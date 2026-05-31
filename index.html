@@ -84,8 +84,13 @@
   .out{padding:10px 12px; white-space:pre-wrap; font-size:13px; color:#cfe3ff;
     border-top:1px dashed var(--line); min-height:8px}
   .out .err{color:var(--red)}
-  .turtlebox{display:flex; justify-content:center; background:#fff; padding:6px}
+  /* Skulpt stacks two canvases (draw layer + turtle layer) using normal
+     block flow + margin-top:-320px. Must NOT be flex, or they sit side by
+     side and the cursor won't line up with the drawing. Center each canvas
+     with auto side-margins so the stack stays aligned. */
+  .turtlebox{display:block; text-align:center; background:#fff; padding:6px}
   .turtlebox:empty{display:none}
+  .turtlebox canvas{margin-left:auto !important; margin-right:auto !important}
 
   pre.show{background:#11142b; border:1px solid var(--line); border-radius:10px;
     padding:12px; overflow:auto; font-size:14px; color:#d7e3ff}
