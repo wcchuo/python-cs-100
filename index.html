@@ -102,6 +102,13 @@
   .opt.correct{background:#163a2a; border-color:var(--green); color:#bdf5d6}
   .opt.wrong{background:#3a1622; border-color:var(--red); color:#ffc2d0}
   .opt .fb{display:block; font-size:12px; color:var(--muted); margin-top:4px}
+  .opt.locked{cursor:default}
+  .qzhead{display:flex; align-items:center; justify-content:space-between; gap:10px}
+  .explain{display:none; margin:6px 0 14px; padding:10px 12px; border-radius:10px;
+    font-size:14px; background:#163a2a; border:1px solid var(--green); color:#cdebd9}
+  .explain.show{display:block; animation:fade .2s}
+  .explain.exwrong{background:#2a1620; border-color:var(--red); color:#ffd4dd}
+  .explain .ok{color:var(--green)} .explain .x{color:var(--red)}
   .quizscore{margin-top:10px; font-weight:700; color:var(--accent)}
 
   .challenge{counter-reset:none}
@@ -192,13 +199,16 @@ let quizCount=0;
 function makeQuiz(title, questions){
   const qid='qz'+(quizCount++);
   let html=`<div class="quiz" data-quiz="${qid}" data-total="${questions.length}">
-    <div class="h">❓ ${title}</div>`;
+    <div class="qzhead"><div class="h">❓ ${title}</div>
+      <button class="resetbtn" data-quizreset="${qid}">↺ Reset answers</button></div>`;
   questions.forEach((q,i)=>{
     html+=`<div class="q">${i+1}. ${q.q}</div>`;
-    q.a.forEach((a,j)=>{
-      html+=`<button class="opt" data-q="${qid}" data-qi="${i}" data-ok="${a.ok?1:0}">
-        ${a.t}${a.fb?`<span class="fb">${a.fb}</span>`:''}</button>`;
+    let correctText='', correctFb='';
+    q.a.forEach((a)=>{ if(a.ok){correctText=a.t; correctFb=a.fb||'';} });
+    q.a.forEach((a)=>{
+      html+=`<button class="opt" data-q="${qid}" data-qi="${i}" data-ok="${a.ok?1:0}">${a.t}</button>`;
     });
+    html+=`<div class="explain" id="${qid}_e${i}" data-ct="${encodeURIComponent(correctText)}" data-fb="${encodeURIComponent(correctFb)}"></div>`;
   });
   html+=`<div class="quizscore" id="${qid}_score"></div></div>`;
   return html;
@@ -207,7 +217,7 @@ function makeQuiz(title, questions){
 /* event delegation for run / reset / quiz */
 const RESET_STORE={};
 document.addEventListener('click',(e)=>{
-  const t=e.target.closest('[data-run],[data-reset],.opt');
+  const t=e.target.closest('[data-run],[data-reset],[data-quizreset],.opt');
   if(!t) return;
   if(t.dataset.run){ runSkulpt(t.dataset.run); }
   else if(t.dataset.reset){
@@ -215,16 +225,38 @@ document.addEventListener('click',(e)=>{
     if(RESET_STORE[id]!==undefined){document.getElementById(id).value=RESET_STORE[id];
       document.getElementById(id+'_out').innerHTML=''; document.getElementById(id+'_t').innerHTML='';}
   }
+  else if(t.dataset.quizreset){ resetQuiz(t.dataset.quizreset); }
   else if(t.classList.contains('opt')){
     const qid=t.dataset.q, qi=t.dataset.qi;
     const group=document.querySelectorAll(`.opt[data-q="${qid}"][data-qi="${qi}"]`);
     let already=false; group.forEach(o=>{if(o.classList.contains('correct')||o.classList.contains('wrong'))already=true;});
     if(already) return;
-    group.forEach(o=>{ if(o.dataset.ok==='1') o.classList.add('correct'); });
-    if(t.dataset.ok!=='1') t.classList.add('wrong');
+    group.forEach(o=>{ if(o.dataset.ok==='1') o.classList.add('correct'); o.classList.add('locked'); });
+    const wrong = t.dataset.ok!=='1';
+    if(wrong) t.classList.add('wrong');
+    // reveal the explanation (always — extra helpful when wrong)
+    const ex=document.getElementById(qid+'_e'+qi);
+    if(ex){
+      const ct=decodeURIComponent(ex.dataset.ct||'');
+      const fb=decodeURIComponent(ex.dataset.fb||'');
+      ex.innerHTML = (wrong
+        ? `<b class="x">✗ Not quite.</b> `
+        : `<b class="ok">✓ Correct!</b> `)
+        + `The right answer is <b>"${ct}"</b>.` + (fb?` ${fb}`:'');
+      ex.classList.add('show'); ex.classList.toggle('exwrong', wrong);
+    }
     updateQuizScore(qid);
   }
 });
+function resetQuiz(qid){
+  document.querySelectorAll(`.opt[data-q="${qid}"]`).forEach(o=>{
+    o.classList.remove('correct','wrong','locked');
+  });
+  document.querySelectorAll(`[id^="${qid}_e"]`).forEach(ex=>{
+    if(ex.classList.contains('explain')){ ex.classList.remove('show','exwrong'); ex.innerHTML=''; }
+  });
+  const sc=document.getElementById(qid+'_score'); if(sc) sc.textContent='';
+}
 function updateQuizScore(qid){
   const quiz=document.querySelector(`[data-quiz="${qid}"]`);
   const total=+quiz.dataset.total;
