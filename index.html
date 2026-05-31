@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🐍 Code Quest: Build Your Own Game in Python</title>
+
+<!-- Skulpt: runs real Python (incl. turtle) in the browser -->
+<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+
+<style>
+  :root{
+    --bg:#0f1226; --panel:#191d3a; --panel2:#222748; --ink:#eef1ff;
+    --muted:#a9b0e0; --accent:#ffd166; --green:#5ee6a0; --red:#ff6b8a;
+    --blue:#5cc8ff; --purple:#b388ff; --line:#2c3160;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'Segoe UI',Verdana,system-ui,sans-serif; line-height:1.6;
+  }
+  code,pre,.editor{font-family:'Consolas','Courier New',monospace}
+
+  /* ---------- Layout ---------- */
+  #app{display:flex; min-height:100vh}
+  #sidebar{
+    width:280px; flex:0 0 280px; background:var(--panel);
+    border-right:2px solid var(--line); padding:18px 14px;
+    position:sticky; top:0; height:100vh; overflow-y:auto;
+  }
+  #sidebar h1{font-size:18px; margin:0 0 4px}
+  #sidebar .tag{color:var(--muted); font-size:12px; margin-bottom:16px}
+  .navbtn{
+    display:block; width:100%; text-align:left; border:none; cursor:pointer;
+    background:var(--panel2); color:var(--ink); padding:10px 12px; margin:6px 0;
+    border-radius:10px; font-size:14px; transition:.15s; border-left:4px solid transparent;
+  }
+  .navbtn:hover{background:#2b3162}
+  .navbtn.active{background:#2b3162; border-left-color:var(--accent); font-weight:700}
+  .navbtn small{display:block; color:var(--muted); font-size:11px; font-weight:400}
+
+  main{flex:1; padding:28px 40px; max-width:1000px; margin:0 auto}
+  .page{display:none; animation:fade .25s}
+  .page.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  h2{font-size:30px; margin:0 0 6px}
+  h3{font-size:22px; margin:30px 0 8px; color:var(--accent)}
+  h4{font-size:17px; margin:18px 0 6px; color:var(--blue)}
+  p,li{font-size:16px}
+  a{color:var(--blue)}
+
+  .lead{color:var(--muted); font-size:15px; margin-bottom:14px}
+  .pill{display:inline-block; background:var(--panel2); border:1px solid var(--line);
+    border-radius:999px; padding:3px 12px; font-size:12px; margin:2px 4px 2px 0; color:var(--muted)}
+
+  /* ---------- Boxes ---------- */
+  .box{background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px; margin:16px 0}
+  .why{border-left:5px solid var(--accent)}
+  .tip{border-left:5px solid var(--green); background:#16271f}
+  .warn{border-left:5px solid var(--red); background:#2a1620}
+  .brick{border-left:5px solid var(--purple); background:#1d1733}
+  .box .h{font-weight:800; margin-bottom:4px; display:flex; align-items:center; gap:8px}
+
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:14px}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:left}
+  th{background:var(--panel2)}
+
+  /* ---------- Code runner ---------- */
+  .runner{background:#11142b; border:1px solid var(--line); border-radius:12px;
+    margin:14px 0; overflow:hidden}
+  .runner .bar{display:flex; align-items:center; justify-content:space-between;
+    background:var(--panel2); padding:6px 10px; font-size:12px; color:var(--muted)}
+  .editor{width:100%; border:none; background:#11142b; color:#eef1ff; padding:12px;
+    font-size:14px; resize:vertical; min-height:120px; line-height:1.45; outline:none}
+  .runbtn{background:var(--green); color:#07321f; border:none; font-weight:800;
+    padding:6px 16px; border-radius:8px; cursor:pointer; font-size:13px}
+  .runbtn:hover{filter:brightness(1.08)}
+  .resetbtn{background:transparent; color:var(--muted); border:1px solid var(--line);
+    padding:5px 10px; border-radius:8px; cursor:pointer; font-size:12px; margin-right:8px}
+  .out{padding:10px 12px; white-space:pre-wrap; font-size:13px; color:#cfe3ff;
+    border-top:1px dashed var(--line); min-height:8px}
+  .out .err{color:var(--red)}
+  .turtlebox{display:flex; justify-content:center; background:#fff; padding:6px}
+  .turtlebox:empty{display:none}
+
+  pre.show{background:#11142b; border:1px solid var(--line); border-radius:10px;
+    padding:12px; overflow:auto; font-size:14px; color:#d7e3ff}
+  .kw{color:#ff9ecb} .st{color:#9ee493} .nm{color:#ffd98a} .cm{color:#7d86c0}
+
+  /* ---------- Quiz ---------- */
+  .quiz{background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px; margin:16px 0}
+  .quiz .q{font-weight:700; margin:14px 0 6px}
+  .opt{display:block; width:100%; text-align:left; background:var(--panel2); color:var(--ink);
+    border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin:6px 0;
+    cursor:pointer; font-size:15px; transition:.12s}
+  .opt:hover{background:#2b3162}
+  .opt.correct{background:#163a2a; border-color:var(--green); color:#bdf5d6}
+  .opt.wrong{background:#3a1622; border-color:var(--red); color:#ffc2d0}
+  .opt .fb{display:block; font-size:12px; color:var(--muted); margin-top:4px}
+  .quizscore{margin-top:10px; font-weight:700; color:var(--accent)}
+
+  .challenge{counter-reset:none}
+  .tier{font-weight:800; padding:4px 10px; border-radius:8px; display:inline-block; margin:14px 0 2px}
+  .t-green{background:#163a2a; color:#bdf5d6}
+  .t-yellow{background:#3a3416; color:#f5ecbd}
+  .t-red{background:#3a1622; color:#ffc2d0}
+  .t-star{background:#2a2147; color:#d9c8ff}
+
+  details{background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:8px 14px; margin:8px 0}
+  summary{cursor:pointer; font-weight:700; color:var(--blue)}
+
+  .footer{color:var(--muted); font-size:13px; margin:40px 0 20px; border-top:1px solid var(--line); padding-top:14px}
+  .navpager{display:flex; justify-content:space-between; margin-top:30px}
+  .navpager button{background:var(--panel2); color:var(--ink); border:1px solid var(--line);
+    border-radius:10px; padding:10px 16px; cursor:pointer; font-size:14px}
+  .navpager button:hover{background:#2b3162}
+  .navpager button:disabled{opacity:.35; cursor:default}
+  .hide{display:none}
+  hr{border:none; border-top:1px solid var(--line); margin:24px 0}
+  .mini{font-size:13px; color:var(--muted)}
+  ul.clean{list-style:none; padding-left:0}
+  ul.clean li{padding:4px 0; border-bottom:1px dashed var(--line)}
+</style>
+</head>
+<body>
+<div id="app">
+  <nav id="sidebar">
+    <h1>🐍 Code Quest</h1>
+    <div class="tag">Build Your Own Game in Python · 10 × 1.5 hrs</div>
+    <div id="navlist"></div>
+  </nav>
+  <main id="main"><!-- pages injected here --></main>
+</div>
+
+<script>
+/* =========================================================================
+   SKULPT RUNNER  — runs real Python (and turtle) in the browser
+   ========================================================================= */
+function builtinRead(x){
+  if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+    throw "File not found: '" + x + "'";
+  return Sk.builtinFiles["files"][x];
+}
+let runnerCount = 0;
+function makeRunner(code, opts){
+  opts = opts || {};
+  const id = 'rn'+(runnerCount++);
+  const turtleId = id+'_t';
+  const rows = opts.rows || Math.min(18, Math.max(5, code.split('\n').length+1));
+  return `
+  <div class="runner">
+    <div class="bar"><span>▶ Python — edit me, then Run!</span>
+      <span><button class="resetbtn" data-reset="${id}">↺ Reset</button>
+      <button class="runbtn" data-run="${id}">▶ Run</button></span></div>
+    <textarea class="editor" id="${id}" rows="${rows}" spellcheck="false">${escapeHtml(code)}</textarea>
+    <div class="turtlebox" id="${turtleId}"></div>
+    <div class="out" id="${id}_out"></div>
+  </div>`;
+}
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function runSkulpt(id){
+  const code = document.getElementById(id).value;
+  const outEl = document.getElementById(id+'_out');
+  const turtleEl = document.getElementById(id+'_t');
+  outEl.innerHTML=''; turtleEl.innerHTML='';
+  if(typeof Sk === 'undefined'){ outEl.innerHTML='<span class="err">Python engine still loading… try again in a sec.</span>'; return; }
+  Sk.configure({
+    output:(t)=>{ outEl.appendChild(document.createTextNode(t)); },
+    read:builtinRead, __future__:Sk.python3, killableWhile:true, killableFor:true
+  });
+  (Sk.TurtleGraphics||(Sk.TurtleGraphics={})).target = id+'_t';
+  Sk.TurtleGraphics.width = 420; Sk.TurtleGraphics.height = 320;
+  Sk.misceval.asyncToPromise(()=>Sk.importMainWithBody("<stdin>",false,code,true))
+    .then(()=>{}, (err)=>{
+      const e=document.createElement('div'); e.className='err'; e.textContent='⚠ '+err.toString();
+      outEl.appendChild(e);
+    });
+}
+
+/* =========================================================================
+   QUIZ BUILDER  — multiple choice with instant feedback + scoring
+   q = { q:"question", a:[{t:"text", ok:true/false, fb:"why"}] }
+   ========================================================================= */
+let quizCount=0;
+function makeQuiz(title, questions){
+  const qid='qz'+(quizCount++);
+  let html=`<div class="quiz" data-quiz="${qid}" data-total="${questions.length}">
+    <div class="h">❓ ${title}</div>`;
+  questions.forEach((q,i)=>{
+    html+=`<div class="q">${i+1}. ${q.q}</div>`;
+    q.a.forEach((a,j)=>{
+      html+=`<button class="opt" data-q="${qid}" data-qi="${i}" data-ok="${a.ok?1:0}">
+        ${a.t}${a.fb?`<span class="fb">${a.fb}</span>`:''}</button>`;
+    });
+  });
+  html+=`<div class="quizscore" id="${qid}_score"></div></div>`;
+  return html;
+}
+
+/* event delegation for run / reset / quiz */
+const RESET_STORE={};
+document.addEventListener('click',(e)=>{
+  const t=e.target.closest('[data-run],[data-reset],.opt');
+  if(!t) return;
+  if(t.dataset.run){ runSkulpt(t.dataset.run); }
+  else if(t.dataset.reset){
+    const id=t.dataset.reset;
+    if(RESET_STORE[id]!==undefined){document.getElementById(id).value=RESET_STORE[id];
+      document.getElementById(id+'_out').innerHTML=''; document.getElementById(id+'_t').innerHTML='';}
+  }
+  else if(t.classList.contains('opt')){
+    const qid=t.dataset.q, qi=t.dataset.qi;
+    const group=document.querySelectorAll(`.opt[data-q="${qid}"][data-qi="${qi}"]`);
+    let already=false; group.forEach(o=>{if(o.classList.contains('correct')||o.classList.contains('wrong'))already=true;});
+    if(already) return;
+    group.forEach(o=>{ if(o.dataset.ok==='1') o.classList.add('correct'); });
+    if(t.dataset.ok!=='1') t.classList.add('wrong');
+    updateQuizScore(qid);
+  }
+});
+function updateQuizScore(qid){
+  const quiz=document.querySelector(`[data-quiz="${qid}"]`);
+  const total=+quiz.dataset.total;
+  // count answered questions where a correct option is showing & user picked correctly
+  let answered=0, right=0;
+  for(let i=0;i<total;i++){
+    const group=quiz.querySelectorAll(`.opt[data-qi="${i}"]`);
+    let done=false, wrongPicked=false;
+    group.forEach(o=>{if(o.classList.contains('correct')||o.classList.contains('wrong'))done=true;
+      if(o.classList.contains('wrong'))wrongPicked=true;});
+    if(done){answered++; if(!wrongPicked)right++;}
+  }
+  const el=document.getElementById(qid+'_score');
+  el.textContent=`Score: ${right} / ${total} ${answered===total?(right===total?'🏆 Perfect!':'— keep going, you got this!'):''}`;
+}
+</script>
+
+<script>
+/* =========================================================================
+   CONTENT  — every session is an object {id,title,sub,html()}
+   ========================================================================= */
+const C = {}; // helpers shortcuts used inside templates
+const R = makeRunner, Q = makeQuiz;
+
+const SESSIONS = [];
+
+/* ---------- helper to register pages ---------- */
+function page(id,title,sub,builder){ SESSIONS.push({id,title,sub,builder}); }
+</script>
+
+<!-- The big content script is split into a second file-like block below -->
+<script src="content.js"></script>
+
+<script>
+/* =========================================================================
+   RENDER  — build sidebar + pages, wire navigation
+   ========================================================================= */
+function render(){
+  const nav=document.getElementById('navlist');
+  const main=document.getElementById('main');
+  SESSIONS.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.className='navbtn'; b.dataset.go=i;
+    b.innerHTML=`${s.title}<small>${s.sub}</small>`;
+    b.onclick=()=>goto(i); nav.appendChild(b);
+
+    const pg=document.createElement('section');
+    pg.className='page'; pg.id='page'+i;
+    pg.innerHTML=s.builder();
+    // pager
+    pg.innerHTML+=`<div class="navpager">
+      <button ${i===0?'disabled':''} onclick="goto(${i-1})">← Previous</button>
+      <button ${i===SESSIONS.length-1?'disabled':''} onclick="goto(${i+1})">Next →</button></div>
+      <div class="footer">Code Quest · 10-Session Python Game Camp · made for curious builders 🐍</div>`;
+    main.appendChild(pg);
+    // store reset defaults after injection
+  });
+  // store reset originals
+  document.querySelectorAll('.editor').forEach(t=>{RESET_STORE[t.id]=t.value;});
+  goto(location.hash? (parseInt(location.hash.replace('#p',''))||0):0);
+}
+function goto(i){
+  if(i<0||i>=SESSIONS.length)return;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page'+i).classList.add('active');
+  document.querySelectorAll('.navbtn')[i].classList.add('active');
+  location.hash='p'+i; window.scrollTo({top:0,behavior:'smooth'});
+}
+render();
+</script>
+</body>
+</html>
