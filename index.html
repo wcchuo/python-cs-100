@@ -172,11 +172,21 @@ function makeRunner(code, opts){
 }
 function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
+// Replace the turtle box with a fresh empty node sharing the same id.
+// Skulpt caches the element it draws into, so any frames still rendering
+// from a previous run land in the old (now-detached) node — invisible.
+function freshTurtle(id){
+  const old=document.getElementById(id+'_t');
+  if(!old) return;
+  const fresh=document.createElement('div');
+  fresh.className='turtlebox'; fresh.id=id+'_t';
+  old.replaceWith(fresh);
+}
+
 function runSkulpt(id){
   const code = document.getElementById(id).value;
   const outEl = document.getElementById(id+'_out');
-  const turtleEl = document.getElementById(id+'_t');
-  outEl.innerHTML=''; turtleEl.innerHTML='';
+  outEl.innerHTML=''; freshTurtle(id);
   if(typeof Sk === 'undefined'){ outEl.innerHTML='<span class="err">Python engine still loading… try again in a sec.</span>'; return; }
   Sk.configure({
     output:(t)=>{ outEl.appendChild(document.createTextNode(t)); },
@@ -223,7 +233,7 @@ document.addEventListener('click',(e)=>{
   else if(t.dataset.reset){
     const id=t.dataset.reset;
     if(RESET_STORE[id]!==undefined){document.getElementById(id).value=RESET_STORE[id];
-      document.getElementById(id+'_out').innerHTML=''; document.getElementById(id+'_t').innerHTML='';}
+      document.getElementById(id+'_out').innerHTML=''; freshTurtle(id);}
   }
   else if(t.dataset.quizreset){ resetQuiz(t.dataset.quizreset); }
   else if(t.classList.contains('opt')){
