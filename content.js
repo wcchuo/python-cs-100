@@ -6,6 +6,16 @@
      Q(title, [{q, a:[{t,ok,fb}]}])  -> interactive quiz
    ===================================================================== */
 
+/* ---------- Homework workspace helper ----------
+   A clearly-labeled blank editor for the kid's own homework attempt.
+   The starter `code` carries short instructions + the expected result as
+   comments, so they always know the goal and how to check themselves. */
+function HW(code, opts){
+  return `<div class="box brick"><div class="h">✍️ Your homework workspace</div>
+    Write your answer here and press ▶ <b>Run</b>. The comments tell you the goal and the
+    expected result — delete them once your code works!</div>` + R(code, opts);
+}
+
 /* ---------- WELCOME ---------- */
 page('home','🏠 Welcome','Start here · how it works', ()=>`
   <h2>🐍 Code Quest: Build Your Own Game in Python</h2>
@@ -154,6 +164,7 @@ page('s1','1 · Hello, Turtle!','Your first drawing', ()=>`
   </ol>
   ${R('import turtle\nt = turtle.Turtle()\nt.forward(100)\nt.left(90)\nt.forward(100)\nt.left(90)\nt.forward(100)\nturtle.done()')}
   <details><summary>Homework hint (don't peek too soon!)</summary>It draws 3 sides of a square (an open box). Add one more <code>left(90)</code> + <code>forward(100)</code> to close it.</details>
+  ${HW('# 🏠 HOMEWORK: Draw the first letter of your name.\n# Use a color you like, a thick pen, and forward / right / left.\nimport turtle\nt = turtle.Turtle()\nt.color("blue")     # <- change to your favorite color\nt.pensize(5)\n\n# draw your letter below:\n\n\nturtle.done()\n\n# Expected result: a thick letter (e.g. an "L" or "T") in your color.')}
 
   <div class="box tip"><div class="h">💡 Tip to remember</div>
     "The computer does exactly what you say — not what you <i>meant</i>." Celebrate your first
@@ -194,6 +205,72 @@ page('s2','2 · Variables','Boxes that remember', ()=>`
       {t:'x', ok:false, fb:'Too vague.'}, {t:'score', ok:true, fb:'Names should say what they hold.'}, {t:'thing2', ok:false}]},
   ])}
 
+  <h3>🔤 Putting words and variables together (this trips everyone up!)</h3>
+  <p>A variable is only useful if you can <b>show it</b> and <b>mix it into sentences</b>.
+  There are two main ways, and kids mix them up — so let's make it crystal clear.</p>
+
+  <h4>Way 1: the comma <code>,</code> inside <code>print()</code> — the easy, safe way</h4>
+  <p>Commas put a <b>space</b> between things and work with <b>any type</b> (words AND numbers).</p>
+  ${R('name = "Maya"\nage = 11\nscore = 250\n\nprint("Hello", name)\nprint(name, "is", age, "years old")\nprint("Score:", score)')}
+  <div class="box tip"><div class="h">💡 Why commas are friendly</div>
+    Commas don't care if it's a word or a number — Python adds a space and prints them in a row.
+    Great for quick messages.</div>
+
+  <h4>Way 2: the plus <code>+</code> — glue strings into ONE word/string</h4>
+  <p><code>+</code> <b>joins (concatenates)</b> strings with <b>no</b> automatic space. You add spaces yourself.</p>
+  ${R('first = "Code"\nlast = "Quest"\n\nprint(first + last)         # CodeQuest  (no space!)\nprint(first + " " + last)   # Code Quest (we added " ")\n\ngreeting = "Hi, " + first\nprint(greeting)')}
+
+  <div class="box warn"><div class="h">⚠ The error EVERY beginner hits</div>
+    <code>+</code> can only glue <b>strings to strings</b>. Gluing a word to a number crashes!
+    Run this and read the red error — then see the fix below.</div>
+  ${R('age = 11\nprint("I am " + age + " years old")   # 💥 TypeError: can only concatenate str')}
+  <p><b>The fix:</b> turn the number into a string with <code>str(...)</code> — OR just use commas.</p>
+  ${R('age = 11\n\n# Fix A: str() turns a number into text so + works\nprint("I am " + str(age) + " years old")\n\n# Fix B: easier — just use commas\nprint("I am", age, "years old")')}
+
+  <h4>✨ Pro shortcut: f-strings (put variables right inside the quotes)</h4>
+  <p>Modern Python has a neat trick: put an <code>f</code> before the quotes, then drop variables in
+  <code>{curly braces}</code>. No <code>+</code>, no <code>str()</code>, no spacing headaches.</p>
+  ${R('name = "Maya"\nage = 11\nscore = 250\n\nprint(f"{name} is {age} and has {score} points!")\n\nmsg = f"GAME OVER, {name}! Final score: {score}"\nprint(msg)')}
+
+  <table>
+    <tr><th>Goal</th><th>Best tool</th><th>Example</th></tr>
+    <tr><td>Quick message, mixed words + numbers</td><td>comma <code>,</code></td><td>print("Score:", score)</td></tr>
+    <tr><td>Glue strings into one piece of text</td><td>plus <code>+</code></td><td>"Code" + " " + "Quest"</td></tr>
+    <tr><td>Drop variables inside a sentence</td><td>f-string</td><td>f"Hi {name}!"</td></tr>
+  </table>
+
+  ${Q('Quiz — words + variables', [
+    {q:'What does <code>print("Hi", name)</code> put between Hi and the name?', a:[
+      {t:'A space', ok:true, fb:'Commas in print() add a space automatically.'},
+      {t:'Nothing', ok:false}, {t:'A comma', ok:false}]},
+    {q:'<code>"Code" + "Quest"</code> gives…', a:[
+      {t:'"CodeQuest" (no space)', ok:true, fb:'+ glues with no space unless you add one.'},
+      {t:'"Code Quest"', ok:false}, {t:'an error', ok:false}]},
+    {q:'<code>"I am " + 11</code> does what?', a:[
+      {t:'Crashes — you can\'t + a string and a number', ok:true, fb:'Use str(11) or a comma instead.'},
+      {t:'Prints "I am 11"', ok:false}, {t:'Prints "I am  + 11"', ok:false}]},
+    {q:'Which prints <code>Score: 250</code> with a number variable <code>score = 250</code>?', a:[
+      {t:'print("Score:", score)', ok:true},
+      {t:'print("Score:" + score)', ok:false, fb:'That crashes — would need str(score).'},
+      {t:'print("Score: score")', ok:false, fb:'That prints the word "score", not the value.'}]},
+    {q:'What does <code>f"Hi {name}"</code> print when <code>name = "Sam"</code>?', a:[
+      {t:'Hi Sam', ok:true, fb:'f-strings drop the variable\'s value into the braces.'},
+      {t:'Hi {name}', ok:false}, {t:'Hi name', ok:false}]},
+  ])}
+
+  <h3>🏆 Word challenges (try all three!)</h3>
+  <div class="tier t-green">🟢 Starter — About Me</div>
+  <ul><li>Make variables <code>name</code> and <code>age</code>, then print one sentence using <b>commas</b>, and the same sentence again using an <b>f-string</b>.</li></ul>
+  <div class="tier t-yellow">🟡 Medium — Score Message</div>
+  <ul><li>Make <code>score = 0</code>. Add 10 to it three times, then print <code>"Final score: 30"</code> using the variable (not the number 30!).</li></ul>
+  <div class="tier t-red">🔴 Challenge — Mad Libs</div>
+  <ul><li>Make variables for an <code>animal</code>, a <code>place</code>, and a <code>number</code>, then build a silly sentence that uses all three.</li></ul>
+  ${R('# Your word challenges here!\nname = "Maya"\nage = 11\n\n# Starter: print with a comma, then with an f-string\nprint("My name is", name, "and I am", age)\nprint(f"My name is {name} and I am {age}")\n\n# Try the Medium and Challenge tasks below:\n')}
+
+  <div class="box brick"><div class="h">🐍 Snake callback</div>
+    Your game's <b>"Score: 7"</b> and <b>"GAME OVER, Maya!"</b> messages are exactly this:
+    a word glued to a variable. You'll use <code>str(score)</code> or an f-string in Build Day 2!</div>
+
   <h3>🎨 In class — a resizable square</h3>
   <p>Change <b>one number</b> and the whole square resizes. That's the power of variables.</p>
   ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\nsize = 120        # <-- change ONLY this number!\n\nfor i in range(4):\n    t.forward(size)\n    t.right(90)\n\nturtle.done()')}
@@ -226,7 +303,12 @@ page('s2','2 · Variables','Boxes that remember', ()=>`
   <h3>🏠 Homework — "The Growing Spiral"</h3>
   <p>Start with <code>size = 10</code>, draw a line, then <code>size = size + 10</code>, turn, and repeat
   a few times. Watch a spiral grow! (This previews loops <i>and</i> the snake growing.)</p>
-  ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\nsize = 10\nt.forward(size); t.right(90)\nsize = size + 10\nt.forward(size); t.right(90)\nsize = size + 10\nt.forward(size); t.right(90)\n# keep going... add more!\n\nturtle.done()')}
+  ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\nsize = 10\nt.forward(size); t.right(90)\nsize = size + 10\nt.forward(size); t.right(90)\nsize = size + 10\nt.forward(size); t.right(90)\n# keep going... add more!\n\nturtle.done()', {origin:'center'})}
+
+  <h3>🏠 Homework #2 — "Mad Libs Story"</h3>
+  <p>Make a silly story by storing words in variables and mixing them into sentences. Practice all
+  three ways to combine words and variables — comma, <code>+</code>, and f-string.</p>
+  ${HW('# 🏠 HOMEWORK: Fill the variables with silly words, then build a story.\nname = "Maya"\nanimal = "penguin"\nplace = "the moon"\nnumber = 7\n\n# 1) using commas:\nprint(name, "saw a", animal, "on", place)\n\n# 2) using + (remember str() for the number!):\nprint("It had " + str(number) + " hats.")\n\n# 3) using an f-string:\nprint(f"{name} and the {animal} laughed for {number} hours!")\n\n# Expected: three silly sentences using your words and numbers.')}
 
   <div class="box tip"><div class="h">💡 Tip</div>
     Name boxes for what they hold — <code>score</code>, not <code>x</code>. And remember:
@@ -293,6 +375,7 @@ page('s3','3 · Loops','Do it again without retyping', ()=>`
   <h3>🏠 Homework — "Spirograph Art"</h3>
   <p>Make your own colorful loop pattern (a flower or starburst). Experiment with the numbers:
   the angle, the forward distance, and the colors. Bring your favorite to show!</p>
+  ${HW('# 🏠 HOMEWORK: Make a colorful pattern with ONE loop.\n# Change the angle, the distance, and the colors to make it your own.\nimport turtle\nt = turtle.Turtle()\nt.speed(0)\ncolors = ["red", "orange", "gold", "green", "blue", "purple"]\n\nfor i in range(36):\n    t.color(colors[i % 6])\n    t.forward(120)\n    t.right(85)      # <- try 90, 120, 144, 170...\n\nturtle.done()\n\n# Expected result: a repeating starburst/flower of rainbow lines.', {origin:'center'})}
 
   <div class="box tip"><div class="h">💡 Tip</div>
     Loops + variables together are unstoppable: a variable counts, the loop repeats. That's basically
@@ -334,7 +417,7 @@ page('s4','4 · Lists ⭐','One backpack, many things', ()=>`
   ])}
 
   <h3>🎨 In class — a growing trail (this IS snake movement!)</h3>
-  ${R('import turtle\nt = turtle.Turtle()\nt.penup(); t.speed(0)\n\nbody = [(-100,0), (-60,0), (-20,0)]   # a list of positions\n\nfor part in body:        # loop over every part\n    t.goto(part)\n    t.stamp()            # draw a block there\n\n# now the snake EATS -> grow the body:\nbody.append((20,0))\nt.goto(20,0); t.stamp()\n\nturtle.done()')}
+  ${R('import turtle\nt = turtle.Turtle()\nt.penup(); t.speed(0)\n\nbody = [(-100,0), (-60,0), (-20,0)]   # a list of positions\n\nfor part in body:        # loop over every part\n    t.goto(part)\n    t.stamp()            # draw a block there\n\n# now the snake EATS -> grow the body:\nbody.append((20,0))\nt.goto(20,0); t.stamp()\n\nturtle.done()', {origin:'center'})}
   <div class="box brick"><div class="h">🐍 Snake callback</div>
     That loop just drew a snake! "Eat food → <code>.append()</code> → snake gets longer."
     The whole game lives in this idea.</div>
@@ -346,7 +429,7 @@ page('s4','4 · Lists ⭐','One backpack, many things', ()=>`
   <ul><li>Make a list of numbers and print their total using a loop and a <code>total</code> variable.</li></ul>
   <div class="tier t-red">🔴 Challenge — Connect the Dots</div>
   <ul><li>Store 5 coordinate pairs in a list, loop through them drawing lines, reveal a hidden shape.</li></ul>
-  ${R('import turtle\nt = turtle.Turtle()\nt.speed(2)\n\ndots = [(0,0), (100,0), (100,100), (0,100), (0,0)]\n\nt.penup(); t.goto(dots[0]); t.pendown()\nfor point in dots:\n    t.goto(point)\n\nturtle.done()')}
+  ${R('import turtle\nt = turtle.Turtle()\nt.speed(2)\n\ndots = [(0,0), (100,0), (100,100), (0,100), (0,0)]\n\nt.penup(); t.goto(dots[0]); t.pendown()\nfor point in dots:\n    t.goto(point)\n\nturtle.done()', {origin:'center'})}
 
   ${Q('Exit quiz', [
     {q:'How do you add an item to the end of a list?', a:[
@@ -362,6 +445,7 @@ page('s4','4 · Lists ⭐','One backpack, many things', ()=>`
   <h3>🏠 Homework — "Connect the Dots Picture"</h3>
   <p>Design your own hidden shape with at least 6 points in a list, then loop through to draw it.
   Can a friend guess the picture before you run it?</p>
+  ${HW('# 🏠 HOMEWORK: Store at least 6 points in a LIST, then connect them.\n# Change the numbers to draw your own hidden shape!\nimport turtle\nt = turtle.Turtle()\nt.speed(2)\n\npoints = [(0,0), (100,0), (150,80), (100,160), (0,160), (-50,80), (0,0)]\n\nt.penup(); t.goto(points[0]); t.pendown()\nfor p in points:        # loop over every point in the list\n    t.goto(p)\n\nturtle.done()\n\n# Expected result: a closed outline connecting all your points (here: a house-like hexagon).', {origin:'center'})}
 
   <div class="box tip"><div class="h">💡 Tip</div>
     Lists + loops are best friends. Whenever you have "a bunch of things," reach for a list.</div>
@@ -413,7 +497,7 @@ page('s5','5 · Conditionals','Teaching the computer to decide', ()=>`
   <div class="tier t-yellow">🟡 Medium</div>
   <ul><li>Draw a red circle if a number is even, a blue one if it's odd. Hint: <code>n % 2 == 0</code>.</li></ul>
   <div class="tier t-red">🔴 Challenge — Traffic Light drawing</div>
-  ${R('import turtle\nt = turtle.Turtle()\nt.penup(); t.speed(0)\n\nlight = 3   # try 1, 2, or 3\n\nif light == 1:\n    t.color("red")\nelif light == 2:\n    t.color("yellow")\nelse:\n    t.color("green")\n\nt.dot(120)\nturtle.done()')}
+  ${R('import turtle\nt = turtle.Turtle()\nt.penup(); t.speed(0)\n\nlight = 3   # try 1, 2, or 3\n\nif light == 1:\n    t.color("red")\nelif light == 2:\n    t.color("yellow")\nelse:\n    t.color("green")\n\nt.dot(120)\nturtle.done()', {origin:'center'})}
 
   ${Q('Exit quiz', [
     {q:'<code>n % 2 == 0</code> is True when n is…', a:[
@@ -427,6 +511,7 @@ page('s5','5 · Conditionals','Teaching the computer to decide', ()=>`
   <h3>🏠 Homework — "Number Sorter"</h3>
   <p>Write a program with a variable <code>n</code>. Print "big" if n &gt; 100, "medium" if between
   10 and 100, and "small" otherwise. Test it with three different values.</p>
+  ${HW('# 🏠 HOMEWORK: Print "big", "medium", or "small" depending on n.\nn = 250        # <- try 250, then 50, then 5\n\n# write your if / elif / else here:\n\n\n# Expected output:\n#   n = 250  -> big\n#   n = 50   -> medium\n#   n = 5    -> small')}
 
   <div class="box tip"><div class="h">💡 Tip</div>
     Read your conditions out loud like English. If it makes sense as a sentence, it's probably right.</div>
@@ -487,6 +572,7 @@ page('s6','6 · Functions','Name a trick, use it forever', ()=>`
   <h3>🏠 Homework — "Shape Stamp Maker"</h3>
   <p>Polish your <code>draw_polygon</code> function and use it to draw a whole row of different shapes
   in a loop, each a different color. Add a parameter for color too!</p>
+  ${HW('# 🏠 HOMEWORK: Finish draw_polygon so it takes a COLOR too,\n# then draw a row of shapes with one loop.\nimport turtle\nt = turtle.Turtle()\nt.speed(0)\n\ndef draw_polygon(sides, size, color):\n    t.color(color)\n    angle = 360 / sides\n    for i in range(sides):\n        t.forward(size)\n        t.right(angle)\n\n# call your function a few times (move between shapes with penup/forward):\ndraw_polygon(3, 60, "red")\n\n\nturtle.done()\n\n# Expected result: a row of different colored shapes (triangle, square, pentagon...).')}
 
   <div class="box tip"><div class="h">💡 Tip</div>
     If you've copy-pasted code twice, that's a sign: turn it into a function. <b>DRY!</b></div>
@@ -506,7 +592,7 @@ page('s7','7 · Abstraction','Hide the mess, organize the toys', ()=>`
 
   <h3>🧠 Learn — make "main" read like English</h3>
   <p>Compare a messy program to a clean one. Same drawing, but which is easier to read?</p>
-  ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\ndef draw_sun():\n    t.penup(); t.goto(80,80); t.pendown()\n    t.color("orange"); t.dot(60)\n\ndef draw_house():\n    t.penup(); t.goto(-80,-80); t.pendown()\n    t.color("brown")\n    for i in range(4):\n        t.forward(100); t.left(90)\n\n# The MAIN program reads like plain English:\ndraw_house()\ndraw_sun()\n\nturtle.done()')}
+  ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\ndef draw_sun():\n    t.penup(); t.goto(80,80); t.pendown()\n    t.color("orange"); t.dot(60)\n\ndef draw_house():\n    t.penup(); t.goto(-80,-80); t.pendown()\n    t.color("brown")\n    for i in range(4):\n        t.forward(100); t.left(90)\n\n# The MAIN program reads like plain English:\ndraw_house()\ndraw_sun()\n\nturtle.done()', {origin:'center'})}
   <div class="box tip"><div class="h">💡 The test</div>
     If your <b>main</b> program is readable by your little sibling, you nailed abstraction.
     Good code reads like a recipe, not a wall of text.</div>
@@ -524,7 +610,7 @@ page('s7','7 · Abstraction','Hide the mess, organize the toys', ()=>`
   <h3>🏆 Challenge — Scene Builder</h3>
   <p>Build a picture where the main program is only 3–4 clean function calls. The messy turtle
   commands hide inside the functions above.</p>
-  ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\ndef draw_ground():\n    t.penup(); t.goto(-200,-50); t.pendown()\n    t.color("green"); t.pensize(8); t.forward(400)\n\ndef draw_tree():\n    t.penup(); t.goto(-100,-50); t.pendown()\n    t.color("brown"); t.pensize(10)\n    t.left(90); t.forward(80)\n    t.color("darkgreen"); t.dot(70)\n\n# main:\ndraw_ground()\ndraw_tree()\n# add draw_sun() yourself!\n\nturtle.done()')}
+  ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\ndef draw_ground():\n    t.penup(); t.goto(-200,-50); t.pendown()\n    t.color("green"); t.pensize(8); t.forward(400)\n\ndef draw_tree():\n    t.penup(); t.goto(-100,-50); t.pendown()\n    t.color("brown"); t.pensize(10)\n    t.left(90); t.forward(80)\n    t.color("darkgreen"); t.dot(70)\n\n# main:\ndraw_ground()\ndraw_tree()\n# add draw_sun() yourself!\n\nturtle.done()', {origin:'center'})}
 
   <div class="box brick"><div class="h">🐍 Snake callback</div>
     Next week your whole game's main loop will read like:
@@ -544,6 +630,7 @@ page('s7','7 · Abstraction','Hide the mess, organize the toys', ()=>`
   <p>Make a picture (house + tree + sun, or your own idea) where the main program is just 3–4 named
   function calls. Show a grown-up your main program and see if they can guess what it draws — without
   reading the details!</p>
+  ${HW('# 🏠 HOMEWORK: Build a scene. Hide the messy turtle code inside\n# named functions, so the MAIN part reads like plain English.\nimport turtle\nt = turtle.Turtle()\nt.speed(0)\n\ndef draw_sun():\n    t.penup(); t.goto(120,120); t.pendown()\n    t.color("gold"); t.dot(70)\n\ndef draw_house():\n    t.penup(); t.goto(-120,-100); t.pendown()\n    t.color("brown")\n    for i in range(4):\n        t.forward(120); t.left(90)\n\n# write more functions, then call them here (this is your clean MAIN):\ndraw_house()\ndraw_sun()\n\nturtle.done()\n\n# Expected result: a scene where MAIN is just a few readable function calls.', {origin:'center'})}
 `);
 
 /* ===================================================================== */
@@ -609,6 +696,7 @@ page('s8','8 · Classes','Design your own thing', ()=>`
   <h3>🏠 Homework — "Design Your Own Blueprint"</h3>
   <p>Invent a class for anything you like — a <code>Robot</code>, a <code>Wizard</code>, a
   <code>Car</code>. Give it at least 2 attributes and 2 methods. Make 3 different objects from it.</p>
+  ${HW('# 🏠 HOMEWORK: Design your own class with 2 attributes and 2 methods.\nclass Robot:\n    def __init__(self, name, power):\n        self.name = name        # attribute 1\n        self.power = power      # attribute 2\n\n    def greet(self):           # method 1\n        print("Beep boop, I am", self.name)\n\n    def charge(self):          # method 2\n        self.power = self.power + 10\n        print(self.name, "power is now", self.power)\n\n# make 3 different objects:\nr1 = Robot("Bolt", 50)\n\n\n# Expected output (example):\n#   Beep boop, I am Bolt\n#   Bolt power is now 60')}
 `);
 
 /* ===================================================================== */
@@ -629,7 +717,7 @@ page('s9','9 · Build Day 1 🐍','Snake comes alive', ()=>`
   <h3>🎮 The full Build Day 1 game</h3>
   <p>This runs right here! (In real Python it uses arrow keys; this browser version moves on its own so
   you can watch the snake grow. Read every line — you understand all of it now.)</p>
-  ${R('import turtle\nimport random\n\nscreen = turtle.Screen()\nscreen.setup(420, 420)\nscreen.bgcolor("black")\n\nclass Snake:\n    def __init__(self):\n        self.body = [(0,0)]        # LIST (S4)\n        self.dx, self.dy = 20, 0   # VARIABLES (S2)\n    def move(self):                # METHOD (S6/S8)\n        hx, hy = self.body[-1]\n        new_head = (hx + self.dx, hy + self.dy)\n        self.body.append(new_head) # grow head\n        self.body.pop(0)           # drop tail (slither)\n    def grow(self):\n        self.body.append(self.body[-1])  # eat -> longer!\n\ndef draw(snake, food, pen):\n    pen.clear()\n    for part in snake.body:        # LOOP (S3)\n        pen.goto(part); pen.color("lime"); pen.stamp()\n    pen.goto(food); pen.color("red"); pen.stamp()\n    screen.update()\n\nsnake = Snake()\nfood = (60, 0)\npen = turtle.Turtle(); pen.penup(); pen.hideturtle()\nscreen.tracer(0)\n\nfor step in range(20):             # game loop (20 frames here)\n    snake.move()\n    if snake.body[-1] == food:     # CONDITIONAL (S5): ate it?\n        snake.grow()\n        food = (random.randint(-5,5)*20, random.randint(-5,5)*20)\n    draw(snake, food, pen)\n\nturtle.done()')}
+  ${R('import turtle\nimport random\n\nscreen = turtle.Screen()\nscreen.setup(420, 420)\nscreen.bgcolor("black")\n\nclass Snake:\n    def __init__(self):\n        self.body = [(0,0)]        # LIST (S4)\n        self.dx, self.dy = 20, 0   # VARIABLES (S2)\n    def move(self):                # METHOD (S6/S8)\n        hx, hy = self.body[-1]\n        new_head = (hx + self.dx, hy + self.dy)\n        self.body.append(new_head) # grow head\n        self.body.pop(0)           # drop tail (slither)\n    def grow(self):\n        self.body.append(self.body[-1])  # eat -> longer!\n\ndef draw(snake, food, pen):\n    pen.clear()\n    for part in snake.body:        # LOOP (S3)\n        pen.goto(part); pen.color("lime"); pen.stamp()\n    pen.goto(food); pen.color("red"); pen.stamp()\n    screen.update()\n\nsnake = Snake()\nfood = (60, 0)\npen = turtle.Turtle(); pen.penup(); pen.hideturtle()\nscreen.tracer(0)\n\nfor step in range(20):             # game loop (20 frames here)\n    snake.move()\n    if snake.body[-1] == food:     # CONDITIONAL (S5): ate it?\n        snake.grow()\n        food = (random.randint(-5,5)*20, random.randint(-5,5)*20)\n    draw(snake, food, pen)\n\nturtle.done()', {origin:'center'})}
 
   <h3>🧠 Find the bricks (discussion)</h3>
   <ul class="clean">
@@ -655,6 +743,7 @@ page('s9','9 · Build Day 1 🐍','Snake comes alive', ()=>`
   <h3>🏠 Homework — "Make it yours"</h3>
   <p>Change the snake's <b>color</b>, the food's <b>position</b>, or the number of steps. Bring <b>one
   idea</b> for a new feature to Build Day 2 (score? game over? speed up?).</p>
+  ${HW('# 🏠 HOMEWORK: Tweak this mini-snake! Change the 3 marked spots.\nimport turtle\nimport random\nscreen = turtle.Screen(); screen.tracer(0)\n\nbody = [(0,0)]\ndx, dy = 20, 0\nfood = (60, 0)\npen = turtle.Turtle(); pen.penup(); pen.hideturtle()\n\nfor step in range(20):              # (1) try more steps\n    hx, hy = body[-1]\n    body.append((hx+dx, hy+dy)); body.pop(0)\n    if body[-1] == food:\n        body.append(body[-1])\n        food = (random.randint(-4,4)*20, random.randint(-4,4)*20)\n    pen.clear()\n    for part in body:\n        pen.goto(part); pen.color("lime"); pen.stamp()   # (2) change snake color\n    pen.goto(food); pen.color("red"); pen.stamp()        # (3) change food color\n    screen.update()\n\nturtle.done()\n\n# Expected result: a colored snake that slides right and grows when it hits the food.', {origin:'center'})}
 
   <div class="box tip"><div class="h">💡 Tip</div>
     Save often. Test after every small change — "code a little, run a little." If it breaks, you only
@@ -673,7 +762,7 @@ page('s10','10 · Build Day 2 🏆','Polish, play & showcase', ()=>`
     Then everyone demos what they built.</div>
 
   <h3>🎮 The polished game (score + game over)</h3>
-  ${R('import turtle\nimport random\n\nscreen = turtle.Screen()\nscreen.setup(420, 420)\nscreen.bgcolor("black")\nscreen.tracer(0)\n\nscore = 0\n\nclass Snake:\n    def __init__(self):\n        self.body = [(0,0)]\n        self.dx, self.dy = 20, 0\n    def move(self):\n        hx, hy = self.body[-1]\n        self.body.append((hx+self.dx, hy+self.dy))\n        self.body.pop(0)\n    def grow(self):\n        self.body.append(self.body[-1])\n\ndef hit_wall(head):\n    x, y = head\n    return x < -200 or x > 200 or y < -200 or y > 200\n\nsnake = Snake()\nfood = (60, 0)\npen = turtle.Turtle(); pen.penup(); pen.hideturtle()\nui  = turtle.Turtle(); ui.penup(); ui.hideturtle(); ui.color("white")\n\nfor step in range(25):\n    snake.move()\n    head = snake.body[-1]\n    if hit_wall(head):                 # GAME OVER check\n        ui.goto(0,0); ui.write("GAME OVER", align="center",\n                               font=("Arial",24,"bold"))\n        break\n    if head == food:                   # ate food\n        snake.grow()\n        score = score + 1\n        food = (random.randint(-4,4)*20, random.randint(-4,4)*20)\n    pen.clear()\n    for part in snake.body:\n        pen.goto(part); pen.color("lime"); pen.stamp()\n    pen.goto(food); pen.color("red"); pen.stamp()\n    ui.clear(); ui.goto(-190,180)\n    ui.write("Score: " + str(score), font=("Arial",16,"normal"))\n    screen.update()\n\nturtle.done()')}
+  ${R('import turtle\nimport random\n\nscreen = turtle.Screen()\nscreen.setup(420, 420)\nscreen.bgcolor("black")\nscreen.tracer(0)\n\nscore = 0\n\nclass Snake:\n    def __init__(self):\n        self.body = [(0,0)]\n        self.dx, self.dy = 20, 0\n    def move(self):\n        hx, hy = self.body[-1]\n        self.body.append((hx+self.dx, hy+self.dy))\n        self.body.pop(0)\n    def grow(self):\n        self.body.append(self.body[-1])\n\ndef hit_wall(head):\n    x, y = head\n    return x < -200 or x > 200 or y < -200 or y > 200\n\nsnake = Snake()\nfood = (60, 0)\npen = turtle.Turtle(); pen.penup(); pen.hideturtle()\nui  = turtle.Turtle(); ui.penup(); ui.hideturtle(); ui.color("white")\n\nfor step in range(25):\n    snake.move()\n    head = snake.body[-1]\n    if hit_wall(head):                 # GAME OVER check\n        ui.goto(0,0); ui.write("GAME OVER", align="center",\n                               font=("Arial",24,"bold"))\n        break\n    if head == food:                   # ate food\n        snake.grow()\n        score = score + 1\n        food = (random.randint(-4,4)*20, random.randint(-4,4)*20)\n    pen.clear()\n    for part in snake.body:\n        pen.goto(part); pen.color("lime"); pen.stamp()\n    pen.goto(food); pen.color("red"); pen.stamp()\n    ui.clear(); ui.goto(-190,180)\n    ui.write("Score: " + str(score), font=("Arial",16,"normal"))\n    screen.update()\n\nturtle.done()', {origin:'center'})}
 
   <h3>✨ Features to add (pick your level)</h3>
   <table>
