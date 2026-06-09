@@ -84,6 +84,16 @@
   .out{padding:10px 12px; white-space:pre-wrap; font-size:13px; color:#cfe3ff;
     border-top:1px dashed var(--line); min-height:8px}
   .out .err{color:var(--red)}
+  .inrow{display:flex; align-items:center; gap:8px; margin:6px 0; flex-wrap:wrap}
+  .inlabel{color:var(--accent)}
+  .inecho{color:#cfe3ff; font-style:italic}
+  .inbox{background:#11142b; color:#eef1ff; border:1px solid var(--line);
+    border-radius:6px; padding:4px 8px; font:inherit; min-width:160px; outline:none}
+  .inbox:focus{border-color:var(--accent)}
+  .inbox:disabled{opacity:.5}
+  .inbtn{background:var(--blue); color:#062236; border:none; border-radius:6px;
+    padding:4px 10px; font-weight:700; cursor:pointer; font-size:12px}
+  .inbtn:disabled{opacity:.4; cursor:default}
   /* Skulpt stacks two canvases (draw layer + turtle layer) using normal
      block flow + margin-top:-320px. Must NOT be flex, or they sit side by
      side and the cursor won't line up with the drawing. Center each canvas
@@ -200,9 +210,36 @@ function runSkulpt(id){
   const outEl = document.getElementById(id+'_out');
   outEl.innerHTML=''; clearTurtle(id);
   if(typeof Sk === 'undefined'){ outEl.innerHTML='<span class="err">Python engine still loading… try again in a sec.</span>'; return; }
+  // Custom input(): render a textbox into the output area and resolve when
+  // the user presses Enter or clicks Submit. Avoids window.prompt() (which
+  // some sandboxes block) and gives a nicer in-page experience.
+  const askInput = (promptStr)=> new Promise((resolve)=>{
+    const row = document.createElement('div');
+    row.className = 'inrow';
+    const label = document.createElement('span');
+    label.className = 'inlabel'; label.textContent = String(promptStr||'');
+    const box = document.createElement('input');
+    box.type = 'text'; box.className = 'inbox'; box.autocomplete = 'off';
+    const send = document.createElement('button');
+    send.className = 'inbtn'; send.textContent = 'Enter';
+    const finish = ()=>{
+      const v = box.value;
+      row.querySelectorAll('input,button').forEach(el=>el.disabled=true);
+      const echo = document.createElement('span');
+      echo.className = 'inecho'; echo.textContent = ' ' + v;
+      label.appendChild(echo); box.remove(); send.remove();
+      resolve(v);
+    };
+    box.addEventListener('keydown',(ev)=>{ if(ev.key==='Enter') finish(); });
+    send.addEventListener('click', finish);
+    row.appendChild(label); row.appendChild(box); row.appendChild(send);
+    outEl.appendChild(row);
+    setTimeout(()=>box.focus(), 0);
+  });
   Sk.configure({
     output:(t)=>{ outEl.appendChild(document.createTextNode(t)); },
-    read:builtinRead, __future__:Sk.python3, killableWhile:true, killableFor:true
+    read:builtinRead, __future__:Sk.python3, killableWhile:true, killableFor:true,
+    inputfun: askInput, inputfunTakesPrompt: true
   });
   // 40%-wider canvas (590×460 instead of 420×320) so drawings rarely run off.
   Sk.TurtleGraphics = Sk.TurtleGraphics || {};

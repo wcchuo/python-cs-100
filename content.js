@@ -196,6 +196,40 @@ page('s2','2 · Variables','Boxes that remember', ()=>`
     <code>score = score + 1</code> is NOT math that's "wrong". The <b>=</b> means
     "put the right side into the box." So it reads: "new score = old score + 1." Magic counter!</div>
 
+  <h4>⚡ The shortcut every programmer uses: <code>+=</code></h4>
+  <p>"Add to the box" is so common that Python has a shortcut. These two lines do exactly the same thing:</p>
+  ${R('score = 0\n\nscore = score + 1   # the long way\nprint(score)\n\nscore += 1          # the SHORTCUT — same thing!\nprint(score)\n\n# they all work:\nscore += 10   # add 10\nscore -= 3    # subtract 3\nscore *= 2    # multiply by 2\nprint("Final:", score)')}
+  <div class="box tip"><div class="h">💡 Read it like English</div>
+    <code>score += 1</code> = "score, plus-equals one" = "add one to score." You'll see this
+    everywhere — including in your Snake game.</div>
+
+  <h3>💬 Comments — notes for humans, ignored by Python</h3>
+  <p>Anything after a <code>#</code> on a line is a <b>comment</b>. Python skips it. Use comments to
+  remind yourself (or a friend reading your code) what something does.</p>
+  ${R('# This program greets the player\nname = "Maya"   # the player\'s name\nprint("Hi,", name)\n\n# print("This line is ignored — it\'s a comment!")')}
+
+  <h3>📛 Naming rules — what Python allows (and what crashes)</h3>
+  <p>Naming has two parts: <b>rules</b> (Python enforces) and <b>style</b> (you choose). Break the
+  rules and Python crashes. Ignore the style and your future self gets lost.</p>
+  <table>
+    <tr><th>✅ Legal</th><th>❌ Illegal — crashes</th><th>Why</th></tr>
+    <tr><td><code>score</code></td><td><code>2cool = 5</code></td><td>Can't start with a digit</td></tr>
+    <tr><td><code>player_name</code></td><td><code>player name = "Sam"</code></td><td>No spaces — use <code>_</code></td></tr>
+    <tr><td><code>lives3</code></td><td><code>for = 10</code></td><td><code>for</code> is a Python keyword</td></tr>
+    <tr><td><code>HighScore</code></td><td><code>high-score = 100</code></td><td>The <code>-</code> means minus, not part of a name</td></tr>
+  </table>
+  <p>Try this — read the error message, then fix it:</p>
+  ${R('# Pick ONE of these to uncomment and see the error.\n# Then fix it (e.g. change 2cool to cool2 or player2).\n\n# 2cool = 5\n# player name = "Sam"\n# for = 10\n\nprint("Now uncomment one above and run me!")')}
+
+  <div class="box warn"><div class="h">⚠ Capital letters MATTER (case sensitivity)</div>
+    To Python, <code>Score</code>, <code>score</code>, and <code>SCORE</code> are <b>three different boxes</b>.
+    Pick one spelling and stick with it!</div>
+  ${R('score = 5\nprint(score)   # works — same name\nprint(Score)   # 💥 NameError — capital S is a different box!')}
+
+  <div class="box tip"><div class="h">💡 Style habit: <code>snake_case</code></div>
+    Python programmers use <b>lowercase with underscores</b>: <code>player_name</code>,
+    <code>high_score</code>, <code>is_game_over</code>. (Fitting, given our final project! 🐍)</div>
+
   ${Q('Quick check', [
     {q:'After <code>score = 5</code> then <code>score = score + 3</code>, what is score?', a:[
       {t:'5', ok:false}, {t:'3', ok:false}, {t:'8', ok:true, fb:'old (5) + 3 = 8.'}]},
@@ -203,6 +237,17 @@ page('s2','2 · Variables','Boxes that remember', ()=>`
       {t:'"hello"', ok:true, fb:'Quotes = text.'}, {t:'42', ok:false}, {t:'size', ok:false}]},
     {q:'What is a good variable name for a player\'s points?', a:[
       {t:'x', ok:false, fb:'Too vague.'}, {t:'score', ok:true, fb:'Names should say what they hold.'}, {t:'thing2', ok:false}]},
+    {q:'<code>score += 5</code> is the same as…', a:[
+      {t:'score = score + 5', ok:true, fb:'+= is just the shortcut form.'},
+      {t:'score = 5', ok:false, fb:'That would replace the box, not add.'},
+      {t:'score == 5', ok:false, fb:'== compares — we\'ll meet it in Session 5.'}]},
+    {q:'Which variable name is ILLEGAL in Python?', a:[
+      {t:'player_name', ok:false}, {t:'lives3', ok:false},
+      {t:'2players', ok:true, fb:'Names can\'t start with a digit.'}]},
+    {q:'<code>score = 5</code> then <code>print(Score)</code> — what happens?', a:[
+      {t:'Prints 5', ok:false, fb:'Different capitalisation = different box!'},
+      {t:'NameError — Score (capital S) was never defined', ok:true},
+      {t:'Prints "Score"', ok:false}]},
   ])}
 
   <h3>🔤 Putting words and variables together (this trips everyone up!)</h3>
@@ -270,6 +315,56 @@ page('s2','2 · Variables','Boxes that remember', ()=>`
   <div class="box brick"><div class="h">🐍 Snake callback</div>
     Your game's <b>"Score: 7"</b> and <b>"GAME OVER, Maya!"</b> messages are exactly this:
     a word glued to a variable. You'll use <code>str(score)</code> or an f-string in Build Day 2!</div>
+
+  <h3>🎙️ Asking the user — <code>input()</code></h3>
+  <p>Until now you've <i>hard-coded</i> values like <code>name = "Maya"</code>. Real programs
+  <b>ask the user</b>. <code>input()</code> pops up a prompt and stores what the user types into a variable.</p>
+  ${R('name = input("What is your name? ")\nprint("Hello,", name, "— welcome to Code Quest!")')}
+  <div class="box tip"><div class="h">💡 Try it</div>
+    Click <b>Run</b>, type your name in the box that appears, and press Enter. The variable
+    <code>name</code> now holds whatever you typed.</div>
+
+  <h4>⚠ The catch: <code>input()</code> ALWAYS returns a string</h4>
+  <p>Even if the user types <code>11</code>, Python sees the text <code>"11"</code> — not the number.
+  Watch this fail:</p>
+  ${R('age = input("How old are you? ")\nprint("Next year you will be", age + 1)   # 💥 TypeError — "11" + 1')}
+  <p><b>The fix:</b> wrap it with <code>int(...)</code> to turn the text into a real number.</p>
+  ${R('age = int(input("How old are you? "))   # int() turns "11" into 11\nprint("Next year you will be", age + 1)\nprint(f"In 5 years you\'ll be {age + 5}")')}
+  <table>
+    <tr><th>Convert</th><th>What it does</th></tr>
+    <tr><td><code>int("11")</code></td><td>"11" → 11 (a whole number)</td></tr>
+    <tr><td><code>float("3.14")</code></td><td>"3.14" → 3.14 (a decimal)</td></tr>
+    <tr><td><code>str(42)</code></td><td>42 → "42" (text, so + works)</td></tr>
+  </table>
+  <div class="box warn"><div class="h">⚠ One more error to recognize</div>
+    <code>int("hello")</code> crashes — Python can't turn a word into a number.
+    Only digits work inside <code>int()</code>.</div>
+
+  ${Q('Quiz — input & convert', [
+    {q:'<code>input()</code> always returns a…', a:[
+      {t:'string (text)', ok:true, fb:'Even "11" comes back as text "11", not the number 11.'},
+      {t:'number', ok:false}, {t:'boolean', ok:false}]},
+    {q:'You ask for an age and want to add 1 to it. You need…', a:[
+      {t:'int(input("Age? "))', ok:true, fb:'int() converts the text into a real number.'},
+      {t:'str(input("Age? "))', ok:false, fb:'input is already a string.'},
+      {t:'just input("Age? ")', ok:false, fb:'You\'d get a TypeError when you add 1.'}]},
+    {q:'What does <code>int("3.14")</code> do?', a:[
+      {t:'Crashes — int() wants whole-number text', ok:true, fb:'Use float("3.14") for decimals.'},
+      {t:'Gives 3.14', ok:false}, {t:'Gives 3', ok:false}]},
+  ])}
+
+  <h3>🐞 Two errors to recognize (your debug toolkit)</h3>
+  <p>You've now met the two errors that cause 90% of beginner pain. Read the red message — it tells you the type:</p>
+  <table>
+    <tr><th>Error</th><th>What it means</th><th>Usually fixed by…</th></tr>
+    <tr><td><b>TypeError</b></td><td>Wrong type of thing (e.g. <code>"age " + 11</code>)</td><td><code>str()</code> or <code>int()</code>, or use commas</td></tr>
+    <tr><td><b>NameError</b></td><td>That box doesn't exist — typo or wrong capitals</td><td>Check spelling &amp; capital letters</td></tr>
+  </table>
+  ${R('# Trigger a NameError on purpose — read the message!\nscore = 5\nprint(scor)    # 💥 NameError: name \'scor\' is not defined')}
+
+  <h3>🎁 Bonus — unpacking two boxes at once</h3>
+  <p>You can fill two variables on one line. You'll see this in your Snake game!</p>
+  ${R('x, y = 0, 0          # two boxes filled at once\nprint("Start at", x, y)\n\ndx, dy = 20, 0       # direction: 20 right, 0 up — exactly how Snake moves!\nprint("Next step:", x + dx, y + dy)')}
 
   <h3>🎨 In class — a resizable square</h3>
   <p>Change <b>one number</b> and the whole square resizes. That's the power of variables.</p>
