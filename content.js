@@ -183,6 +183,13 @@ page('s2','2 · Variables','Boxes that remember', ()=>`
     remembers a number or some words for later — like the <b>score</b> in a game, or
     <b>where the snake is</b>.</div>
 
+  <h3>🎬 Watch first — Variables in 4 minutes</h3>
+  <p>A quick, friendly video to see variables in action before we dive in:</p>
+  <div class="video"><iframe src="https://www.youtube.com/embed/ghCbURMWBD8"
+    title="Python Variables" frameborder="0" loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe></div>
+
   <h3>🧠 Learn — making boxes</h3>
   ${R('score = 0\nname = "Alex"\nprint(name, "has score", score)\n\nscore = score + 10   # update the box\nprint("New score:", score)')}
   <table>
@@ -365,6 +372,51 @@ page('s2','2 · Variables','Boxes that remember', ()=>`
   <h3>🎁 Bonus — unpacking two boxes at once</h3>
   <p>You can fill two variables on one line. You'll see this in your Snake game!</p>
   ${R('x, y = 0, 0          # two boxes filled at once\nprint("Start at", x, y)\n\ndx, dy = 20, 0       # direction: 20 right, 0 up — exactly how Snake moves!\nprint("Next step:", x + dx, y + dy)')}
+
+  <h3>🧩 Good-to-know extras</h3>
+  <p>A few more things about boxes that come up all the time — skim these, then run each one.</p>
+
+  <h4>✅ Booleans — the yes/no box (<code>True</code> / <code>False</code>)</h4>
+  <p>Some boxes hold a number, some hold text, and some hold a simple <b>yes or no</b>. These are
+  <b>Booleans</b>, and they're how a game remembers things like "is it game over yet?"</p>
+  ${R('game_over = False     # a yes/no box — note the Capital F, no quotes!\nhas_key = True\n\nprint("Game over?", game_over)\nprint("Has key?", has_key)\n\nscore = 12\nyou_win = score > 10  # a comparison gives back True or False\nprint("Did you win?", you_win)')}
+  <div class="box warn"><div class="h">⚠ Watch the spelling</div>
+    It's <code>True</code> / <code>False</code> with a <b>capital</b> first letter and <b>no quotes</b>.
+    <code>"True"</code> (with quotes) is just text, not a real yes/no box!</div>
+
+  <h4>🔎 <code>type()</code> — peek inside a box</h4>
+  <p>Not sure what's in a box (and why your <code>+</code> crashed)? Ask Python with <code>type()</code>.</p>
+  ${R('print(type(42))       # a number (int)\nprint(type(3.14))     # a decimal (float)\nprint(type("hi"))     # text (str)\nprint(type(True))     # yes/no (bool)\n\nage = input("Age? ")  # remember: input is ALWAYS text\nprint("input gave me a:", type(age))')}
+
+  <h4>🔄 A box can be refilled — even with a different kind of thing</h4>
+  <p>A variable isn't locked. You can put a new value in any time — that's the whole point of a "score"
+  that changes. You can even swap the <i>type</i> of thing inside (though usually you won't want to).</p>
+  ${R('lives = 3\nprint(lives)\n\nlives = 2        # refilled with a new number\nprint(lives)\n\nlives = "none left!"   # even a different TYPE is allowed\nprint(lives)')}
+
+  <h4>📌 ALL-CAPS = "please don't change me" (a constant)</h4>
+  <p>When a value should stay fixed for the whole program — like the screen width — programmers write
+  its name in <b>ALL_CAPS</b>. Python won't stop you changing it, but the capitals are a promise to
+  yourself: "this one is a setting, leave it alone."</p>
+  ${R('WIDTH = 400      # a setting — treat as fixed\nGRID = 20        # your Snake game will use exactly this idea!\n\nsquares_across = WIDTH / GRID\nprint("The grid is", squares_across, "squares wide")')}
+
+  <h4>➖ Boxes can hold negative numbers</h4>
+  <p>Positions can go below zero. On the turtle screen, negative x is <b>left</b> of center and negative
+  y is <b>down</b>. Your Snake's walls live at <code>-200</code> and <code>200</code>!</p>
+  ${R('x = -100      # 100 steps to the LEFT of center\ny = 50\nprint("Position:", x, y)\n\nx = x - 50    # move further left\nprint("Now at:", x)   # -150')}
+
+  ${Q('Quiz — extras', [
+    {q:'Which is a real Boolean (yes/no) value?', a:[
+      {t:'True', ok:true, fb:'Capital T, no quotes.'},
+      {t:'"True"', ok:false, fb:'Quotes make it text, not a Boolean.'},
+      {t:'true', ok:false, fb:'Python needs a capital T.'}]},
+    {q:'You want to check what kind of thing is in a box. You use…', a:[
+      {t:'type(box)', ok:true}, {t:'kind(box)', ok:false}, {t:'check(box)', ok:false}]},
+    {q:'A name in <code>ALL_CAPS</code> like <code>GRID</code> usually signals…', a:[
+      {t:'a setting/constant you should not change', ok:true},
+      {t:'a broken variable', ok:false}, {t:'a comment', ok:false}]},
+    {q:'On the turtle screen, <code>x = -100</code> means the point is…', a:[
+      {t:'100 steps left of center', ok:true}, {t:'100 steps right', ok:false}, {t:'off the screen', ok:false}]},
+  ])}
 
   <h3>🎨 In class — a resizable square</h3>
   <p>Change <b>one number</b> and the whole square resizes. That's the power of variables.</p>
