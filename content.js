@@ -473,6 +473,13 @@ page('s3','3 · Loops','Do it again without retyping', ()=>`
     Real programmers are wonderfully <b>lazy</b>. Why type "forward, turn" four times when you can say
     "do this 4 times"? And the game itself <b>never stops looping</b> — that's how it stays alive.</div>
 
+  <h3>🎬 Watch first — Loops in a few minutes</h3>
+  <p>A quick, friendly video to see loops in action before we dive in:</p>
+  <div class="video"><iframe src="https://www.youtube.com/embed/v-K-4KuA8mQ"
+    title="Python Loops" frameborder="0" loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe></div>
+
   <h3>🧠 Learn — the for loop</h3>
   <p>Remember the square's 8 repeated lines? Now it's <b>2</b>:</p>
   ${R('import turtle\nt = turtle.Turtle()\n\nfor i in range(4):   # repeat 4 times\n    t.forward(100)   # indented = "inside the loop"\n    t.right(90)\n\nturtle.done()')}
@@ -490,9 +497,47 @@ page('s3','3 · Loops','Do it again without retyping', ()=>`
       {t:'while', ok:true, fb:'while runs as long as something is true.'}]},
   ])}
 
+  <h3>🔢 The loop variable <code>i</code> — it counts for you</h3>
+  <p>That <code>i</code> isn't decoration — it holds a <b>new number each time</b> the loop runs.
+  You can print it, do math with it, or use it to make each turn different:</p>
+  ${R('for i in range(5):\n    print("Step", i, "-> i times 2 is", i * 2)')}
+  <div class="box tip"><div class="h">💡 range has 3 secret settings</div>
+    <code>range(stop)</code> → 0…stop-1. &nbsp;<code>range(start, stop)</code> → start…stop-1.
+    &nbsp;<code>range(start, stop, step)</code> → counts by <i>step</i> (even backwards with a negative step!).</div>
+  ${R('print("Count to 10 by twos:")\nfor n in range(2, 11, 2):\n    print(n)\n\nprint("Countdown:")\nfor n in range(5, 0, -1):\n    print(n)')}
+
+  <h3>📦 Loop over <b>things</b>, not just numbers</h3>
+  <p>A for loop can walk through every letter of a word or every item in a list — no <code>range</code> needed.
+  (This is exactly how your Snake will walk over every part of its body in Session 4!)</p>
+  ${R('for letter in "SNAKE":\n    print(letter)\n\nfor food in ["apple", "cherry", "mango"]:\n    print("Yum,", food)')}
+
+  <h3>➕ The accumulator — a loop that builds up an answer</h3>
+  <p>The #1 way loops + variables team up: start a variable <i>before</i> the loop, then change it
+  <i>inside</i>. This is how a game keeps a running <b>score</b>.</p>
+  ${R('total = 0                  # start the box at 0\nfor n in range(1, 11):     # numbers 1..10\n    total = total + n      # add each one\nprint("1 + 2 + ... + 10 =", total)')}
+
   <h3>🎨 The "whoa" moment — turn a loop into a circle</h3>
   <p>Change <code>range(4)</code> to bigger numbers with smaller turns:</p>
   ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\nfor i in range(36):   # 36 tiny steps\n    t.forward(20)\n    t.right(10)        # 36 x 10 = 360 = full circle!\n\nturtle.done()')}
+
+  <h3>🪆 Loops inside loops (nested) — the secret to a grid</h3>
+  <p>Put a loop <i>inside</i> another loop and the inner one runs all the way through <b>every</b> time
+  the outer one ticks. That's how you build the Snake <b>grid</b> — rows × columns.</p>
+  ${R('for row in range(3):       # 3 rows\n    for col in range(5):   # 5 columns each\n        print("*", end=" ")\n    print()                # new line after each row')}
+
+  <h3>🚪 <code>break</code> and <code>continue</code> — escape & skip</h3>
+  <p><code>break</code> jumps <b>out</b> of the loop right away. <code>continue</code> <b>skips</b> the rest
+  of this turn and goes to the next one.</p>
+  ${R('for n in range(1, 11):\n    if n == 6:\n        break          # stop the whole loop at 6\n    print(n)\n\nprint("---")\nfor n in range(1, 6):\n    if n == 3:\n        continue       # skip just the number 3\n    print(n)')}
+
+  <div class="box warn"><div class="h">🐛 Common gotchas — read before you cry</div>
+    <ul>
+      <li><b>Off-by-one:</b> <code>range(5)</code> is <b>0,1,2,3,4</b> — it stops <i>before</i> 5, so 5 numbers but no "5".</li>
+      <li><b>Forgot the colon</b> <code>:</code> at the end of the <code>for</code>/<code>while</code> line → <code>SyntaxError</code>.</li>
+      <li><b>Wrong indentation:</b> a line that should be inside the loop isn't lined up → it runs only once, or Python errors.</li>
+      <li><b>Infinite while loop:</b> if nothing inside ever makes the condition false, it never stops. Always change the counter!</li>
+      <li><b>Changing a list while looping over it</b> can confuse Python — loop over a copy if you need to add/remove.</li>
+    </ul></div>
 
   <h3>🌀 The while loop — runs while something is true</h3>
   ${R('count = 5\nwhile count > 0:\n    print("Launch in", count)\n    count = count - 1\nprint("Blast off! 🚀")')}
@@ -500,14 +545,48 @@ page('s3','3 · Loops','Do it again without retyping', ()=>`
     Your Snake game is one big <b>while loop</b>: "while the game is not over → move the snake, check
     for food, redraw." You just built the engine!</div>
 
+  ${Q('Going deeper', [
+    {q:'<code>range(2, 8)</code> produces…', a:[
+      {t:'2,3,4,5,6,7', ok:true, fb:'Starts at 2, stops before 8.'},
+      {t:'2,3,4,5,6,7,8', ok:false, fb:'It stops BEFORE 8.'},
+      {t:'0,1,2,3,4,5,6,7', ok:false}]},
+    {q:'<code>range(10, 0, -2)</code> counts…', a:[
+      {t:'down by 2: 10,8,6,4,2', ok:true, fb:'A negative step counts backwards.'},
+      {t:'up by 2', ok:false}, {t:'it crashes', ok:false}]},
+    {q:'In an accumulator like <code>total = total + n</code>, where must <code>total = 0</code> go?', a:[
+      {t:'BEFORE the loop', ok:true, fb:'Set it up once, then the loop adds to it.'},
+      {t:'Inside the loop', ok:false, fb:'Then it resets to 0 every turn!'},
+      {t:'It doesn\'t matter', ok:false}]},
+    {q:'<code>break</code> does what?', a:[
+      {t:'Skips just this one turn', ok:false, fb:'That\'s continue.'},
+      {t:'Jumps out of the whole loop', ok:true},
+      {t:'Pauses the program', ok:false}]},
+    {q:'<code>for c in "Hi":</code> — what is <code>c</code> on the first turn?', a:[
+      {t:'the letter "H"', ok:true, fb:'A for loop walks over each character.'},
+      {t:'the number 0', ok:false}, {t:'the whole word "Hi"', ok:false}]},
+  ])}
+
   <h3>🏆 Challenges</h3>
   <div class="tier t-green">🟢 Starter</div>
-  <ul><li>Draw a hexagon (6 sides). Hint: <code>range(6)</code> and turn 60.</li></ul>
+  <ul>
+    <li>Draw a hexagon (6 sides). Hint: <code>range(6)</code> and turn 60.</li>
+    <li>Print your name 10 times using a loop instead of copy-paste.</li>
+    <li>Use a loop to count down from 10 to 1, then print <code>"Liftoff!"</code>.</li>
+  </ul>
   <div class="tier t-yellow">🟡 Medium</div>
-  <ul><li>Use a loop to print the 7× table (7, 14, 21 … 70).</li></ul>
-  <div class="tier t-red">🔴 Challenge — Spirograph</div>
-  <ul><li>Draw a colorful repeating pattern using a loop. Try changing colors each turn.</li></ul>
+  <ul>
+    <li>Use a loop to print the 7× table (7, 14, 21 … 70).</li>
+    <li>Add up all the even numbers from 2 to 20 with an accumulator. (Answer: 110.)</li>
+    <li>Loop over the word <code>"PYTHON"</code> and print each letter on its own line, with its position number.</li>
+  </ul>
+  <div class="tier t-red">🔴 Challenge — Spirograph & a grid</div>
+  <ul>
+    <li>Draw a colorful repeating pattern using a loop. Try changing colors each turn.</li>
+    <li><b>Stretch:</b> use a <i>nested</i> loop to stamp a 5×5 grid of dots — the start of the Snake board!</li>
+  </ul>
   ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\ncolors = ["red","orange","yellow","green","blue","purple"]\n\nfor i in range(36):\n    t.color(colors[i % 6])\n    t.forward(100)\n    t.right(80)   # try other angles!\n\nturtle.done()')}
+  <p>Nested-loop grid starter (try it!):</p>
+  ${R('import turtle\nt = turtle.Turtle()\nt.penup(); t.speed(0); t.shape("circle")\n\nfor row in range(5):          # 5 rows\n    for col in range(5):      # 5 dots per row\n        t.goto(col*40 - 80, row*40 - 80)\n        t.stamp()\n\nturtle.done()', {origin:'center'})}
 
   ${Q('Exit quiz', [
     {q:'<code>range(5)</code> produces which numbers?', a:[
@@ -517,12 +596,23 @@ page('s3','3 · Loops','Do it again without retyping', ()=>`
       {t:'Run once', ok:false}, {t:'Skip itself', ok:false}]},
     {q:'To draw a 360° circle in 36 steps, each turn is…', a:[
       {t:'10 degrees', ok:true, fb:'360 ÷ 36 = 10.'}, {t:'36 degrees', ok:false}, {t:'90 degrees', ok:false}]},
+    {q:'You forgot the <code>:</code> at the end of your <code>for</code> line. Python will…', a:[
+      {t:'Give a SyntaxError', ok:true, fb:'The colon is required!'},
+      {t:'Run it anyway', ok:false}, {t:'Loop forever', ok:false}]},
+    {q:'A nested loop with <code>range(3)</code> outside and <code>range(4)</code> inside runs the inner body…', a:[
+      {t:'3 × 4 = 12 times', ok:true, fb:'Inner runs fully for each outer turn.'},
+      {t:'7 times', ok:false}, {t:'4 times', ok:false}]},
   ])}
 
   <h3>🏠 Homework — "Spirograph Art"</h3>
   <p>Make your own colorful loop pattern (a flower or starburst). Experiment with the numbers:
   the angle, the forward distance, and the colors. Bring your favorite to show!</p>
   ${HW('# 🏠 HOMEWORK: Make a colorful pattern with ONE loop.\n# Change the angle, the distance, and the colors to make it your own.\nimport turtle\nt = turtle.Turtle()\nt.speed(0)\ncolors = ["red", "orange", "gold", "green", "blue", "purple"]\n\nfor i in range(36):\n    t.color(colors[i % 6])\n    t.forward(120)\n    t.right(85)      # <- try 90, 120, 144, 170...\n\nturtle.done()\n\n# Expected result: a repeating starburst/flower of rainbow lines.', {origin:'center'})}
+
+  <h3>🏠 Bonus homework — "Score Counter" (no turtle)</h3>
+  <p>Practice the accumulator — the exact trick your Snake score will use. Finish the loop so it
+  adds up the points and prints the final total.</p>
+  ${HW('# 🏠 BONUS: Use a loop + accumulator to total up the points.\npoints = [10, 5, 20, 5, 50]   # points earned each turn\n\ntotal = 0                     # start the score box at 0\nfor p in points:\n    total = total + p         # add each one\n    print("Got", p, "-> score is now", total)\n\nprint("FINAL SCORE:", total)\n\n# Expected result: it counts up and prints FINAL SCORE: 90')}
 
   <div class="box tip"><div class="h">💡 Tip</div>
     Loops + variables together are unstoppable: a variable counts, the loop repeats. That's basically
