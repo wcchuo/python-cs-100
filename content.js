@@ -72,6 +72,13 @@ page('s1','1 · Hello, Turtle!','Your first drawing', ()=>`
   <div class="box brick"><div class="h">🧱 Today's brick</div>
     A drawing window + a moving turtle → this becomes the <b>game screen and the snake's head</b>.</div>
 
+  <h3>🎬 Watch first — Meet the turtle</h3>
+  <p>A quick, friendly video to see turtle drawing in action before we dive in:</p>
+  <div class="video"><iframe src="https://www.youtube.com/embed/FjuD-pOKiDE"
+    title="Python Turtle" frameborder="0" loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe></div>
+
   <h3>🧠 Learn — your first program</h3>
   <p>Type along. Each line is one instruction:</p>
   ${R('import turtle\n\nt = turtle.Turtle()\nt.forward(100)\n\nturtle.done()')}
@@ -631,6 +638,13 @@ page('s4','4 · Lists ⭐','One backpack, many things', ()=>`
     holds many things, <b>in order</b>. This is the most important session because
     <b>the snake's body IS a list that grows every time it eats.</b></div>
 
+  <h3>🎬 Watch first — Lists in a few minutes</h3>
+  <p>A quick, friendly video to see lists in action before we dive in:</p>
+  <div class="video"><iframe src="https://www.youtube.com/embed/pNncmHowA0U"
+    title="Python Lists" frameborder="0" loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe></div>
+
   <h3>🧠 Learn — the backpack</h3>
   ${R('colors = ["red", "blue", "green"]\nprint(colors)\nprint("First item:", colors[0])   # counting starts at 0!\nprint("How many:", len(colors))\n\ncolors.append("purple")           # add to the end\nprint("After append:", colors)')}
   <table>
@@ -659,13 +673,69 @@ page('s4','4 · Lists ⭐','One backpack, many things', ()=>`
     That loop just drew a snake! "Eat food → <code>.append()</code> → snake gets longer."
     The whole game lives in this idea.</div>
 
+  <h3>✏️ Learn more — changing & removing items</h3>
+  <p>A list isn't frozen — you can <b>change</b> an item, <b>remove</b> one, or pull off the last/first.
+  These are the exact moves the snake makes every frame.</p>
+  ${R('snake = ["head", "body", "tail"]\n\nsnake[1] = "belly"        # change item at position 1\nprint("Changed:", snake)\n\nlast = snake.pop()        # remove & return the LAST item\nprint("Popped:", last, "-> ", snake)\n\nsnake.pop(0)              # remove the FIRST item (by position)\nprint("After pop(0):", snake)\n\nsnake.remove("belly")     # remove by VALUE\nprint("After remove:", snake)')}
+  <div class="box brick"><div class="h">🐍 This IS slithering</div>
+    Every frame the snake does two things: <code>append()</code> a new head and <code>pop(0)</code> the tail.
+    Add to the front, drop from the back → it looks like it's moving!</div>
+
+  <h3>🔎 Learn more — peeking from the end & slicing</h3>
+  <p>Negative numbers count from the <b>back</b>, and a <i>slice</i> grabs a chunk.
+  <code>list[-1]</code> (the last item) is how the game always finds the snake's head.</p>
+  ${R('nums = [10, 20, 30, 40, 50]\nprint("Last:", nums[-1])      # 50  (no need to know the length!)\nprint("2nd last:", nums[-2])  # 40\n\nprint("First three:", nums[0:3])  # [10, 20, 30]\nprint("From 2 on:", nums[2:])     # [30, 40, 50]')}
+
+  <h3>❓ Learn more — "is it in there?" and counting</h3>
+  <p>The <code>in</code> keyword checks membership — perfect for "did the snake hit its own body?"</p>
+  ${R('body = [(0,0), (20,0), (40,0)]\nhead = (20, 0)\n\nprint("Did we hit ourselves?", head in body)   # True!\nprint("Body length:", len(body))\nprint("Where is (40,0)?", body.index((40,0)))  # position 2')}
+
+  <div class="box warn"><div class="h">🐛 Common list gotchas — read before you cry</div>
+    <ul>
+      <li><b>Counting from zero:</b> the 3rd item is <code>list[2]</code>, not <code>list[3]</code>.</li>
+      <li><b>Index out of range:</b> a 3-item list has no <code>list[3]</code> — the last is <code>list[2]</code> (or <code>list[-1]</code>).</li>
+      <li><b>append vs add:</b> it's <code>.append()</code>, not <code>.add()</code>. And <code>append</code> adds <i>one</i> item — to join two lists use <code>+</code> or <code>.extend()</code>.</li>
+      <li><b>It changes in place:</b> <code>.append()</code>/<code>.pop()</code> change the list itself and return <code>None</code>. Don't write <code>body = body.append(x)</code> — that erases your list!</li>
+      <li><b>remove() needs the value</b>, <code>pop()</code> needs the position. Don't mix them up.</li>
+      <li><b>Copies share:</b> <code>b = a</code> makes a second name for the <i>same</i> list. Change one, both change. Use <code>b = a.copy()</code> for a real copy.</li>
+    </ul></div>
+
+  ${Q('Going deeper', [
+    {q:'For <code>n = [10,20,30,40]</code>, what is <code>n[-1]</code>?', a:[
+      {t:'40', ok:true, fb:'-1 means the last item.'}, {t:'10', ok:false}, {t:'an error', ok:false}]},
+    {q:'<code>snake.pop(0)</code> does what?', a:[
+      {t:'Removes the FIRST item', ok:true, fb:'Position 0 = first. This drops the tail.'},
+      {t:'Removes the last item', ok:false, fb:'That\'s pop() with no number.'},
+      {t:'Adds an item', ok:false}]},
+    {q:'Which adds an item to the end?', a:[
+      {t:'list.add("x")', ok:false, fb:'Python lists don\'t have .add().'},
+      {t:'list.append("x")', ok:true}, {t:'list.insert("x")', ok:false}]},
+    {q:'<code>(20,0) in body</code> gives back…', a:[
+      {t:'True or False', ok:true, fb:'in checks membership — great for collision checks!'},
+      {t:'the position number', ok:false}, {t:'the whole list', ok:false}]},
+    {q:'What does <code>nums[1:3]</code> grab from <code>[5,6,7,8]</code>?', a:[
+      {t:'[6, 7]', ok:true, fb:'From index 1 up to (not including) 3.'},
+      {t:'[6, 7, 8]', ok:false}, {t:'[5, 6, 7]', ok:false}]},
+  ])}
+
   <h3>🏆 Challenges</h3>
   <div class="tier t-green">🟢 Starter</div>
-  <ul><li>Make a list of 3 friends' names and print each on its own line with a loop.</li></ul>
+  <ul>
+    <li>Make a list of 3 friends' names and print each on its own line with a loop.</li>
+    <li>Make a list of 5 numbers, then print the first one, the last one (use <code>[-1]</code>), and how many there are.</li>
+    <li>Start with an empty list <code>[]</code> and <code>.append()</code> three favorite foods, then print the list.</li>
+  </ul>
   <div class="tier t-yellow">🟡 Medium</div>
-  <ul><li>Make a list of numbers and print their total using a loop and a <code>total</code> variable.</li></ul>
+  <ul>
+    <li>Make a list of numbers and print their total using a loop and a <code>total</code> variable.</li>
+    <li>Find the biggest number in a list <i>without</i> using <code>max()</code> — loop and keep track.</li>
+    <li>Make a "snake" list, <code>append()</code> a new head and <code>pop(0)</code> the tail, and print it before & after to watch it slither.</li>
+  </ul>
   <div class="tier t-red">🔴 Challenge — Connect the Dots</div>
-  <ul><li>Store 5 coordinate pairs in a list, loop through them drawing lines, reveal a hidden shape.</li></ul>
+  <ul>
+    <li>Store 5 coordinate pairs in a list, loop through them drawing lines, reveal a hidden shape.</li>
+    <li><b>Stretch:</b> check with <code>in</code> whether a chosen point is already in your list before adding it (no duplicates!).</li>
+  </ul>
   ${R('import turtle\nt = turtle.Turtle()\nt.speed(2)\n\ndots = [(0,0), (100,0), (100,100), (0,100), (0,0)]\n\nt.penup(); t.goto(dots[0]); t.pendown()\nfor point in dots:\n    t.goto(point)\n\nturtle.done()', {origin:'center'})}
 
   ${Q('Exit quiz', [
@@ -677,12 +747,27 @@ page('s4','4 · Lists ⭐','One backpack, many things', ()=>`
       {t:'One container holds many items and can grow/shrink', ok:true},
       {t:'It is shorter to type only', ok:false},
       {t:'No real reason', ok:false}]},
+    {q:'<code>body = body.append("x")</code> is a trap because…', a:[
+      {t:'append returns None, so body becomes None', ok:true, fb:'Just write body.append("x") on its own line.'},
+      {t:'it adds two items', ok:false}, {t:'it is perfectly fine', ok:false}]},
+    {q:'To make the snake slither one step, you…', a:[
+      {t:'append a new head AND pop(0) the tail', ok:true, fb:'Grow the front, drop the back!'},
+      {t:'only append a head', ok:false, fb:'Then it would just grow forever.'},
+      {t:'clear the whole list', ok:false}]},
+    {q:'<code>b = a</code> then <code>b.append(9)</code>. What about list <code>a</code>?', a:[
+      {t:'a also has 9 — they\'re the same list', ok:true, fb:'Use a.copy() if you want them separate.'},
+      {t:'a is unchanged', ok:false}, {t:'a becomes empty', ok:false}]},
   ])}
 
   <h3>🏠 Homework — "Connect the Dots Picture"</h3>
   <p>Design your own hidden shape with at least 6 points in a list, then loop through to draw it.
   Can a friend guess the picture before you run it?</p>
   ${HW('# 🏠 HOMEWORK: Store at least 6 points in a LIST, then connect them.\n# Change the numbers to draw your own hidden shape!\nimport turtle\nt = turtle.Turtle()\nt.speed(2)\n\npoints = [(0,0), (100,0), (150,80), (100,160), (0,160), (-50,80), (0,0)]\n\nt.penup(); t.goto(points[0]); t.pendown()\nfor p in points:        # loop over every point in the list\n    t.goto(p)\n\nturtle.done()\n\n# Expected result: a closed outline connecting all your points (here: a house-like hexagon).', {origin:'center'})}
+
+  <h3>🏠 Bonus homework — "Slithering Snake" (no turtle)</h3>
+  <p>This is the real heart of your game. Finish the loop so the snake moves: each step,
+  add a new head to the end and remove the tail from the front. Watch the list "walk."</p>
+  ${HW('# 🏠 BONUS: Make the snake slither using append() + pop(0).\nsnake = [(0,0), (20,0), (40,0)]   # tail ... head\nmoves = [(60,0), (80,0), (100,0)] # where the head goes next\n\nprint("Start:", snake)\nfor new_head in moves:\n    snake.append(new_head)   # grow a new head at the end\n    snake.pop(0)             # drop the tail from the front\n    print("Step ->", snake)\n\n# Expected: the list stays length 3 but the numbers march forward.\n# That sliding is exactly how the snake moves!')}
 
   <div class="box tip"><div class="h">💡 Tip</div>
     Lists + loops are best friends. Whenever you have "a bunch of things," reach for a list.</div>
@@ -698,6 +783,13 @@ page('s5','5 · Conditionals','Teaching the computer to decide', ()=>`
   <div class="box why"><div class="h">🎯 Why it matters</div>
     Games need to <b>judge</b> things: Did you eat the food? Did you crash into the wall? Did you win?
     <b>if</b> statements are forks in the road — they turn a drawing into a real <i>game</i>.</div>
+
+  <h3>🎬 Watch first — Making decisions</h3>
+  <p>A quick, friendly video to see if-statements in action before we dive in:</p>
+  <div class="video"><iframe src="https://www.youtube.com/embed/HQ3dCWjfRZ4"
+    title="Python Conditionals" frameborder="0" loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe></div>
 
   <h3>🧠 Learn — forks in the road</h3>
   ${R('score = 12\n\nif score > 10:\n    print("You win! 🏆")\nelif score > 5:\n    print("Almost there...")\nelse:\n    print("Keep trying!")')}
@@ -728,12 +820,73 @@ page('s5','5 · Conditionals','Teaching the computer to decide', ()=>`
     "if snake_head == food_position → eat & grow" and "if head hits wall → game over."
     Every rule in Snake is an <code>if</code>.</div>
 
+  <h3>🔗 Learn more — and, or, not (combining decisions)</h3>
+  <p>Real games ask <b>several</b> questions at once. <code>and</code>, <code>or</code>, and <code>not</code>
+  glue conditions together. The snake's "game over" check is really <i>"hit a wall <b>or</b> hit myself."</i></p>
+  ${R('lives = 2\nscore = 80\n\n# and -> BOTH must be true\nif lives > 0 and score >= 50:\n    print("Still playing AND doing well!")\n\n# or -> EITHER is enough\nif lives == 0 or score < 0:\n    print("Game over")\nelse:\n    print("Keep going")\n\n# not -> flips True/False\ngame_over = False\nif not game_over:\n    print("The game is running")')}
+  <table>
+    <tr><th>Expression</th><th>True when…</th></tr>
+    <tr><td>a <b>and</b> b</td><td>a is true <i>and</i> b is true (both)</td></tr>
+    <tr><td>a <b>or</b> b</td><td>at least one of a, b is true</td></tr>
+    <tr><td><b>not</b> a</td><td>a is false (it flips it)</td></tr>
+  </table>
+
+  <h3>🔢 Learn more — all the comparisons</h3>
+  <p>Conditions are built from comparisons. Each one gives back <code>True</code> or <code>False</code>.</p>
+  ${R('a = 7\nb = 10\nprint("a == b :", a == b)   # equal?\nprint("a != b :", a != b)   # not equal?\nprint("a <  b :", a < b)\nprint("a <= 7 :", a <= 7)    # less than OR equal\nprint("a >  b :", a > b)\n\n# you can chain them like math!\nscore = 75\nprint("Is 50-100? :", 50 <= score <= 100)')}
+  <div class="box tip"><div class="h">💡 You can chain comparisons</div>
+    <code>10 &lt; n &lt; 100</code> reads just like math and means "n is between 10 and 100." Neat for ranges!</div>
+
+  <h3>🪆 Learn more — nested ifs (a question inside a question)</h3>
+  ${R('logged_in = True\nis_admin = False\n\nif logged_in:\n    print("Welcome back!")\n    if is_admin:\n        print("You have admin powers")\n    else:\n        print("You are a normal player")\nelse:\n    print("Please log in first")')}
+
+  <div class="box warn"><div class="h">🐛 Common conditional gotchas — read before you cry</div>
+    <ul>
+      <li><b>One = vs two ==:</b> <code>if x = 5:</code> is an error — comparing needs <code>==</code>.</li>
+      <li><b>Forgot the colon</b> <code>:</code> at the end of the <code>if</code>/<code>elif</code>/<code>else</code> line.</li>
+      <li><b>Indentation:</b> the lines that belong to an <code>if</code> must be indented under it.</li>
+      <li><b>elif vs many ifs:</b> a chain of <code>if/elif/else</code> picks <i>one</i> branch. Separate <code>if</code>s can all run — sometimes a surprise!</li>
+      <li><b>and vs or mix-ups:</b> "between 10 and 100" is <code>n &gt; 10 and n &lt; 100</code> — using <code>or</code> here is true for almost everything.</li>
+      <li><b>You can't say it like English:</b> <code>if x == 1 or 2:</code> does <i>not</i> work. Write <code>if x == 1 or x == 2:</code>.</li>
+      <li><b>Case & quotes matter:</b> <code>"Red" == "red"</code> is <code>False</code>; <code>True</code> (the value) is different from <code>"True"</code> (text).</li>
+    </ul></div>
+
+  ${Q('Going deeper', [
+    {q:'<code>not False</code> is…', a:[
+      {t:'True', ok:true, fb:'not flips it.'}, {t:'False', ok:false}, {t:'an error', ok:false}]},
+    {q:'You want "lives left AND score over 50". Which is right?', a:[
+      {t:'lives > 0 and score > 50', ok:true},
+      {t:'lives > 0 or score > 50', ok:false, fb:'or would pass with just one.'},
+      {t:'lives > 0, score > 50', ok:false}]},
+    {q:'<code>if x == 1 or 2:</code> — what\'s wrong?', a:[
+      {t:'You must write x == 1 or x == 2', ok:true, fb:'Each side of or needs a full comparison.'},
+      {t:'Nothing, it\'s fine', ok:false}, {t:'or should be and', ok:false}]},
+    {q:'"n is between 10 and 100" is best written as…', a:[
+      {t:'10 < n < 100', ok:true, fb:'Python lets you chain comparisons.'},
+      {t:'10 < n > 100', ok:false}, {t:'n < 10 and n > 100', ok:false}]},
+    {q:'A chain of <code>if / elif / else</code> runs…', a:[
+      {t:'exactly ONE branch', ok:true, fb:'The first match wins; the rest are skipped.'},
+      {t:'every branch that is true', ok:false},
+      {t:'always the else', ok:false}]},
+  ])}
+
   <h3>🏆 Challenges</h3>
   <div class="tier t-green">🟢 Starter — Traffic Light</div>
-  <ul><li>Set <code>light = 2</code>. Use if/elif/else to print "Stop" (1), "Slow" (2), or "Go" (3).</li></ul>
+  <ul>
+    <li>Set <code>light = 2</code>. Use if/elif/else to print "Stop" (1), "Slow" (2), or "Go" (3).</li>
+    <li>Set an <code>age</code> variable. Print "You can play!" only if age is <code>&gt;= 10 and age &lt;= 14</code>.</li>
+  </ul>
   <div class="tier t-yellow">🟡 Medium</div>
-  <ul><li>Draw a red circle if a number is even, a blue one if it's odd. Hint: <code>n % 2 == 0</code>.</li></ul>
+  <ul>
+    <li>Draw a red circle if a number is even, a blue one if it's odd. Hint: <code>n % 2 == 0</code>.</li>
+    <li>"FizzBuzz lite": for a number, print "Fizz" if divisible by 3, "Buzz" if by 5, "FizzBuzz" if by both (use <code>and</code>), else the number.</li>
+    <li>Given <code>password</code>, print "Access granted" only if it equals <code>"snake123"</code> <b>and</b> <code>tries &lt; 3</code>.</li>
+  </ul>
   <div class="tier t-red">🔴 Challenge — Traffic Light drawing</div>
+  <ul>
+    <li>Run the drawing below, then add a 4th case: if <code>light == 0</code>, draw a gray dot ("off").</li>
+    <li><b>Stretch:</b> check if the turtle's head position is off-screen using <code>or</code> (x too big <i>or</i> y too big) — that's a wall crash!</li>
+  </ul>
   ${R('import turtle\nt = turtle.Turtle()\nt.penup(); t.speed(0)\n\nlight = 3   # try 1, 2, or 3\n\nif light == 1:\n    t.color("red")\nelif light == 2:\n    t.color("yellow")\nelse:\n    t.color("green")\n\nt.dot(120)\nturtle.done()', {origin:'center'})}
 
   ${Q('Exit quiz', [
@@ -743,12 +896,27 @@ page('s5','5 · Conditionals','Teaching the computer to decide', ()=>`
       {t:'at least one of a, b is true', ok:true}, {t:'both are true', ok:false}, {t:'neither is true', ok:false}]},
     {q:'<code>x = 5</code> inside an if condition (instead of <code>x == 5</code>) is…', a:[
       {t:'a common bug — that stores, not compares', ok:true}, {t:'totally fine', ok:false}, {t:'faster', ok:false}]},
+    {q:'For the snake, "game over" is best written as…', a:[
+      {t:'hit_wall or hit_self', ok:true, fb:'Either one ends the game.'},
+      {t:'hit_wall and hit_self', ok:false, fb:'That needs BOTH at once — too rare.'},
+      {t:'not hit_wall', ok:false}]},
+    {q:'<code>"Yes" == "yes"</code> gives…', a:[
+      {t:'False — capital Y is different', ok:true, fb:'Text comparison is case-sensitive.'},
+      {t:'True', ok:false}, {t:'an error', ok:false}]},
+    {q:'<code>not (5 > 3)</code> is…', a:[
+      {t:'False', ok:true, fb:'5>3 is True, and not flips it to False.'},
+      {t:'True', ok:false}, {t:'5', ok:false}]},
   ])}
 
   <h3>🏠 Homework — "Number Sorter"</h3>
   <p>Write a program with a variable <code>n</code>. Print "big" if n &gt; 100, "medium" if between
   10 and 100, and "small" otherwise. Test it with three different values.</p>
   ${HW('# 🏠 HOMEWORK: Print "big", "medium", or "small" depending on n.\nn = 250        # <- try 250, then 50, then 5\n\n# write your if / elif / else here:\n\n\n# Expected output:\n#   n = 250  -> big\n#   n = 50   -> medium\n#   n = 5    -> small')}
+
+  <h3>🏠 Bonus homework — "Game Over Check" (no turtle)</h3>
+  <p>This is a real Snake rule. Using <code>and</code>/<code>or</code>, decide if the game should end:
+  the snake crashes if its head goes past a wall <b>or</b> hits its own body.</p>
+  ${HW('# 🏠 BONUS: Decide if the game is over using or / in.\nhead = (120, 0)            # the snake\'s head position\nbody = [(0,0), (20,0), (40,0)]\nEDGE = 100                 # walls are at +/- 100\n\nx, y = head\nhit_wall = x > EDGE or x < -EDGE or y > EDGE or y < -EDGE\nhit_self = head in body\n\nif hit_wall or hit_self:\n    print("GAME OVER!")\nelse:\n    print("Keep slithering...")\n\n# Try changing head to (60,0) -> keep slithering,\n# or (20,0) -> hit_self is True -> GAME OVER.')}
 
   <div class="box tip"><div class="h">💡 Tip</div>
     Read your conditions out loud like English. If it makes sense as a sentence, it's probably right.</div>
@@ -764,6 +932,13 @@ page('s6','6 · Functions','Name a trick, use it forever', ()=>`
   <div class="box why"><div class="h">🎯 Why it matters</div>
     A function is a <b>magic spell you name once and cast forever</b>. Instead of repeating "draw food"
     code everywhere, you write <code>draw_food()</code> once and call it whenever you need it.</div>
+
+  <h3>🎬 Watch first — Functions explained</h3>
+  <p>A quick, friendly video to see functions in action before we dive in:</p>
+  <div class="video"><iframe src="https://www.youtube.com/embed/KW6qncswzHw"
+    title="Python Functions" frameborder="0" loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe></div>
 
   <h3>🧠 Learn — define & call</h3>
   ${R('def greet(name):          # define the spell\n    print("Hi", name, "!")\n\ngreet("Sam")              # cast it\ngreet("Maria")            # cast again — no retyping!\ngreet("Pat")')}
@@ -787,14 +962,95 @@ page('s6','6 · Functions','Name a trick, use it forever', ()=>`
     Your game will be made of functions: <code>move()</code>, <code>grow()</code>,
     <code>draw_food()</code>, <code>check_collision()</code>. Functions are how big programs stay manageable.</div>
 
+  <h3>🧩 Learn more — the anatomy: parameters vs arguments</h3>
+  <p>People mix these up, so let's nail it: a <b>parameter</b> is the name in the <i>definition</i> (the empty
+  slot). An <b>argument</b> is the real value you <i>pass in</i> when you call it. Same slot, different word
+  depending on which side you're on.</p>
+  ${R('#        v-- parameters (the empty slots)\ndef power_up(player, points):\n    print(player, "gained", points, "points!")\n\n#        v-- arguments (the real values)\npower_up("Sam", 50)\npower_up("Maria", 100)')}
+  <div class="box tip"><div class="h">💡 Default & named arguments</div>
+    You can give a parameter a <b>default</b> so it's optional, and pass arguments <b>by name</b> for clarity.</div>
+  ${R('def draw_dot(size, color="red"):   # color is optional (default red)\n    print("Drawing a", color, "dot of size", size)\n\ndraw_dot(20)                  # uses default -> red\ndraw_dot(20, "blue")          # by position\ndraw_dot(size=30, color="green")  # by name (clear!)')}
+
+  <h3>▶️ Learn more — how a function actually runs</h3>
+  <p>Defining a function does <b>not</b> run it — it just teaches Python the spell. The code only runs
+  when you <b>call</b> it. Then Python <i>jumps</i> into the function, runs its lines, and <i>jumps back</i>
+  to exactly where it was called.</p>
+  ${R('print("1. before")\n\ndef say_hi():\n    print("3. inside the function")\n\nprint("2. defined, but not run yet")\nsay_hi()                 # NOW it jumps in\nprint("4. back after the call")\n\n# Watch the numbers: 1, 2, 3, 4 — the jump in and out is clear.')}
+
+  <h3>↩️ Learn more — return vs print (they are NOT the same!)</h3>
+  <p><code>print</code> just <i>shows</i> text on screen. <code>return</code> <i>hands a value back</i> so the
+  rest of your program can use it. A returned value can be stored, added, or passed on; printed text can't.</p>
+  ${R('def double_print(n):\n    print(n * 2)        # only shows it\n\ndef double_return(n):\n    return n * 2        # hands it back\n\na = double_print(5)     # shows 10, but a is empty (None)\nb = double_return(5)    # b actually holds 10\nprint("a is", a)\nprint("b is", b, "-> we can keep using it:", b + 1)')}
+  <div class="box warn"><div class="h">🛑 return also ends the function</div>
+    The moment Python hits <code>return</code>, it leaves the function immediately — any lines after it
+    are skipped. A function with no <code>return</code> hands back <code>None</code>.</div>
+
+  <h3>🎯 Learn more — one job per function (Single Responsibility)</h3>
+  <p>The best functions do <b>one</b> thing and do it well. If you have to use the word "and" to describe
+  what a function does ("it draws the food <i>and</i> moves the snake <i>and</i> checks the score"), it's
+  doing too much — split it. Small single-job functions are easier to name, test, and reuse.</p>
+  ${R('# 👎 one function doing everything\ndef do_turn_messy():\n    print("move snake"); print("check food"); print("update score")\n\n# 👍 one job each — main reads like a sentence\ndef move_snake():   print("move snake")\ndef check_food():   print("check food")\ndef update_score(): print("update score")\n\nmove_snake(); check_food(); update_score()')}
+
+  <h3>🏠 Learn more — namespaces (where names live)</h3>
+  <p>A <b>namespace</b> is just "the list of names Python currently knows." Variables made <i>inside</i> a
+  function live in that function's own <b>local</b> namespace — they're born when the function is called and
+  vanish when it ends. Names made outside live in the <b>global</b> namespace.</p>
+  ${R('def make_score():\n    points = 100        # LOCAL — only exists inside this function\n    print("Inside, points =", points)\n\nmake_score()\nprint("Outside, points =", points)   # 💥 ERROR: points is not defined out here')}
+  <div class="box tip"><div class="h">💡 Why have local namespaces at all?</div>
+    They keep functions <b>self-contained and safe</b>. A function can use a variable named <code>i</code>
+    or <code>total</code> without worrying that some <i>other</i> part of the program also uses that name —
+    no accidental clashes. Each function gets its own clean workspace, wiped after it runs. To send a value
+    back out, use <code>return</code> (not a sneaky shared variable).</div>
+  ${R('def add(a, b):\n    answer = a + b      # local: this "answer" belongs only to add()\n    return answer       # the clean way to send it out\n\ntotal = add(3, 4)       # the OUTSIDE world catches it with return\nprint("total =", total)')}
+
+  <div class="box warn"><div class="h">🐛 Common function gotchas — read before you cry</div>
+    <ul>
+      <li><b>Defining ≠ calling:</b> <code>def greet():</code> alone prints nothing. You must <i>call</i> it: <code>greet()</code>.</li>
+      <li><b>Forgot the parentheses:</b> <code>greet</code> is the spell itself; <code>greet()</code> casts it.</li>
+      <li><b>return vs print:</b> if you forget <code>return</code>, the caller gets <code>None</code>.</li>
+      <li><b>Wrong number of arguments:</b> <code>def add(a, b)</code> called as <code>add(3)</code> → error. Slots must be filled.</li>
+      <li><b>Using a local outside:</b> a variable made inside a function can't be seen outside — return it instead.</li>
+      <li><b>Define before you call:</b> Python must read the <code>def</code> line before the call runs.</li>
+    </ul></div>
+
+  ${Q('Going deeper', [
+    {q:'In <code>def hit(target):</code>, called as <code>hit("wall")</code> — which is the ARGUMENT?', a:[
+      {t:'"wall"', ok:true, fb:'The real value passed in is the argument.'},
+      {t:'target', ok:false, fb:'That\'s the parameter (the slot).'},
+      {t:'hit', ok:false}]},
+    {q:'When does the code inside a function run?', a:[
+      {t:'Only when the function is called', ok:true, fb:'def just defines; the call runs it.'},
+      {t:'As soon as you write the def', ok:false}, {t:'Never', ok:false}]},
+    {q:'A function with no <code>return</code> hands back…', a:[
+      {t:'None', ok:true, fb:'No return → None.'}, {t:'0', ok:false}, {t:'the last print', ok:false}]},
+    {q:'A variable created inside a function is…', a:[
+      {t:'local — gone when the function ends', ok:true},
+      {t:'usable everywhere', ok:false}, {t:'saved to a file', ok:false}]},
+    {q:'Why are local namespaces helpful?', a:[
+      {t:'Functions don\'t clash over names like i or total', ok:true, fb:'Each function gets its own clean workspace.'},
+      {t:'They make code run slower', ok:false}, {t:'They are required by law', ok:false}]},
+    {q:'A function that "draws food AND moves snake AND scores" breaks which idea?', a:[
+      {t:'Single Responsibility — one job per function', ok:true},
+      {t:'DRY', ok:false}, {t:'None, that\'s great', ok:false}]},
+  ])}
+
   <h3>🏆 Challenges</h3>
   <div class="tier t-green">🟢 Starter</div>
-  <ul><li>Write <code>def cheer(name):</code> that prints "Go [name], go!" and call it for 3 names.</li></ul>
+  <ul>
+    <li>Write <code>def cheer(name):</code> that prints "Go [name], go!" and call it for 3 names.</li>
+    <li>Write <code>def greet(name, mood="happy"):</code> with a default. Call it once with the default and once overriding it.</li>
+  </ul>
   <div class="tier t-yellow">🟡 Medium — Shape Stamp Maker</div>
-  <ul><li>Write <code>draw_polygon(sides, size)</code> and draw a triangle, square, and pentagon with the SAME function.</li></ul>
+  <ul>
+    <li>Write <code>draw_polygon(sides, size)</code> and draw a triangle, square, and pentagon with the SAME function.</li>
+    <li>Write <code>is_even(n)</code> that <b>returns</b> True/False (no printing). Use its return value inside an <code>if</code>.</li>
+  </ul>
   ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\ndef draw_polygon(sides, size):\n    angle = 360 / sides\n    for i in range(sides):\n        t.forward(size)\n        t.right(angle)\n\ndraw_polygon(3, 80)   # triangle\nt.penup(); t.forward(100); t.pendown()\ndraw_polygon(5, 60)   # pentagon\n\nturtle.done()')}
   <div class="tier t-red">🔴 Challenge</div>
-  <ul><li>Write a function <code>area(width, height)</code> that returns width × height, and print the area of 3 rooms.</li></ul>
+  <ul>
+    <li>Write a function <code>area(width, height)</code> that <b>returns</b> width × height, and print the area of 3 rooms.</li>
+    <li>Split a messy program into 3 single-job functions, then write a short <code>main()</code> that calls them in order — make <code>main</code> read like a sentence.</li>
+  </ul>
 
   ${Q('Exit quiz', [
     {q:'<code>return</code> does what?', a:[
@@ -804,12 +1060,26 @@ page('s6','6 · Functions','Name a trick, use it forever', ()=>`
       {t:'Make it a function and call it 3 times', ok:true}, {t:'Leave it, copy-paste is fine', ok:false}, {t:'Delete two copies', ok:false}]},
     {q:'<code>draw_polygon(6, 50)</code> draws a…', a:[
       {t:'hexagon of size 50', ok:true}, {t:'circle', ok:false}, {t:'square', ok:false}]},
+    {q:'<code>def f(): print("hi")</code> — then you write just <code>f</code> (no parentheses). It…', a:[
+      {t:'does NOT call it — you need f()', ok:true, fb:'Parentheses cast the spell.'},
+      {t:'prints hi', ok:false}, {t:'errors', ok:false}]},
+    {q:'<code>print("hi")</code> vs <code>return "hi"</code> — the difference is…', a:[
+      {t:'print shows it; return hands it back to use', ok:true},
+      {t:'they are identical', ok:false}, {t:'return is just a typo for print', ok:false}]},
+    {q:'<code>def add(a, b)</code> called as <code>add(5)</code> will…', a:[
+      {t:'error — b has no argument', ok:true, fb:'Every slot needs a value (unless it has a default).'},
+      {t:'use 0 for b', ok:false}, {t:'work fine', ok:false}]},
   ])}
 
   <h3>🏠 Homework — "Shape Stamp Maker"</h3>
   <p>Polish your <code>draw_polygon</code> function and use it to draw a whole row of different shapes
   in a loop, each a different color. Add a parameter for color too!</p>
   ${HW('# 🏠 HOMEWORK: Finish draw_polygon so it takes a COLOR too,\n# then draw a row of shapes with one loop.\nimport turtle\nt = turtle.Turtle()\nt.speed(0)\n\ndef draw_polygon(sides, size, color):\n    t.color(color)\n    angle = 360 / sides\n    for i in range(sides):\n        t.forward(size)\n        t.right(angle)\n\n# call your function a few times (move between shapes with penup/forward):\ndraw_polygon(3, 60, "red")\n\n\nturtle.done()\n\n# Expected result: a row of different colored shapes (triangle, square, pentagon...).')}
+
+  <h3>🏠 Bonus homework — "Score Helpers" (no turtle)</h3>
+  <p>Practice <b>return</b> and the single-job idea. Finish two small functions: one that returns
+  points for a food, and one that returns whether the player won. The main code uses what they return.</p>
+  ${HW('# 🏠 BONUS: Write functions that RETURN values (don\'t print inside them).\n\ndef points_for(food):\n    # return 10 for "apple", 20 for "cherry", else 5\n    pass        # <- replace with your if/elif/else + return\n\ndef has_won(score):\n    # return True if score >= 100, else False\n    pass        # <- replace with a return\n\n# main program uses the returned values:\nscore = points_for("cherry") + points_for("apple")\nprint("Score:", score)\nif has_won(score):\n    print("You win!")\nelse:\n    print("Keep going!")\n\n# Expected with cherry+apple = 30 -> "Keep going!"\n# Make score >= 100 to see "You win!"')}
 
   <div class="box tip"><div class="h">💡 Tip</div>
     If you've copy-pasted code twice, that's a sign: turn it into a function. <b>DRY!</b></div>
