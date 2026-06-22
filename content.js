@@ -158,6 +158,25 @@ page('s1','1 · Hello, Turtle!','Your first drawing', ()=>`
       {t:'Always crash', ok:false}]},
     {q:'A square has 4 equal sides. Each turn is…', a:[
       {t:'90 degrees', ok:true, fb:'360 ÷ 4 = 90.'}, {t:'45 degrees', ok:false}, {t:'100 degrees', ok:false}]},
+    {q:'Color names like red must be written…', a:[
+      {t:'in quotes: t.color("red")', ok:true, fb:'Text always needs quotes.'},
+      {t:'with no quotes: t.color(red)', ok:false, fb:'That makes Python look for a variable named red.'},
+      {t:'in capitals: t.color(RED)', ok:false}]},
+    {q:'<code>t.pensize(5)</code> changes the…', a:[
+      {t:'thickness of the line', ok:true}, {t:'speed of the turtle', ok:false}, {t:'number of sides', ok:false}]},
+    {q:'<code>t.left(90)</code> turns the turtle…', a:[
+      {t:'counter-clockwise 90 degrees', ok:true}, {t:'clockwise 90 degrees', ok:false, fb:'That is right().'},
+      {t:'forward 90 steps', ok:false}]},
+    {q:'<code>t.speed(0)</code> draws…', a:[
+      {t:'instantly (fastest)', ok:true, fb:'0 is the special "no animation" speed.'},
+      {t:'the slowest', ok:false}, {t:'backwards', ok:false}]},
+    {q:'A 5-pointed star turns <code>right(144)</code> between points. Why not 90?', a:[
+      {t:'A star is not a square — each point needs a sharper turn', ok:true},
+      {t:'90 only works for circles', ok:false},
+      {t:'144 is the only number turtle allows', ok:false}]},
+    {q:'You wrote the right commands but in the wrong order. The drawing will…', a:[
+      {t:'probably look different — order matters', ok:true},
+      {t:'look exactly the same', ok:false}, {t:'always crash', ok:false}]},
   ])}
 
   <div class="box brick"><div class="h">🐍 Snake callback</div>
@@ -452,6 +471,28 @@ page('s2','2 · Variables','Boxes that remember', ()=>`
     {q:'Which stores text correctly?', a:[
       {t:'msg = hello', ok:false, fb:'Missing quotes — Python thinks hello is another variable.'},
       {t:'msg = "hello"', ok:true}, {t:'msg = (hello)', ok:false}]},
+    {q:'<code>input()</code> always gives you back…', a:[
+      {t:'text (a string), even if you typed a number', ok:true, fb:'That is why we use int() to convert.'},
+      {t:'a number', ok:false}, {t:'a list', ok:false}]},
+    {q:'To do math on a typed number, you must…', a:[
+      {t:'wrap it in int(): age = int(input("Age? "))', ok:true},
+      {t:'nothing — input gives numbers', ok:false},
+      {t:'wrap it in str()', ok:false, fb:'str() makes text, not a number.'}]},
+    {q:'<code>print("Score: " + 5)</code> crashes because…', a:[
+      {t:'you cannot add text and a number — use str(5) or a comma', ok:true},
+      {t:'5 is too small', ok:false}, {t:'print only takes one thing', ok:false}]},
+    {q:'<code>f"Hi {name}!"</code> with <code>name = "Sam"</code> prints…', a:[
+      {t:'Hi Sam!', ok:true, fb:'f-strings drop the variable right into the text.'},
+      {t:'Hi {name}!', ok:false, fb:'That happens if you forget the f.'},
+      {t:'Hi name!', ok:false}]},
+    {q:'<code>print("3" + "4")</code> shows…', a:[
+      {t:'34 — they are text, so they join', ok:true, fb:'Quotes make them text, not numbers.'},
+      {t:'7', ok:false}, {t:'an error', ok:false}]},
+    {q:'To Python, <code>Score</code> and <code>score</code> are…', a:[
+      {t:'two different boxes — capitals matter', ok:true, fb:'Python is case-sensitive.'},
+      {t:'the same box', ok:false}, {t:'both illegal names', ok:false}]},
+    {q:'<code>score += 5</code> is a shortcut for…', a:[
+      {t:'score = score + 5', ok:true}, {t:'score = 5', ok:false}, {t:'score == 5', ok:false}]},
   ])}
 
   <h3>🏠 Homework — "The Growing Spiral"</h3>
@@ -609,6 +650,22 @@ page('s3','3 · Loops','Do it again without retyping', ()=>`
     {q:'A nested loop with <code>range(3)</code> outside and <code>range(4)</code> inside runs the inner body…', a:[
       {t:'3 × 4 = 12 times', ok:true, fb:'Inner runs fully for each outer turn.'},
       {t:'7 times', ok:false}, {t:'4 times', ok:false}]},
+    {q:'In <code>for i in range(3):</code>, the value of <code>i</code> on the three turns is…', a:[
+      {t:'0, then 1, then 2', ok:true, fb:'It counts from 0.'},
+      {t:'1, then 2, then 3', ok:false}, {t:'always 3', ok:false}]},
+    {q:'<code>range(2, 11, 2)</code> produces…', a:[
+      {t:'2,4,6,8,10 — counting by 2', ok:true, fb:'The third number is the step.'},
+      {t:'2,3,4,…,11', ok:false}, {t:'2 and 11 only', ok:false}]},
+    {q:'<code>for letter in "HI":</code> loops over…', a:[
+      {t:'each letter: H, then I', ok:true, fb:'A for loop can walk a word, no range needed.'},
+      {t:'the whole word "HI" once', ok:false}, {t:'numbers 0 and 1', ok:false}]},
+    {q:'An accumulator like <code>total = total + n</code> should start…', a:[
+      {t:'before the loop (e.g. total = 0)', ok:true, fb:'Otherwise it resets every turn.'},
+      {t:'inside the loop', ok:false}, {t:'after the loop', ok:false}]},
+    {q:'<code>continue</code> inside a loop…', a:[
+      {t:'skips the rest of this turn, then keeps looping', ok:true},
+      {t:'stops the whole loop', ok:false, fb:'That is break.'},
+      {t:'restarts from the very beginning', ok:false}]},
   ])}
 
   <h3>🏠 Homework — "Spirograph Art"</h3>
@@ -757,6 +814,18 @@ page('s4','4 · Lists ⭐','One backpack, many things', ()=>`
     {q:'<code>b = a</code> then <code>b.append(9)</code>. What about list <code>a</code>?', a:[
       {t:'a also has 9 — they\'re the same list', ok:true, fb:'Use a.copy() if you want them separate.'},
       {t:'a is unchanged', ok:false}, {t:'a becomes empty', ok:false}]},
+    {q:'The 3rd item in a list is at position…', a:[
+      {t:'2 — because counting starts at 0', ok:true}, {t:'3', ok:false}, {t:'1', ok:false}]},
+    {q:'<code>snake[1] = "belly"</code> does what?', a:[
+      {t:'changes the item at position 1', ok:true, fb:'You can overwrite any item by its position.'},
+      {t:'adds "belly" to the end', ok:false}, {t:'removes position 1', ok:false}]},
+    {q:'<code>nums[1:3]</code> on <code>[5,6,7,8]</code> grabs…', a:[
+      {t:'[6, 7] — from index 1 up to (not including) 3', ok:true},
+      {t:'[6, 7, 8]', ok:false}, {t:'[5, 6, 7]', ok:false}]},
+    {q:'<code>remove()</code> vs <code>pop()</code> —', a:[
+      {t:'remove() takes a value, pop() takes a position', ok:true},
+      {t:'they are exactly the same', ok:false},
+      {t:'remove() takes a position, pop() takes a value', ok:false}]},
   ])}
 
   <h3>🏠 Homework — "Connect the Dots Picture"</h3>
@@ -1215,6 +1284,18 @@ page('s6','6 · Functions','Name a trick, use it forever', ()=>`
     {q:'<code>def add(a, b)</code> called as <code>add(5)</code> will…', a:[
       {t:'error — b has no argument', ok:true, fb:'Every slot needs a value (unless it has a default).'},
       {t:'use 0 for b', ok:false}, {t:'work fine', ok:false}]},
+    {q:'<code>def draw_dot(size, color="red"):</code> — calling <code>draw_dot(20)</code> makes color…', a:[
+      {t:'"red" — the default value', ok:true, fb:'A default makes that argument optional.'},
+      {t:'empty (None)', ok:false}, {t:'an error', ok:false}]},
+    {q:'A <b>parameter</b> is the slot in the def; an <b>argument</b> is…', a:[
+      {t:'the real value you pass in when calling', ok:true},
+      {t:'the name of the function', ok:false}, {t:'the return value', ok:false}]},
+    {q:'You call a function on line 1 but its <code>def</code> is on line 5. This…', a:[
+      {t:'errors — Python must read the def before the call', ok:true},
+      {t:'works fine', ok:false}, {t:'runs the def twice', ok:false}]},
+    {q:'When Python hits <code>return</code>, the lines after it in the function…', a:[
+      {t:'are skipped — return leaves the function right away', ok:true},
+      {t:'still run', ok:false}, {t:'run twice', ok:false}]},
   ])}
 
   <h3>🏠 Homework — "Shape Stamp Maker"</h3>
@@ -1277,6 +1358,25 @@ page('s7','7 · Abstraction','Hide the mess, organize the toys', ()=>`
       {t:'sorting LEGO into labeled bins', ok:true}, {t:'dumping all LEGO in one pile', ok:false}, {t:'throwing LEGO away', ok:false}]},
     {q:'Well-named functions make code…', a:[
       {t:'self-explaining and easy to change', ok:true}, {t:'slower', ok:false}, {t:'longer to understand', ok:false}]},
+    {q:'Abstraction is mainly about…', a:[
+      {t:'hiding messy details behind a simple name', ok:true},
+      {t:'deleting code you don\'t like', ok:false}, {t:'making code run faster', ok:false}]},
+    {q:'A good <b>main</b> program should read like…', a:[
+      {t:'a short recipe of well-named function calls', ok:true},
+      {t:'one giant wall of detailed commands', ok:false}, {t:'a list of comments only', ok:false}]},
+    {q:'You use <code>draw_house()</code> without knowing every turtle line inside it. That\'s…', a:[
+      {t:'abstraction — the details are hidden', ok:true},
+      {t:'a bug', ok:false}, {t:'a loop', ok:false}]},
+    {q:'Splitting a big program into named functions is called…', a:[
+      {t:'modularity', ok:true}, {t:'repetition', ok:false}, {t:'nesting', ok:false}]},
+    {q:'A great test that your abstraction worked is…', a:[
+      {t:'a beginner can read your main and guess what it does', ok:true},
+      {t:'the file is as long as possible', ok:false}, {t:'there are zero comments', ok:false}]},
+    {q:'Hiding details inside functions makes a program easier to…', a:[
+      {t:'find, fix, and reuse', ok:true}, {t:'crash', ok:false}, {t:'forget', ok:false}]},
+    {q:'In a clean game, the main loop reading <code>move_snake(); check_food(); draw_everything()</code> shows…', a:[
+      {t:'good abstraction — messy bits hidden inside each call', ok:true},
+      {t:'bad code — too short', ok:false}, {t:'an infinite loop', ok:false}]},
   ])}
 
   <h3>🏠 Homework — "My Clean Scene"</h3>
@@ -1344,6 +1444,27 @@ page('s8','8 · Classes','Design your own thing', ()=>`
     {q:'Why is the snake a class?', a:[
       {t:'It bundles the snake\'s data (body) AND actions (move) together', ok:true},
       {t:'Classes run faster', ok:false}, {t:'Python requires classes for games', ok:false}]},
+    {q:'A class is like a cookie-cutter; an object is…', a:[
+      {t:'an actual cookie stamped from it', ok:true},
+      {t:'another cookie-cutter', ok:false}, {t:'the recipe book', ok:false}]},
+    {q:'<code>__init__</code> runs…', a:[
+      {t:'automatically when you create a new object', ok:true},
+      {t:'every time the program ends', ok:false}, {t:'only if you call it by name', ok:false}]},
+    {q:'<code>self.color = color</code> creates a…', a:[
+      {t:'attribute — data the object remembers', ok:true},
+      {t:'method', ok:false}, {t:'new class', ok:false}]},
+    {q:'A <b>method</b> is…', a:[
+      {t:'a function that belongs to the object', ok:true},
+      {t:'a kind of list', ok:false}, {t:'a loop counter', ok:false}]},
+    {q:'<code>self</code> in a method refers to…', a:[
+      {t:'the specific object the method was called on', ok:true},
+      {t:'the class blueprint', ok:false}, {t:'the whole program', ok:false}]},
+    {q:'From <code>class Pet:</code> you make <code>p1 = Pet("Rex")</code> and <code>p2 = Pet("Luna")</code>. They…', a:[
+      {t:'are two separate objects, each with its own data', ok:true},
+      {t:'are the same object', ok:false}, {t:'share one name', ok:false}]},
+    {q:'You call a method with <code>p1.speak()</code>. The dot means…', a:[
+      {t:'"ask this object to run its speak action"', ok:true},
+      {t:'multiply p1 by speak', ok:false}, {t:'create a new method', ok:false}]},
   ])}
 
   <h3>🏠 Homework — "Design Your Own Blueprint"</h3>
