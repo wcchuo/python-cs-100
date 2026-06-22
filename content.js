@@ -805,6 +805,32 @@ page('s5','5 · Conditionals','Teaching the computer to decide', ()=>`
     One <b>=</b> <i>stores</i> a value. Two <b>==</b> <i>compares</i>. Chant it:
     "one equals stores, two equals compares!"</div>
 
+  <div class="box tip"><div class="h">🤔 Which one do I use?</div>
+    <ul>
+      <li><b>Just <code>if</code></b> — one yes/no question, and nothing special happens on "no."
+        <br><i>"If the score is over 10, print a trophy."</i></li>
+      <li><b><code>if … else</code></b> — exactly <b>two</b> outcomes: a "yes" path and a "no" path. One of them <i>always</i> runs.
+        <br><i>"If the door is locked, knock — otherwise, walk in."</i></li>
+      <li><b><code>if … elif … else</code></b> — <b>three or more</b> choices where only one should win.
+        <br><i>"Red? Stop. Yellow? Slow. Green? Go."</i> Add an <code>elif</code> for each extra case.</li>
+    </ul>
+    <b>Quick rule:</b> count your outcomes. <b>1</b> → <code>if</code>. <b>2</b> → <code>if/else</code>.
+    <b>3+</b> → <code>if/elif/else</code>.
+  </div>
+
+  <div class="box brick"><div class="h">🧱 What every if/else needs</div>
+    Whichever form you pick, the structure is always the same:
+    <ul>
+      <li>The word <code>if</code> (or <code>elif</code>/<code>else</code>) followed by a <b>condition</b> that is True or False
+        — <code>else</code> has <b>no</b> condition.</li>
+      <li>A <b>colon</b> <code>:</code> at the end of that line.</li>
+      <li>At least one <b>indented</b> line underneath — that's the code that runs.
+        Same indent (usually 4 spaces) for every line in the block.</li>
+    </ul>
+    <code>elif</code> and <code>else</code> are optional, but if you use them they must line up directly
+    under their <code>if</code> — never on their own.
+  </div>
+
   ${Q('Decision basics', [
     {q:'Which checks "are these equal"?', a:[
       {t:'=', ok:false, fb:'That stores a value.'}, {t:'==', ok:true}, {t:'=>', ok:false}]},
@@ -840,6 +866,79 @@ page('s5','5 · Conditionals','Teaching the computer to decide', ()=>`
   <h3>🪆 Learn more — nested ifs (a question inside a question)</h3>
   ${R('logged_in = True\nis_admin = False\n\nif logged_in:\n    print("Welcome back!")\n    if is_admin:\n        print("You have admin powers")\n    else:\n        print("You are a normal player")\nelse:\n    print("Please log in first")')}
 
+  <h3>📦 Learn more — <code>in</code>: is it on the list?</h3>
+  <p><b>Analogy:</b> <code>in</code> is the <i>bouncer with a guest list</i>. Instead of asking
+  "are you Sam? are you Alex? are you Jo?" one by one, the bouncer just checks: "is your name
+  <b>on the list</b>?" — one quick question.</p>
+  ${R('move = "up"\n\n# the long, tiring way:\nif move == "up" or move == "down" or move == "left" or move == "right":\n    print("Valid move!")\n\n# the bouncer way — much shorter:\nif move in ["up", "down", "left", "right"]:\n    print("Still valid! 🎮")\n\n# works on text too: is the letter inside the word?\nif "z" in "snake":\n    print("found a z")\nelse:\n    print("no z in snake")')}
+  <div class="box tip"><div class="h">💡 Why you\'ll love it for Snake</div>
+    Checking key presses (<code>if key in ["Up","Down","Left","Right"]</code>) becomes one clean line
+    instead of four <code>or</code>s.</div>
+
+  <h3>✅ Learn more — truthiness (empty means "no")</h3>
+  <p><b>Analogy:</b> Python treats some values like an <i>empty lunchbox</i>. You don\'t have to ask
+  "does the lunchbox have zero items?" — you just peek: empty lunchbox = "nope" (False),
+  lunchbox with <i>anything</i> inside = "yep" (True).</p>
+  <p>These all count as <b>False</b> (empty/nothing): <code>0</code>, <code>""</code> (empty text),
+  <code>[]</code> (empty list), <code>None</code>. Almost everything else is <b>True</b>.</p>
+  ${R('body = []          # the snake has no body yet\n\nif body:\n    print("The snake has", len(body), "parts")\nelse:\n    print("Empty! Time to grow 🐍")\n\nname = ""\nif name:\n    print("Hi", name)\nelse:\n    print("Please type your name")')}
+  <div class="box warn"><div class="h">⚠ Read it out loud</div>
+    <code>if body:</code> means "if the body has stuff in it." It is NOT the same as
+    <code>if body == True</code> — don\'t compare to True, just use the value itself.</div>
+
+  <h3>🔀 Learn more — <code>match</code> / <code>case</code> (Python\'s "switch")</h3>
+  <p>Some languages have a <code>switch</code> statement. <b>Python does not</b> — but it has something
+  even tidier called <code>match</code> (Python 3.10+).</p>
+  <p><b>Analogy:</b> <code>match</code> is a <i>vending machine</i>. You press one button (the value),
+  and it drops out the matching snack. Each <code>case</code> is one labeled slot, and <code>case _</code>
+  (the underscore) is the "anything else" slot.</p>
+  <pre class="show">light = 2
+
+match light:
+    case 1:
+        print("Stop 🔴")
+    case 2:
+        print("Slow 🟡")
+    case 3:
+        print("Go 🟢")
+    case _:            # _ means "anything else"
+        print("Broken light!")</pre>
+  <div class="box warn"><div class="h">⚠ Try this one at home</div>
+    <code>match</code> is newer Python (3.10+), so the little in-browser ▶ runner here can\'t play it —
+    that\'s why this box shows the code instead of a Run button. It works in real Python (like on your
+    own computer or <a href="https://www.python.org" target="_blank" rel="noopener">python.org</a>).</div>
+  <div class="box tip"><div class="h">💡 When to reach for it</div>
+    Use <code>match</code> when you check <b>one variable</b> against <b>many fixed values</b>. For
+    ranges or combined conditions (<code>and</code>/<code>or</code>), a normal <code>if/elif</code> chain
+    is still the right tool.</div>
+
+  <h3>🎚️ Learn more — the one-line if (ternary)</h3>
+  <p><b>Analogy:</b> a <i>light switch with a label</i>. "Lights ON if it\'s dark, otherwise OFF" —
+  said in a single breath. Python lets you pick one of two values on one line.</p>
+  ${R('lives = 0\n\n# the normal way:\nif lives > 0:\n    status = "alive"\nelse:\n    status = "dead"\n\n# the one-line way (reads like English):\nstatus = "alive" if lives > 0 else "dead"\nprint("Player is", status)')}
+  <div class="box tip"><div class="h">💡 Shape to remember</div>
+    <code>VALUE_if_true <b>if</b> condition <b>else</b> VALUE_if_false</code>. Great for short choices —
+    but if it gets long, go back to a full <code>if/else</code> so it stays readable.</div>
+
+  <h3>🛑 Learn more — <code>break</code> &amp; <code>continue</code> (if inside a loop)</h3>
+  <p>This is the bridge from "deciding" to "playing" — the game loop runs forever until an
+  <code>if</code> decides to stop it.</p>
+  <p><b>Analogy:</b> <code>break</code> is the <i>emergency stop button</i> — it ends the whole loop
+  right now. <code>continue</code> is <i>"skip my turn"</i> — jump straight to the next round without
+  finishing this one.</p>
+  ${R('for step in range(1, 11):\n    if step == 4:\n        continue          # skip step 4, keep looping\n    if step == 7:\n        print("Crashed! Game over 💥")\n        break             # stop the loop completely\n    print("Step", step)')}
+  <div class="box brick"><div class="h">🐍 Snake callback</div>
+    The whole game is a <code>while True:</code> loop. Each frame an <code>if</code> asks
+    "did I hit a wall or myself?" — and if yes, <code>break</code> ends the game.</div>
+
+  <h3>🪞 Learn more — <code>==</code> vs <code>is</code> (a quick heads-up)</h3>
+  <p><b>Analogy:</b> <code>==</code> asks "are these two things <i>the same value</i>?" — like two
+  identical-looking water bottles. <code>is</code> asks "are these the <i>exact same object</i>?" —
+  literally the one bottle, not a twin.</p>
+  <p><b>Rule for now:</b> use <code>==</code> to compare values (numbers, text). Only use
+  <code>is</code> for one special check: <code>if x is None:</code>.</p>
+  ${R('a = "snake"\nb = "snake"\nprint("Same value? ", a == b)   # True — both say snake\n\nfood = None\nif food is None:\n    print("No food on the board yet")')}
+
   <div class="box warn"><div class="h">🐛 Common conditional gotchas — read before you cry</div>
     <ul>
       <li><b>One = vs two ==:</b> <code>if x = 5:</code> is an error — comparing needs <code>==</code>.</li>
@@ -871,22 +970,53 @@ page('s5','5 · Conditionals','Teaching the computer to decide', ()=>`
   ])}
 
   <h3>🏆 Challenges</h3>
-  <div class="tier t-green">🟢 Starter — Traffic Light</div>
-  <ul>
-    <li>Set <code>light = 2</code>. Use if/elif/else to print "Stop" (1), "Slow" (2), or "Go" (3).</li>
-    <li>Set an <code>age</code> variable. Print "You can play!" only if age is <code>&gt;= 10 and age &lt;= 14</code>.</li>
-  </ul>
-  <div class="tier t-yellow">🟡 Medium</div>
-  <ul>
-    <li>Draw a red circle if a number is even, a blue one if it's odd. Hint: <code>n % 2 == 0</code>.</li>
-    <li>"FizzBuzz lite": for a number, print "Fizz" if divisible by 3, "Buzz" if by 5, "FizzBuzz" if by both (use <code>and</code>), else the number.</li>
-    <li>Given <code>password</code>, print "Access granted" only if it equals <code>"snake123"</code> <b>and</b> <code>tries &lt; 3</code>.</li>
-  </ul>
-  <div class="tier t-red">🔴 Challenge — Traffic Light drawing</div>
-  <ul>
-    <li>Run the drawing below, then add a 4th case: if <code>light == 0</code>, draw a gray dot ("off").</li>
-    <li><b>Stretch:</b> check if the turtle's head position is off-screen using <code>or</code> (x too big <i>or</i> y too big) — that's a wall crash!</li>
-  </ul>
+  <p class="mini">Try them in order. Stuck on the shape of an if/else? Re-read the
+  "🤔 Which one do I use?" and "🧱 What every if/else needs" tips above.</p>
+
+  <div class="tier t-green">🟢 Starter — get the shape right (2 outcomes or simple chains)</div>
+  <ol>
+    <li><b>Hot or not.</b> Set <code>temp = 32</code>. Print <code>"Hot 🥵"</code> if it's over 30,
+      otherwise print <code>"Nice 🙂"</code>. (This is a 2-outcome → <code>if/else</code>.)</li>
+    <li><b>Password check.</b> Set <code>name = "snake"</code>. If it equals <code>"snake"</code>
+      print <code>"Correct! 🐍"</code>, else print <code>"Try again"</code>.</li>
+    <li><b>Sign of a number.</b> Set <code>n = -4</code>. Print <code>"Positive"</code> if &gt; 0,
+      <code>"Zero"</code> if it equals 0, otherwise <code>"Negative"</code> (3 outcomes → <code>if/elif/else</code>).</li>
+    <li><b>Traffic light.</b> Set <code>light = 2</code>. Use if/elif/else to print
+      <code>"Stop"</code> (1), <code>"Slow"</code> (2), or <code>"Go"</code> (3).</li>
+    <li><b>Old enough?</b> Set an <code>age</code> variable. Print <code>"You can play!"</code> only
+      when <code>age &gt;= 10 and age &lt;= 14</code>, else <code>"Maybe next year"</code>.</li>
+  </ol>
+  ${R('# Starter scratch — try each challenge here\ntemp = 32\n\nif temp > 30:\n    print("Hot 🥵")\nelse:\n    print("Nice 🙂")')}
+
+  <div class="tier t-yellow">🟡 Medium — combine conditions &amp; input</div>
+  <ol>
+    <li><b>Even or odd.</b> Set a number and print <code>"Even"</code> or <code>"Odd"</code>.
+      Hint: <code>n % 2 == 0</code>.</li>
+    <li><b>FizzBuzz lite.</b> For a number, print <code>"FizzBuzz"</code> if divisible by 3 <b>and</b> 5,
+      else <code>"Fizz"</code> if by 3, else <code>"Buzz"</code> if by 5, else the number.
+      <i>(Order matters — check "both" first!)</i></li>
+    <li><b>Login.</b> Given <code>password</code> and <code>tries</code>, print <code>"Access granted"</code>
+      only if password equals <code>"snake123"</code> <b>and</b> <code>tries &lt; 3</code>.</li>
+    <li><b>Report card.</b> Set <code>score = 84</code>. Print a grade:
+      A (90+), B (80+), C (70+), else F. Use one <code>if/elif/elif/else</code> chain.</li>
+    <li><b>Ask the player.</b> Use <code>age = int(input("Your age? "))</code>, then print whether they
+      can join the camp (<code>age &gt;= 10</code>).</li>
+  </ol>
+  ${R('# Medium scratch\nn = 7\n\nif n % 2 == 0:\n    print("Even")\nelse:\n    print("Odd")')}
+
+  <div class="tier t-red">🔴 Challenge — decisions that draw &amp; play</div>
+  <ol>
+    <li><b>Traffic light drawing.</b> Run the drawing below, then add a 4th case:
+      if <code>light == 0</code>, make a gray dot ("off").</li>
+    <li><b>Wall crash.</b> Set <code>x</code> and <code>y</code>. Print <code>"CRASH! 💥"</code> if the head is
+      off-screen using <code>or</code> — x too big <i>or</i> y too big (e.g. <code>abs(x) &gt; 200 or abs(y) &gt; 200</code>).</li>
+    <li><b>Rock · Paper · Scissors.</b> Set <code>p1</code> and <code>p2</code> to one of
+      <code>"rock"/"paper"/"scissors"</code>. Use an if/elif chain to print who wins (or a tie).</li>
+    <li><b>Guess the number.</b> Set <code>secret = 7</code> and a <code>guess</code>. Print
+      <code>"Too high"</code>, <code>"Too low"</code>, or <code>"Correct! 🎉"</code>.</li>
+    <li><b>Danger zone (loop + if).</b> In the drawing below, walk the turtle forward in a loop and
+      color each step <b>red</b> when <code>x &gt; 100</code>, otherwise <b>green</b> — a live collision preview.</li>
+  </ol>
   ${R('import turtle\nt = turtle.Turtle()\nt.penup(); t.speed(0)\n\nlight = 3   # try 1, 2, or 3\n\nif light == 1:\n    t.color("red")\nelif light == 2:\n    t.color("yellow")\nelse:\n    t.color("green")\n\nt.dot(120)\nturtle.done()', {origin:'center'})}
 
   ${Q('Exit quiz', [
@@ -906,6 +1036,22 @@ page('s5','5 · Conditionals','Teaching the computer to decide', ()=>`
     {q:'<code>not (5 > 3)</code> is…', a:[
       {t:'False', ok:true, fb:'5>3 is True, and not flips it to False.'},
       {t:'True', ok:false}, {t:'5', ok:false}]},
+    {q:'<code>move in ["up", "down"]</code> checks…', a:[
+      {t:'whether move is one of the items in the list', ok:true, fb:'Like a bouncer checking the guest list.'},
+      {t:'whether the list is empty', ok:false},
+      {t:'whether move equals the whole list', ok:false}]},
+    {q:'<code>if body:</code> when <code>body = []</code> (empty list) runs the…', a:[
+      {t:'else branch — an empty list counts as False', ok:true, fb:'Empty lunchbox = "no".'},
+      {t:'if branch — lists are always True', ok:false},
+      {t:'neither — it crashes', ok:false}]},
+    {q:'<code>status = "alive" if lives > 0 else "dead"</code> sets status to "dead" when…', a:[
+      {t:'lives is 0 (or less)', ok:true, fb:'The part after else is the "false" choice.'},
+      {t:'lives is more than 0', ok:false},
+      {t:'always', ok:false}]},
+    {q:'In a loop, <code>break</code> does what?', a:[
+      {t:'stops the whole loop right away', ok:true, fb:'The emergency stop button.'},
+      {t:'skips just this one round', ok:false, fb:'That is continue.'},
+      {t:'restarts the loop from the top', ok:false}]},
   ])}
 
   <h3>🏠 Homework — "Number Sorter"</h3>

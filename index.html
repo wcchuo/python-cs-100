@@ -152,6 +152,33 @@
   .mini{font-size:13px; color:var(--muted)}
   ul.clean{list-style:none; padding-left:0}
   ul.clean li{padding:4px 0; border-bottom:1px dashed var(--line)}
+
+  /* ---------- Slide-in Python scratchpad (every page) ---------- */
+  #scratchTab{
+    position:fixed; right:0; top:50%; transform:translateY(-50%);
+    writing-mode:vertical-rl; text-orientation:mixed;
+    background:var(--green); color:#07321f; border:none; cursor:pointer;
+    font-weight:800; font-size:14px; padding:16px 8px; border-radius:12px 0 0 12px;
+    box-shadow:-2px 2px 10px rgba(0,0,0,.4); z-index:60;
+  }
+  #scratchTab:hover{filter:brightness(1.08)}
+  #scratchpad{
+    position:fixed; top:0; right:0; height:100vh; width:900px; min-width:900px; max-width:96vw;
+    background:var(--panel); border-left:2px solid var(--line);
+    box-shadow:-6px 0 24px rgba(0,0,0,.5); z-index:61;
+    transform:translateX(100%); transition:transform .25s ease;
+    display:flex; flex-direction:column;
+  }
+  #scratchpad.open{transform:none}
+  #scratchpad .scratchhead{display:flex; align-items:center; justify-content:space-between;
+    padding:14px 16px; border-bottom:1px solid var(--line)}
+  #scratchpad .scratchhead b{font-size:16px}
+  #scratchClose{background:transparent; color:var(--muted); border:1px solid var(--line);
+    border-radius:8px; padding:4px 10px; cursor:pointer; font-size:14px}
+  #scratchClose:hover{color:var(--ink)}
+  #scratchpad .scratchbody{padding:14px 16px; overflow-y:auto; flex:1}
+  #scratchpad .scratchbody .runner{margin-top:0}
+  #scratchpad .editor{min-height:240px}
 </style>
 </head>
 <body>
@@ -163,6 +190,19 @@
   </nav>
   <main id="main"><!-- pages injected here --></main>
 </div>
+
+<!-- Slide-in Python scratchpad — available on every lesson -->
+<button id="scratchTab" title="Open a blank Python scratchpad">🐍 Scratchpad</button>
+<aside id="scratchpad" aria-hidden="true">
+  <div class="scratchhead">
+    <b>🐍 Python Scratchpad</b>
+    <button id="scratchClose" title="Close">✕ Close</button>
+  </div>
+  <div class="scratchbody" id="scratchbody">
+    <p class="mini">A blank space to try anything. Your code stays here while you switch lessons.</p>
+    <!-- empty runner injected here -->
+  </div>
+</aside>
 
 <script>
 /* =========================================================================
@@ -399,6 +439,23 @@ function render(){
   // store reset originals
   document.querySelectorAll('.editor').forEach(t=>{RESET_STORE[t.id]=t.value;});
   goto(location.hash? (parseInt(location.hash.replace('#p',''))||0):0);
+  setupScratchpad();
+}
+
+/* Inject the blank scratchpad runner (starts with no code) and wire the
+   slide-in tab. Reuses the same runner machinery as the lesson code boxes,
+   so Run / Reset / turtle all work via the existing event delegation. */
+function setupScratchpad(){
+  const body=document.getElementById('scratchbody');
+  body.insertAdjacentHTML('beforeend', makeRunner(''));
+  const ed=body.querySelector('.editor');
+  RESET_STORE[ed.id]='';        // Reset clears it back to empty
+  const pad=document.getElementById('scratchpad');
+  const open=(o)=>{ pad.classList.toggle('open',o); pad.setAttribute('aria-hidden', o?'false':'true');
+    if(o) setTimeout(()=>ed.focus(),250); };
+  document.getElementById('scratchTab').onclick=()=>open(!pad.classList.contains('open'));
+  document.getElementById('scratchClose').onclick=()=>open(false);
+  document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') open(false); });
 }
 function goto(i){
   if(i<0||i>=SESSIONS.length)return;
