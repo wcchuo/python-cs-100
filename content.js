@@ -1635,10 +1635,39 @@ page('s9','9 · Build Day 1 🐍','Snake comes alive', ()=>`
     variables (direction, score) · list (the body) · loop (the game loop) · conditionals (ate food?) ·
     functions/methods (move, grow) · class (Snake, Food). Find each one in the code below!</div>
 
+  <h3>📖 First, read the story (what the code does)</h3>
+  <p>Before you run it, here's the whole game in plain English — every step matches a line of code:</p>
+  <div class="box why"><div class="h">🎬 The snake's life, step by step</div>
+    <ol>
+      <li><b>Set the stage:</b> open a black window and make a <code>Snake</code> (a list with one part).</li>
+      <li><b>Drop some food</b> at a spot on the screen (a red dot).</li>
+      <li><b>Repeat over and over (the game loop):</b>
+        <ul>
+          <li><b>Move:</b> add a new head in front, drop the tail — that's how it slithers.</li>
+          <li><b>Did I eat?</b> If the head landed on the food → <code>grow()</code> (keep the tail this time)
+            and put new food somewhere random.</li>
+          <li><b>Redraw</b> every body part, then the food.</li>
+          <li><b>Pause</b> a moment so your eyes can follow.</li>
+        </ul></li>
+    </ol>
+  </div>
+
   <h3>🎮 The full Build Day 1 game</h3>
-  <p>This runs right here! (In real Python it uses arrow keys; this browser version moves on its own so
-  you can watch the snake grow. Read every line — you understand all of it now.)</p>
-  ${R('import turtle\nimport random\n\nscreen = turtle.Screen()\nscreen.setup(420, 420)\nscreen.bgcolor("black")\n\nclass Snake:\n    def __init__(self):\n        self.body = [(0,0)]        # LIST (S4)\n        self.dx, self.dy = 20, 0   # VARIABLES (S2)\n    def move(self):                # METHOD (S6/S8)\n        hx, hy = self.body[-1]\n        new_head = (hx + self.dx, hy + self.dy)\n        self.body.append(new_head) # grow head\n        self.body.pop(0)           # drop tail (slither)\n    def grow(self):\n        self.body.append(self.body[-1])  # eat -> longer!\n\ndef draw(snake, food, pen):\n    pen.clear()\n    for part in snake.body:        # LOOP (S3)\n        pen.goto(part); pen.color("lime"); pen.stamp()\n    pen.goto(food); pen.color("red"); pen.stamp()\n    screen.update()\n\nsnake = Snake()\nfood = (60, 0)\npen = turtle.Turtle(); pen.penup(); pen.hideturtle()\nscreen.tracer(0)\n\nfor step in range(20):             # game loop (20 frames here)\n    snake.move()\n    if snake.body[-1] == food:     # CONDITIONAL (S5): ate it?\n        snake.grow()\n        food = (random.randint(-5,5)*20, random.randint(-5,5)*20)\n    draw(snake, food, pen)\n\nturtle.done()', {origin:'center'})}
+  <p>Now run it and <b>watch the printed story on the right</b> as the snake moves. The two
+  <b>KNOBS</b> at the top are yours to play with — make <code>SPEED</code> bigger to slow it down,
+  or <code>STEPS</code> bigger for a longer game. (In real Python you'd steer with the arrow keys;
+  this browser version moves on its own so you can study it.)</p>
+  ${R('import turtle\nimport random\nimport time\n\n# ====== KNOBS — change these and run again! ======\nSPEED = 0.4    # seconds each step is shown. BIGGER = SLOWER.\nSTEPS = 30     # how many moves the snake makes.\n# =================================================\n\nscreen = turtle.Screen()\nscreen.setup(420, 420)\nscreen.bgcolor("black")\nscreen.tracer(0)               # we draw each frame ourselves\n\nclass Snake:\n    def __init__(self):\n        self.body = [(0,0)]        # LIST (S4) — every body part\n        self.dx, self.dy = 20, 0   # VARIABLES (S2) — moving right\n    def move(self):                # METHOD (S6/S8)\n        hx, hy = self.body[-1]                 # head = last part\n        new_head = (hx + self.dx, hy + self.dy)\n        self.body.append(new_head)             # add a new head\n        self.body.pop(0)                       # drop the tail -> slither\n    def grow(self):\n        self.body.append(self.body[-1])        # eat -> one part longer\n\ndef draw(snake, food, pen):\n    pen.clear()\n    pen.shape("square")            # body parts look like blocks\n    for part in snake.body:        # LOOP (S3) over every part\n        pen.goto(part); pen.color("lime"); pen.stamp()\n    pen.shape("circle")            # food looks like a dot\n    pen.goto(food); pen.color("red"); pen.stamp()\n    screen.update()\n\nsnake = Snake()\nfood = (60, 0)\npen = turtle.Turtle(); pen.penup(); pen.hideturtle()\n\nfor step in range(STEPS):          # the GAME LOOP\n    snake.move()\n    head = snake.body[-1]\n    print("Step", step + 1, "- head moved to", head)\n    if head == food:               # CONDITIONAL (S5): did we eat?\n        snake.grow()\n        print("   YUM! ate the food - snake is now", len(snake.body), "long")\n        food = (random.randint(-5,5)*20, random.randint(-5,5)*20)\n    draw(snake, food, pen)\n    time.sleep(SPEED)              # <-- SLOW DOWN so you can watch\n\nturtle.done()', {origin:'center'})}
+
+  <div class="box tip"><div class="h">🎛️ Try these one at a time (interaction!)</div>
+    <ul>
+      <li>Set <code>SPEED = 1.0</code> — watch each step in slow motion.</li>
+      <li>Change <code>self.dx, self.dy = 20, 0</code> to <code>0, 20</code> — now it heads <b>up</b>
+        instead of right. Try <code>-20, 0</code> (left) and <code>0, -20</code> (down).</li>
+      <li>Change <code>"lime"</code> to your favorite snake color.</li>
+      <li>Move the first food: change <code>food = (60, 0)</code> to <code>(0, 60)</code>.</li>
+    </ul>
+  </div>
 
   <h3>🧠 Find the bricks (discussion)</h3>
   <ul class="clean">
@@ -1664,7 +1693,7 @@ page('s9','9 · Build Day 1 🐍','Snake comes alive', ()=>`
   <h3>🏠 Homework — "Make it yours"</h3>
   <p>Change the snake's <b>color</b>, the food's <b>position</b>, or the number of steps. Bring <b>one
   idea</b> for a new feature to Build Day 2 (score? game over? speed up?).</p>
-  ${HW('# 🏠 HOMEWORK: Tweak this mini-snake! Change the 3 marked spots.\nimport turtle\nimport random\nscreen = turtle.Screen(); screen.tracer(0)\n\nbody = [(0,0)]\ndx, dy = 20, 0\nfood = (60, 0)\npen = turtle.Turtle(); pen.penup(); pen.hideturtle()\n\nfor step in range(20):              # (1) try more steps\n    hx, hy = body[-1]\n    body.append((hx+dx, hy+dy)); body.pop(0)\n    if body[-1] == food:\n        body.append(body[-1])\n        food = (random.randint(-4,4)*20, random.randint(-4,4)*20)\n    pen.clear()\n    for part in body:\n        pen.goto(part); pen.color("lime"); pen.stamp()   # (2) change snake color\n    pen.goto(food); pen.color("red"); pen.stamp()        # (3) change food color\n    screen.update()\n\nturtle.done()\n\n# Expected result: a colored snake that slides right and grows when it hits the food.', {origin:'center'})}
+  ${HW('# 🏠 HOMEWORK: Tweak this mini-snake! Change the 4 marked spots.\nimport turtle\nimport random\nimport time\n\nSPEED = 0.4    # (1) seconds per step. Make it BIGGER to slow down.\nscreen = turtle.Screen(); screen.tracer(0)\n\nbody = [(0,0)]\ndx, dy = 20, 0\nfood = (60, 0)\npen = turtle.Turtle(); pen.penup(); pen.hideturtle()\n\nfor step in range(20):              # (2) try more steps\n    hx, hy = body[-1]\n    body.append((hx+dx, hy+dy)); body.pop(0)\n    print("Step", step + 1, "-> head at", body[-1])\n    if body[-1] == food:\n        body.append(body[-1])\n        print("   YUM! grew to", len(body))\n        food = (random.randint(-4,4)*20, random.randint(-4,4)*20)\n    pen.clear()\n    pen.shape("square")\n    for part in body:\n        pen.goto(part); pen.color("lime"); pen.stamp()   # (3) change snake color\n    pen.shape("circle")\n    pen.goto(food); pen.color("red"); pen.stamp()        # (4) change food color\n    screen.update()\n    time.sleep(SPEED)               # slow motion so you can watch\n\nturtle.done()\n\n# Expected result: a green snake that slides right, slowly, and grows when it hits the food.', {origin:'center'})}
 
   <div class="box tip"><div class="h">💡 Tip</div>
     Save often. Test after every small change — "code a little, run a little." If it breaks, you only
