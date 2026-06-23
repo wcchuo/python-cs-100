@@ -1149,7 +1149,11 @@ page('s6','6 · Functions','Name a trick, use it forever', ()=>`
     code everywhere, you write <code>draw_food()</code> once and call it whenever you need it.</div>
 
   <h3>🎬 Watch first — Functions explained</h3>
-  <p>A quick, friendly video to see functions in action before we dive in:</p>
+  <p>Start with this gentle intro, then watch the second video for more examples:</p>
+  <div class="video"><iframe src="https://www.youtube.com/embed/UmNKiV7Lekk"
+    title="Python Functions — intro" frameborder="0" loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe></div>
   <div class="video"><iframe src="https://www.youtube.com/embed/KW6qncswzHw"
     title="Python Functions" frameborder="0" loading="lazy"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -1178,23 +1182,29 @@ page('s6','6 · Functions','Name a trick, use it forever', ()=>`
     <code>draw_food()</code>, <code>check_collision()</code>. Functions are how big programs stay manageable.</div>
 
   <h3>🧩 Learn more — the anatomy: parameters vs arguments</h3>
-  <p>People mix these up, so let's nail it: a <b>parameter</b> is the name in the <i>definition</i> (the empty
-  slot). An <b>argument</b> is the real value you <i>pass in</i> when you call it. Same slot, different word
-  depending on which side you're on.</p>
+  <p><b>Analogy:</b> think of a recipe that says "add ___ cups of flour." The blank "___ cups" is the
+  <b>parameter</b> (the empty slot in the definition). When you actually bake and pour <i>2 cups</i>, that
+  2 is the <b>argument</b> (the real value you pass in). Same slot, different word depending on which side
+  you're on.</p>
   ${R('#        v-- parameters (the empty slots)\ndef power_up(player, points):\n    print(player, "gained", points, "points!")\n\n#        v-- arguments (the real values)\npower_up("Sam", 50)\npower_up("Maria", 100)')}
   <div class="box tip"><div class="h">💡 Default & named arguments</div>
-    You can give a parameter a <b>default</b> so it's optional, and pass arguments <b>by name</b> for clarity.</div>
+    <b>Analogy:</b> a <b>default</b> is like a pizza that <i>comes with cheese</i> unless you say otherwise —
+    you only mention the topping when you want to change it. Passing arguments <b>by name</b>
+    (<code>color="green"</code>) is like writing the labels on a form so nothing gets filled in the wrong box.</div>
   ${R('def draw_dot(size, color="red"):   # color is optional (default red)\n    print("Drawing a", color, "dot of size", size)\n\ndraw_dot(20)                  # uses default -> red\ndraw_dot(20, "blue")          # by position\ndraw_dot(size=30, color="green")  # by name (clear!)')}
 
   <h3>▶️ Learn more — how a function actually runs</h3>
-  <p>Defining a function does <b>not</b> run it — it just teaches Python the spell. The code only runs
-  when you <b>call</b> it. Then Python <i>jumps</i> into the function, runs its lines, and <i>jumps back</i>
-  to exactly where it was called.</p>
+  <p><b>Analogy:</b> calling a function is like following a <i>bookmark</i>. You're reading along, you hit
+  "see recipe on page 50," you flip there, do the steps, then flip <b>back</b> to your bookmark and keep
+  going. Defining a function does <b>not</b> run it — it just writes the recipe on page 50. The code only
+  runs when you <b>call</b> it; then Python jumps in, runs its lines, and jumps back to exactly where it was.</p>
   ${R('print("1. before")\n\ndef say_hi():\n    print("3. inside the function")\n\nprint("2. defined, but not run yet")\nsay_hi()                 # NOW it jumps in\nprint("4. back after the call")\n\n# Watch the numbers: 1, 2, 3, 4 — the jump in and out is clear.')}
 
   <h3>↩️ Learn more — return vs print (they are NOT the same!)</h3>
-  <p><code>print</code> just <i>shows</i> text on screen. <code>return</code> <i>hands a value back</i> so the
-  rest of your program can use it. A returned value can be stored, added, or passed on; printed text can't.</p>
+  <p><b>Analogy:</b> <code>print</code> is <i>saying the answer out loud</i> — everyone hears it, but it's
+  gone in the air. <code>return</code> is <i>writing the answer on a sticky note and handing it back</i> —
+  now you can keep it, add to it, or pass it to someone else. A returned value can be stored, added, or passed
+  on; printed text can't.</p>
   ${R('def double_print(n):\n    print(n * 2)        # only shows it\n\ndef double_return(n):\n    return n * 2        # hands it back\n\na = double_print(5)     # shows 10, but a is empty (None)\nb = double_return(5)    # b actually holds 10\nprint("a is", a)\nprint("b is", b, "-> we can keep using it:", b + 1)')}
   <div class="box warn"><div class="h">🛑 return also ends the function</div>
     The moment Python hits <code>return</code>, it leaves the function immediately — any lines after it
@@ -1207,9 +1217,10 @@ page('s6','6 · Functions','Name a trick, use it forever', ()=>`
   ${R('# 👎 one function doing everything\ndef do_turn_messy():\n    print("move snake"); print("check food"); print("update score")\n\n# 👍 one job each — main reads like a sentence\ndef move_snake():   print("move snake")\ndef check_food():   print("check food")\ndef update_score(): print("update score")\n\nmove_snake(); check_food(); update_score()')}
 
   <h3>🏠 Learn more — namespaces (where names live)</h3>
-  <p>A <b>namespace</b> is just "the list of names Python currently knows." Variables made <i>inside</i> a
-  function live in that function's own <b>local</b> namespace — they're born when the function is called and
-  vanish when it ends. Names made outside live in the <b>global</b> namespace.</p>
+  <p><b>Analogy:</b> each function carries its own <i>backpack</i> of names. Whatever you put in the backpack
+  (variables made inside) belongs only to that function and gets emptied the moment it finishes. A
+  <b>namespace</b> is just "the list of names currently in scope." Variables made <i>inside</i> a function live
+  in that function's own <b>local</b> backpack; names made outside live in the shared <b>global</b> one.</p>
   ${R('def make_score():\n    points = 100        # LOCAL — only exists inside this function\n    print("Inside, points =", points)\n\nmake_score()\nprint("Outside, points =", points)   # 💥 ERROR: points is not defined out here')}
   <div class="box tip"><div class="h">💡 Why have local namespaces at all?</div>
     They keep functions <b>self-contained and safe</b>. A function can use a variable named <code>i</code>
@@ -1250,22 +1261,44 @@ page('s6','6 · Functions','Name a trick, use it forever', ()=>`
   ])}
 
   <h3>🏆 Challenges</h3>
-  <div class="tier t-green">🟢 Starter</div>
-  <ul>
-    <li>Write <code>def cheer(name):</code> that prints "Go [name], go!" and call it for 3 names.</li>
-    <li>Write <code>def greet(name, mood="happy"):</code> with a default. Call it once with the default and once overriding it.</li>
-  </ul>
-  <div class="tier t-yellow">🟡 Medium — Shape Stamp Maker</div>
-  <ul>
-    <li>Write <code>draw_polygon(sides, size)</code> and draw a triangle, square, and pentagon with the SAME function.</li>
-    <li>Write <code>is_even(n)</code> that <b>returns</b> True/False (no printing). Use its return value inside an <code>if</code>.</li>
-  </ul>
+  <div class="tier t-green">🟢 Starter — define &amp; call</div>
+  <ol>
+    <li><b>Cheer squad.</b> Write <code>def cheer(name):</code> that prints "Go [name], go!" and call it for 3 names.</li>
+    <li><b>Greeting with a default.</b> Write <code>def greet(name, mood="happy"):</code>. Call it once
+      using the default and once overriding it.</li>
+    <li><b>Add machine.</b> Write <code>def add(a, b):</code> that <b>returns</b> <code>a + b</code>.
+      Store the result in a variable and print it.</li>
+    <li><b>Square of one number.</b> Write <code>def square(n):</code> that returns <code>n * n</code>,
+      then print <code>square(4)</code> and <code>square(9)</code>.</li>
+    <li><b>Name tag.</b> Write <code>def tag(name, age):</code> that prints
+      <code>f"{name} is {age}"</code> — practice passing two arguments.</li>
+  </ol>
+  <div class="tier t-yellow">🟡 Medium — Shape Stamp Maker &amp; return</div>
+  <ol>
+    <li><b>Polygon maker.</b> Write <code>draw_polygon(sides, size)</code> and draw a triangle, square, and pentagon with the SAME function.</li>
+    <li><b>Even checker.</b> Write <code>is_even(n)</code> that <b>returns</b> True/False (no printing).
+      Use its return value inside an <code>if</code>.</li>
+    <li><b>Biggest of three.</b> Write <code>biggest(a, b, c)</code> that returns the largest —
+      without using <code>max()</code>.</li>
+    <li><b>Colored shapes.</b> Add a <code>color</code> parameter to <code>draw_polygon</code> so each
+      shape can be a different color.</li>
+    <li><b>Points lookup.</b> Write <code>points_for(food)</code> that returns 10 for "apple",
+      20 for "cherry", else 5. Total up two foods using its return value.</li>
+  </ol>
   ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\ndef draw_polygon(sides, size):\n    angle = 360 / sides\n    for i in range(sides):\n        t.forward(size)\n        t.right(angle)\n\ndraw_polygon(3, 80)   # triangle\nt.penup(); t.forward(100); t.pendown()\ndraw_polygon(5, 60)   # pentagon\n\nturtle.done()')}
-  <div class="tier t-red">🔴 Challenge</div>
-  <ul>
-    <li>Write a function <code>area(width, height)</code> that <b>returns</b> width × height, and print the area of 3 rooms.</li>
-    <li>Split a messy program into 3 single-job functions, then write a short <code>main()</code> that calls them in order — make <code>main</code> read like a sentence.</li>
-  </ul>
+  <div class="tier t-red">🔴 Challenge — build with functions</div>
+  <ol>
+    <li><b>Room areas.</b> Write <code>area(width, height)</code> that <b>returns</b> width × height,
+      and print the area of 3 rooms.</li>
+    <li><b>Clean main.</b> Split a messy program into 3 single-job functions, then write a short
+      <code>main()</code> that calls them in order — make <code>main</code> read like a sentence.</li>
+    <li><b>Dice roller.</b> Write <code>roll()</code> that <b>returns</b> a random number 1–6
+      (<code>import random</code>; <code>random.randint(1, 6)</code>). Roll it 5 times in a loop.</li>
+    <li><b>Helper using a helper.</b> Write <code>is_even(n)</code>, then a function
+      <code>count_evens(numbers)</code> that uses it to return how many evens are in a list.</li>
+    <li><b>Stamp a row.</b> Write <code>draw_shape(sides, size, x)</code> that moves to position
+      <code>x</code> and stamps a polygon. Call it in a loop to draw a whole row of growing shapes.</li>
+  </ol>
 
   ${Q('Exit quiz', [
     {q:'<code>return</code> does what?', a:[
@@ -1324,6 +1357,13 @@ page('s7','7 · Abstraction','Hide the mess, organize the toys', ()=>`
     details behind a simple button). And you keep LEGO sorted in bins so you can find pieces — that's
     <b>modularity</b> (organizing code into named parts).</div>
 
+  <h3>🎬 Watch first — Abstraction</h3>
+  <p>A quick, friendly video to see the idea of hiding details before we dive in:</p>
+  <div class="video"><iframe src="https://www.youtube.com/embed/9oDAsFhSR5k"
+    title="Abstraction" frameborder="0" loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe></div>
+
   <h3>🧠 Learn — make "main" read like English</h3>
   <p>Compare a messy program to a clean one. Same drawing, but which is easier to read?</p>
   ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\ndef draw_sun():\n    t.penup(); t.goto(80,80); t.pendown()\n    t.color("orange"); t.dot(60)\n\ndef draw_house():\n    t.penup(); t.goto(-80,-80); t.pendown()\n    t.color("brown")\n    for i in range(4):\n        t.forward(100); t.left(90)\n\n# The MAIN program reads like plain English:\ndraw_house()\ndraw_sun()\n\nturtle.done()', {origin:'center'})}
@@ -1341,10 +1381,59 @@ page('s7','7 · Abstraction','Hide the mess, organize the toys', ()=>`
       {t:'contain every messy detail', ok:false}, {t:'have no functions', ok:false}]},
   ])}
 
-  <h3>🏆 Challenge — Scene Builder</h3>
-  <p>Build a picture where the main program is only 3–4 clean function calls. The messy turtle
-  commands hide inside the functions above.</p>
+  <h3>🪜 Learn more — layers: the button vs the wiring</h3>
+  <p><b>Analogy:</b> a TV remote has a big red <b>power button</b> (simple to use) and a tangle of
+  <i>wiring</i> inside (messy to build). Abstraction is drawing a line between the two: the
+  <b>name you call</b> is the button; the code <b>inside</b> the function is the wiring. Users press the
+  button and never see the wires.</p>
+  ${R('# the "button" — a simple name anyone can press:\ndef draw_star():\n    # the "wiring" — messy details hidden inside:\n    import turtle\n    for i in range(5):\n        turtle.forward(100); turtle.right(144)\n\ndraw_star()   # press the button — no wiring in sight\nimport turtle; turtle.done()', {origin:'center'})}
+
+  <h3>🏷️ Learn more — good names are labeled drawers</h3>
+  <p><b>Analogy:</b> imagine a desk with drawers. Unlabeled drawers mean you open all of them to find a
+  pencil. <b>Labeled</b> drawers (<code>pencils</code>, <code>tape</code>, <code>scissors</code>) mean you
+  go straight to the right one. A good function name like <code>draw_house()</code> is a label — you
+  instantly know what's inside without opening it.</p>
+  ${R('# 👎 mystery names — what do these do?\ndef f1(): print("...")\ndef f2(): print("...")\n\n# 👍 labeled drawers — obvious at a glance\ndef draw_walls():  print("drawing walls")\ndef draw_roof():   print("drawing roof")\n\ndraw_walls(); draw_roof()')}
+
+  <h3>🏆 Challenges</h3>
+  <div class="tier t-green">🟢 Starter — name &amp; hide</div>
+  <ol>
+    <li><b>One clean call.</b> Put any 3 turtle commands inside a function called <code>draw_line()</code>
+      and call it once. The messy bits are now hidden.</li>
+    <li><b>Label the drawer.</b> Rename a function called <code>f()</code> to a clear name that says what
+      it does, then call it.</li>
+    <li><b>Two helpers.</b> Write <code>draw_sun()</code> and <code>draw_ground()</code>, then a main of
+      just those two calls.</li>
+    <li><b>Readable main.</b> Write three functions so the main reads like a sentence:
+      <code>draw_sky(); draw_hill(); draw_tree()</code>.</li>
+    <li><b>Sibling test.</b> Show your main (just the calls) to someone and see if they can guess the
+      picture without reading the details.</li>
+  </ol>
+  <div class="tier t-yellow">🟡 Medium — Scene Builder</div>
+  <ol>
+    <li><b>Full scene.</b> Build a picture where the main program is only 3–4 clean function calls
+      (use the starter code below).</li>
+    <li><b>Add a helper.</b> Add a <code>draw_cloud()</code> function and one line in main to place it.</li>
+    <li><b>Reuse with a parameter.</b> Make <code>draw_tree(x)</code> take a position so you can draw a
+      whole forest with several calls.</li>
+    <li><b>Split the messy one.</b> Take a long 15-line drawing and break it into 3 named functions.</li>
+    <li><b>Helper of helpers.</b> Write <code>draw_house()</code> that itself calls
+      <code>draw_walls()</code> and <code>draw_roof()</code> — layers inside layers.</li>
+  </ol>
   ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\ndef draw_ground():\n    t.penup(); t.goto(-200,-50); t.pendown()\n    t.color("green"); t.pensize(8); t.forward(400)\n\ndef draw_tree():\n    t.penup(); t.goto(-100,-50); t.pendown()\n    t.color("brown"); t.pensize(10)\n    t.left(90); t.forward(80)\n    t.color("darkgreen"); t.dot(70)\n\n# main:\ndraw_ground()\ndraw_tree()\n# add draw_sun() yourself!\n\nturtle.done()', {origin:'center'})}
+  <div class="tier t-red">🔴 Challenge — think in layers</div>
+  <ol>
+    <li><b>Whole village.</b> Write <code>draw_village()</code> that calls <code>draw_house(x)</code>
+      three times at different positions.</li>
+    <li><b>Snake preview.</b> Write empty functions <code>move_snake()</code>, <code>check_food()</code>,
+      <code>draw_everything()</code> and a main loop that calls them — the shape of your real game.</li>
+    <li><b>Hide the setup.</b> Put the turtle setup (<code>speed</code>, <code>pensize</code>, colors)
+      into a <code>setup()</code> function so main starts with one clean <code>setup()</code> call.</li>
+    <li><b>Rename for clarity.</b> Take a working but badly-named program and rename every function so a
+      stranger could read the main and understand it.</li>
+    <li><b>Two layers deep.</b> Build a scene where main calls <code>draw_scene()</code>, which calls
+      <code>draw_house()</code>, which calls <code>draw_walls()</code> — three layers of buttons.</li>
+  </ol>
 
   <div class="box brick"><div class="h">🐍 Snake callback</div>
     Next week your whole game's main loop will read like:
@@ -1397,6 +1486,13 @@ page('s8','8 · Classes','Design your own thing', ()=>`
     A <b>class</b> is a cookie-cutter / blueprint. Stamp it once → make many cookies (objects), each
     with its own data. Our game's Snake and Food will each be built from a blueprint.</div>
 
+  <h3>🎬 Watch first — Classes &amp; objects</h3>
+  <p>A quick, friendly video to see classes in action before we dive in:</p>
+  <div class="video"><iframe src="https://www.youtube.com/embed/ocWCzDAH5lI"
+    title="Python Classes" frameborder="0" loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen></iframe></div>
+
   <h3>🧠 Learn — a tiny Pet class</h3>
   ${R('class Pet:\n    def __init__(self, name):   # setup, runs when created\n        self.name = name        # an ATTRIBUTE (data it remembers)\n\n    def speak(self):            # a METHOD (something it can do)\n        print(self.name, "says hello!")\n\n# stamp the cookie-cutter twice:\np1 = Pet("Rex")\np2 = Pet("Luna")\np1.speak()\np2.speak()')}
   <table>
@@ -1417,6 +1513,20 @@ page('s8','8 · Classes','Design your own thing', ()=>`
       {t:'attribute (data the object stores)', ok:true}, {t:'method', ok:false}, {t:'import', ok:false}]},
   ])}
 
+  <div class="box tip"><div class="h">🍪 One analogy for each new word</div>
+    <ul>
+      <li><b>class</b> = the <i>cookie-cutter</i>. It's just the shape — you can't eat it.</li>
+      <li><b>object</b> = an <i>actual cookie</i> you stamped out. You can make many, each its own cookie.</li>
+      <li><b>__init__</b> = the <i>"new toy" setup card</i> — it runs once the moment a toy comes out of the
+        box, filling in its starting details.</li>
+      <li><b>attribute</b> = a <i>sticker on the toy</i> that records something about <i>this</i> one
+        (its color, its name) — <code>self.color</code>.</li>
+      <li><b>method</b> = a <i>button on the toy</i> — press it and the toy <i>does</i> something
+        (<code>bark()</code>, <code>pop()</code>).</li>
+      <li><b>self</b> = the word <i>"me"</i>. Inside the toy, <code>self</code> means "this very toy,"
+        so <code>self.name</code> is "my own name."</li>
+    </ul></div>
+
   <h3>🐍 Peek at the Snake blueprint</h3>
   <p>Look closely — <b>every concept from the whole camp lives inside this one class:</b></p>
   <pre class="show">class Snake:
@@ -1431,10 +1541,47 @@ page('s8','8 · Classes','Design your own thing', ()=>`
     Variables, lists, loops, conditionals, functions — they all come together inside a class.
     You're ready to build the game.</div>
 
-  <h3>🏆 Challenge — Build a Blueprint</h3>
-  <p>Make a <code>Balloon</code> class with a color and size, and a <code>pop()</code> method that prints
-  a message. Create three different balloons.</p>
+  <h3>🏆 Challenges</h3>
+  <div class="tier t-green">🟢 Starter — stamp your first cookies</div>
+  <ol>
+    <li><b>Balloon.</b> Make a <code>Balloon</code> class with a <code>color</code> and a <code>pop()</code>
+      method that prints a message. Create three different balloons (use the code below).</li>
+    <li><b>Two stickers.</b> Give <code>Balloon</code> a second attribute <code>size</code> and print it
+      inside <code>pop()</code>.</li>
+    <li><b>Pet.</b> Make a <code>Pet</code> class with a <code>name</code> and a <code>speak()</code> method.
+      Make two pets and call <code>speak()</code> on each.</li>
+    <li><b>Press the button twice.</b> Add a second method <code>sleep()</code> to <code>Pet</code> that
+      prints "Zzz". Call both buttons.</li>
+    <li><b>Read the sticker.</b> After making a pet <code>p = Pet("Rex")</code>, print <code>p.name</code>
+      directly (no method needed).</li>
+  </ol>
   ${R('class Balloon:\n    def __init__(self, color, size):\n        self.color = color\n        self.size = size\n\n    def pop(self):\n        print("The", self.color, "balloon goes POP! 🎈")\n\nb1 = Balloon("red", 10)\nb2 = Balloon("blue", 20)\nb3 = Balloon("green", 15)\nb1.pop()\nb2.pop()\nb3.pop()')}
+  <div class="tier t-yellow">🟡 Medium — give your objects memory</div>
+  <ol>
+    <li><b>Counter.</b> Make a <code>Counter</code> class starting at 0 with an <code>add()</code> method
+      that increases <code>self.count</code> by 1, and a <code>show()</code> method that prints it.</li>
+    <li><b>Robot power.</b> Make a <code>Robot</code> with <code>name</code> and <code>power</code>, plus a
+      <code>charge()</code> method that adds 10 to its power — an attribute that <i>changes</i>.</li>
+    <li><b>Bank account.</b> Make an <code>Account</code> with a <code>balance</code>; add
+      <code>deposit(amount)</code> and <code>spend(amount)</code> methods.</li>
+    <li><b>Dog with age.</b> Make a <code>Dog</code> with <code>name</code> and <code>age</code>; add a
+      <code>birthday()</code> method that adds 1 to age and prints the new age.</li>
+    <li><b>Each its own.</b> Make two robots and charge only one. Print both powers to prove each object
+      keeps its <i>own</i> data.</li>
+  </ol>
+  <div class="tier t-red">🔴 Challenge — objects that do real things</div>
+  <ol>
+    <li><b>Food blueprint.</b> Make a <code>Food</code> class with an <code>x</code> and <code>y</code>, and
+      a <code>draw()</code> method that stamps a turtle dot there.</li>
+    <li><b>Player with score.</b> Make a <code>Player</code> with a <code>name</code> and <code>score</code>;
+      add <code>eat()</code> (score += 10) and <code>has_won()</code> that <b>returns</b> True if score ≥ 50.</li>
+    <li><b>Two objects talking.</b> Make a <code>Player</code> and a <code>Food</code>; if the player's
+      position equals the food's position, call the player's <code>eat()</code>.</li>
+    <li><b>Mini Snake.</b> Make a <code>Snake</code> class with a <code>body</code> list and a
+      <code>grow()</code> method that appends a new part. Print the body length before and after.</li>
+    <li><b>Method using a method.</b> In <code>Player</code>, write a <code>turn()</code> method that calls
+      <code>self.eat()</code> and then prints whether <code>self.has_won()</code> — an object using its own buttons.</li>
+  </ol>
 
   ${Q('Exit quiz', [
     {q:'<code>class Dog:</code> … then <code>rex = Dog()</code>. What is rex?', a:[
