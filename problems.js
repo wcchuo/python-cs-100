@@ -16,6 +16,32 @@
      hiddenFrom (optional) tests at this index and later are "hidden":
                the student sees pass/fail but not the input/expected.
    ===================================================================== */
+/* ---------- Shared judge registry + card renderer ----------
+   ALL_PROBLEMS is every graded problem on the whole site (Practice page +
+   ones embedded inside lessons). The wiring in practice.js iterates it.
+   problemCard(p) renders one editor+tester card; CH(p) registers AND renders
+   in a single call, so a lesson page can drop a graded challenge inline with
+   just  ${CH({...})}  inside its template. */
+const ALL_PROBLEMS = [];
+function defineProblem(p){ ALL_PROBLEMS.push(p); return p; }
+function problemById(id){ return ALL_PROBLEMS.find(p=>p.id===id); }
+function problemCard(p){
+  const rows = Math.max(5, p.starter.split('\n').length + 2);
+  return `
+  <div class="problem" data-pid="${p.id}">
+    <h4>${p.title} <span class="pill">${p.level}</span></h4>
+    <p>${p.prompt}</p>
+    <div class="runner">
+      <div class="bar"><span>✍️ Your code — saved as you type</span>
+        <span><button class="resetbtn" data-psol-reset="${p.id}">↺ Reset</button>
+        <button class="runbtn" data-runtests="${p.id}">▶ Run Tests</button></span></div>
+      <textarea class="editor" id="sol_${p.id}" rows="${rows}" spellcheck="false">${escapeHtml(p.starter)}</textarea>
+      <div class="judge-out" id="judge_${p.id}"><span class="mini">Press ▶ Run Tests to check your answer.</span></div>
+    </div>
+  </div>`;
+}
+function CH(p){ defineProblem(p); return problemCard(p); }
+
 const PROBLEMS = [
   {
     id:'double',
@@ -68,6 +94,7 @@ const PROBLEMS = [
     hiddenFrom:2,
   },
 ];
+PROBLEMS.forEach(defineProblem);    // register the Practice-page problems
 
 /* ---------- Practice page (registered like any session) ---------- */
 page('practice','🧪 Practice','Solve & test your code', ()=>{
@@ -82,22 +109,6 @@ page('practice','🧪 Practice','Solve & test your code', ()=>{
     you have to actually solve it! Your code is <b>saved automatically</b>, so a refresh never
     loses your work.</div>
   `;
-  PROBLEMS.forEach(p=>{
-    const tierClass = p.level==='Starter' ? 't-green' : p.level==='Medium' ? 't-yellow' : 't-red';
-    html += `
-    <div class="problem" data-pid="${p.id}">
-      <div class="tier ${tierClass}">${p.level}</div>
-      <h3>${p.title}</h3>
-      <p>${p.prompt}</p>
-      <div class="runner">
-        <div class="bar"><span>✍️ Your solution — saved as you type</span>
-          <span><button class="resetbtn" data-psol-reset="${p.id}">↺ Reset</button>
-          <button class="runbtn" data-runtests="${p.id}">▶ Run Tests</button></span></div>
-        <textarea class="editor" id="sol_${p.id}" rows="${Math.max(6, p.starter.split('\n').length+2)}"
-          spellcheck="false">${escapeHtml(p.starter)}</textarea>
-        <div class="judge-out" id="judge_${p.id}"><span class="mini">Press ▶ Run Tests to check your answer.</span></div>
-      </div>
-    </div>`;
-  });
+  PROBLEMS.forEach(p=>{ html += problemCard(p); });
   return html;
 });

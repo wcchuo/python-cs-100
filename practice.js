@@ -13,11 +13,11 @@ function saveSolution(id, code){
   try{ localStorage.setItem(solKey(id), code); }catch(e){/* quota/blocked */}
 }
 
-function problemById(id){ return PROBLEMS.find(p=>p.id===id); }
+// problemById() and the registry (ALL_PROBLEMS) live in problems.js.
 
 function setupPractice(){
-  if(typeof PROBLEMS === 'undefined') return;   // problems.js not loaded
-  PROBLEMS.forEach(p=>{
+  if(typeof ALL_PROBLEMS === 'undefined') return;   // problems.js not loaded
+  ALL_PROBLEMS.forEach(p=>{
     const ed = document.getElementById('sol_'+p.id);
     if(!ed) return;
     // Restore the kid's saved work (fall back to the starter code).

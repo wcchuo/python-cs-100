@@ -1043,19 +1043,65 @@ match light:
   "🤔 Which one do I use?" and "🧱 What every if/else needs" tips above.</p>
 
   <div class="tier t-green">🟢 Starter — get the shape right (2 outcomes or simple chains)</div>
-  <ol>
-    <li><b>Hot or not.</b> Set <code>temp = 32</code>. Print <code>"Hot 🥵"</code> if it's over 30,
-      otherwise print <code>"Nice 🙂"</code>. (This is a 2-outcome → <code>if/else</code>.)</li>
-    <li><b>Password check.</b> Set <code>name = "snake"</code>. If it equals <code>"snake"</code>
-      print <code>"Correct! 🐍"</code>, else print <code>"Try again"</code>.</li>
-    <li><b>Sign of a number.</b> Set <code>n = -4</code>. Print <code>"Positive"</code> if &gt; 0,
-      <code>"Zero"</code> if it equals 0, otherwise <code>"Negative"</code> (3 outcomes → <code>if/elif/else</code>).</li>
-    <li><b>Traffic light.</b> Set <code>light = 2</code>. Use if/elif/else to print
-      <code>"Stop"</code> (1), <code>"Slow"</code> (2), or <code>"Go"</code> (3).</li>
-    <li><b>Old enough?</b> Set an <code>age</code> variable. Print <code>"You can play!"</code> only
-      when <code>age &gt;= 10 and age &lt;= 14</code>, else <code>"Maybe next year"</code>.</li>
-  </ol>
-  ${R('# Starter scratch — try each challenge here\ntemp = 32\n\nif temp > 30:\n    print("Hot 🥵")\nelse:\n    print("Nice 🙂")')}
+  <div class="box tip"><div class="h">🧪 These are auto-graded!</div>
+    Each challenge below has its own editor. Write your code, press ▶ <b>Run Tests</b>, and a real Python
+    tester checks it against several values (some <b>hidden</b>). Your code saves automatically.
+    The value comes from <code>input()</code> — print <b>exactly</b> the word shown, nothing extra.</div>
+  ${CH({
+    id:'s5-hot', title:'Hot or Not', level:'Starter', mode:'stdout',
+    prompt:'Read a temperature with <code>int(input())</code>. Print <code>Hot</code> if it is over 30, otherwise print <code>Nice</code>. (2 outcomes → <code>if/else</code>.)',
+    starter:'temp = int(input())\n# print "Hot" if temp is over 30, else "Nice"\n',
+    tests:[
+      {stdin:'32\n', expected:'Hot'},
+      {stdin:'30\n', expected:'Nice'},
+      {stdin:'50\n', expected:'Hot'},
+      {stdin:'5\n',  expected:'Nice'},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s5-pass', title:'Password Check', level:'Starter', mode:'stdout',
+    prompt:'Read a word with <code>input()</code>. If it equals <code>snake</code>, print <code>Correct</code>; otherwise print <code>Try again</code>. (Capital letters matter!)',
+    starter:'name = input()\n# print "Correct" if name equals "snake", else "Try again"\n',
+    tests:[
+      {stdin:'snake\n', expected:'Correct'},
+      {stdin:'dog\n',   expected:'Try again'},
+      {stdin:'Snake\n', expected:'Try again'},
+      {stdin:'snake2\n',expected:'Try again'},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s5-sign', title:'Sign of a Number', level:'Starter', mode:'stdout',
+    prompt:'Read a number with <code>int(input())</code>. Print <code>Positive</code> if it is above 0, <code>Zero</code> if it is exactly 0, otherwise <code>Negative</code>. (3 outcomes → <code>if/elif/else</code>.)',
+    starter:'n = int(input())\n# print Positive / Zero / Negative\n',
+    tests:[
+      {stdin:'5\n',   expected:'Positive'},
+      {stdin:'0\n',   expected:'Zero'},
+      {stdin:'-3\n',  expected:'Negative'},
+      {stdin:'100\n', expected:'Positive'},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s5-light', title:'Traffic Light', level:'Starter', mode:'stdout',
+    prompt:'Read a light number with <code>int(input())</code>. Print <code>Stop</code> for 1, <code>Slow</code> for 2, and <code>Go</code> for 3.',
+    starter:'light = int(input())\n# 1 -> Stop, 2 -> Slow, 3 -> Go\n',
+    tests:[
+      {stdin:'1\n', expected:'Stop'},
+      {stdin:'2\n', expected:'Slow'},
+      {stdin:'3\n', expected:'Go'},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s5-age', title:'Old Enough?', level:'Starter', mode:'stdout',
+    prompt:'Read an age with <code>int(input())</code>. Print <code>You can play!</code> only when the age is from 10 to 14 (use <code>and</code>); otherwise print <code>Maybe next year</code>.',
+    starter:'age = int(input())\n# "You can play!" if 10 to 14, else "Maybe next year"\n',
+    tests:[
+      {stdin:'12\n', expected:'You can play!'},
+      {stdin:'10\n', expected:'You can play!'},
+      {stdin:'14\n', expected:'You can play!'},
+      {stdin:'9\n',  expected:'Maybe next year'},
+      {stdin:'15\n', expected:'Maybe next year'},
+    ], hiddenFrom:3,
+  })}
 
   <div class="tier t-yellow">🟡 Medium — combine conditions &amp; input</div>
   <ol>
