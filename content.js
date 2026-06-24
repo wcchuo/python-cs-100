@@ -495,6 +495,74 @@ page('s2','2 · Variables','Boxes that remember', ()=>`
       {t:'score = score + 5', ok:true}, {t:'score = 5', ok:false}, {t:'score == 5', ok:false}]},
   ])}
 
+  <h3>🧪 Code Challenges — auto-graded</h3>
+  <div class="box tip"><div class="h">🧪 Press ▶ Run Tests to earn 🏅</div>
+    These read values with <code>input()</code> and <code>print</code> the answer. Some read <b>two</b>
+    lines — call <code>input()</code> once per line. Your code saves automatically.</div>
+  <div class="tier t-green">🟢 Starter</div>
+  ${CH({ id:'s2-add', title:'Add Two', level:'Starter', mode:'stdout',
+    prompt:'Read two numbers (line 1 and line 2) with <code>int(input())</code> and print their sum.',
+    starter:'a = int(input())\nb = int(input())\n# print a + b\n',
+    tests:[{stdin:'2\n3\n',expected:'5'},{stdin:'10\n20\n',expected:'30'},{stdin:'0\n0\n',expected:'0'},{stdin:'-4\n9\n',expected:'5'}], hiddenFrom:2 })}
+  ${CH({ id:'s2-area', title:'Rectangle Area', level:'Starter', mode:'stdout',
+    prompt:'Read width then height and print <code>width * height</code>.',
+    starter:'w = int(input())\nh = int(input())\n# print the area\n',
+    tests:[{stdin:'3\n4\n',expected:'12'},{stdin:'5\n5\n',expected:'25'},{stdin:'10\n2\n',expected:'20'}], hiddenFrom:2 })}
+  ${CH({ id:'s2-hello', title:'Greeting', level:'Starter', mode:'stdout',
+    prompt:'Read a name and print <code>Hello, NAME!</code> (use an f-string).',
+    starter:'name = input()\n# print "Hello, <name>!"\n',
+    tests:[{stdin:'Sam\n',expected:'Hello, Sam!'},{stdin:'Mia\n',expected:'Hello, Mia!'},{stdin:'Pat\n',expected:'Hello, Pat!'}], hiddenFrom:2 })}
+  ${CH({ id:'s2-double', title:'Double It', level:'Starter', mode:'stdout',
+    prompt:'Read a number and print it times 2.',
+    starter:'n = int(input())\n# print n * 2\n',
+    tests:[{stdin:'4\n',expected:'8'},{stdin:'10\n',expected:'20'},{stdin:'0\n',expected:'0'}], hiddenFrom:2 })}
+  ${CH({ id:'s2-minsec', title:'Minutes to Seconds', level:'Starter', mode:'stdout',
+    prompt:'Read minutes and print the number of seconds (<code>minutes * 60</code>).',
+    starter:'minutes = int(input())\n# print minutes * 60\n',
+    tests:[{stdin:'1\n',expected:'60'},{stdin:'2\n',expected:'120'},{stdin:'5\n',expected:'300'}], hiddenFrom:2 })}
+  <div class="tier t-yellow">🟡 Medium</div>
+  ${CH({ id:'s2-cost', title:'Total Cost', level:'Medium', mode:'stdout',
+    prompt:'Read a price (line 1) and a quantity (line 2) and print <code>price * quantity</code>.',
+    starter:'price = int(input())\nqty = int(input())\n# print the total cost\n',
+    tests:[{stdin:'5\n3\n',expected:'15'},{stdin:'10\n10\n',expected:'100'},{stdin:'7\n0\n',expected:'0'}], hiddenFrom:2 })}
+  ${CH({ id:'s2-perim', title:'Rectangle Perimeter', level:'Medium', mode:'stdout',
+    prompt:'Read width then height and print the perimeter <code>2 * (w + h)</code>.',
+    starter:'w = int(input())\nh = int(input())\n# print 2 * (w + h)\n',
+    tests:[{stdin:'3\n4\n',expected:'14'},{stdin:'5\n5\n',expected:'20'},{stdin:'10\n1\n',expected:'22'}], hiddenFrom:2 })}
+  ${CH({ id:'s2-remainder', title:'Remainder', level:'Medium', mode:'stdout',
+    prompt:'Read two numbers and print the remainder of the first divided by the second (<code>a % b</code>).',
+    starter:'a = int(input())\nb = int(input())\n# print a % b\n',
+    tests:[{stdin:'10\n3\n',expected:'1'},{stdin:'20\n5\n',expected:'0'},{stdin:'7\n4\n',expected:'3'}], hiddenFrom:2 })}
+  ${CH({ id:'s2-tag', title:'Name Tag', level:'Medium', mode:'stdout',
+    prompt:'Read a name (line 1) and age (line 2) and print <code>NAME is AGE</code>.',
+    starter:'name = input()\nage = input()\n# print "<name> is <age>"\n',
+    tests:[{stdin:'Sam\n11\n',expected:'Sam is 11'},{stdin:'Mia\n9\n',expected:'Mia is 9'},{stdin:'Pat\n13\n',expected:'Pat is 13'}], hiddenFrom:2 })}
+  ${CH({ id:'s2-fahr', title:'Celsius to Fahrenheit', level:'Medium', mode:'stdout',
+    prompt:'Read a temperature in Celsius and print Fahrenheit: <code>c * 9 // 5 + 32</code> (whole-number math).',
+    starter:'c = int(input())\n# print c * 9 // 5 + 32\n',
+    tests:[{stdin:'0\n',expected:'32'},{stdin:'100\n',expected:'212'},{stdin:'37\n',expected:'98'},{stdin:'20\n',expected:'68'}], hiddenFrom:2 })}
+  <div class="tier t-red">🔴 Challenge</div>
+  ${CH({ id:'s2-sum3', title:'Sum of Three', level:'Challenge', mode:'stdout',
+    prompt:'Read three numbers (one per line) and print their total.',
+    starter:'a = int(input())\nb = int(input())\nc = int(input())\n# print the total\n',
+    tests:[{stdin:'1\n2\n3\n',expected:'6'},{stdin:'10\n20\n30\n',expected:'60'},{stdin:'5\n0\n5\n',expected:'10'}], hiddenFrom:2 })}
+  ${CH({ id:'s2-vol', title:'Box Volume', level:'Challenge', mode:'stdout',
+    prompt:'Read width, height, depth (one per line) and print <code>w * h * d</code>.',
+    starter:'w = int(input())\nh = int(input())\nd = int(input())\n# print the volume\n',
+    tests:[{stdin:'2\n3\n4\n',expected:'24'},{stdin:'1\n1\n1\n',expected:'1'},{stdin:'5\n2\n2\n',expected:'20'}], hiddenFrom:2 })}
+  ${CH({ id:'s2-totalsec', title:'Total Seconds', level:'Challenge', mode:'stdout',
+    prompt:'Read minutes (line 1) and seconds (line 2) and print the total seconds (<code>minutes * 60 + seconds</code>).',
+    starter:'minutes = int(input())\nseconds = int(input())\n# print the total seconds\n',
+    tests:[{stdin:'1\n30\n',expected:'90'},{stdin:'2\n0\n',expected:'120'},{stdin:'0\n45\n',expected:'45'}], hiddenFrom:2 })}
+  ${CH({ id:'s2-avg3', title:'Average of Three', level:'Challenge', mode:'stdout',
+    prompt:'Read three numbers and print their average using whole-number division: <code>(a + b + c) // 3</code>.',
+    starter:'a = int(input())\nb = int(input())\nc = int(input())\n# print (a + b + c) // 3\n',
+    tests:[{stdin:'3\n4\n5\n',expected:'4'},{stdin:'1\n2\n3\n',expected:'2'},{stdin:'10\n20\n30\n',expected:'20'}], hiddenFrom:2 })}
+  ${CH({ id:'s2-fullname', title:'Full Name', level:'Challenge', mode:'stdout',
+    prompt:'Read a first name (line 1) and last name (line 2) and print them with a space: <code>First Last</code>.',
+    starter:'first = input()\nlast = input()\n# print "<first> <last>"\n',
+    tests:[{stdin:'Ada\nLovelace\n',expected:'Ada Lovelace'},{stdin:'Grace\nHopper\n',expected:'Grace Hopper'}], hiddenFrom:1 })}
+
   <h3>🏠 Homework — "The Growing Spiral"</h3>
   <p>Start with <code>size = 10</code>, draw a line, then <code>size = size + 10</code>, turn, and repeat
   a few times. Watch a spiral grow! (This previews loops <i>and</i> the snake growing.)</p>
@@ -668,6 +736,74 @@ page('s3','3 · Loops','Do it again without retyping', ()=>`
       {t:'restarts from the very beginning', ok:false}]},
   ])}
 
+  <h3>🧪 Code Challenges — auto-graded</h3>
+  <div class="box tip"><div class="h">🧪 Press ▶ Run Tests to earn 🏅</div>
+    Loops that <code>print</code> their answer. When a problem prints several lines, print one item per
+    line (the tester ignores extra blank space at the end). Saved automatically.</div>
+  <div class="tier t-green">🟢 Starter</div>
+  ${CH({ id:'s3-count', title:'Count to N', level:'Starter', mode:'stdout',
+    prompt:'Read <code>n</code> and print the numbers <code>1</code> to <code>n</code>, one per line.',
+    starter:'n = int(input())\n# print 1, 2, ... up to n (one per line)\n',
+    tests:[{stdin:'3\n',expected:'1\n2\n3'},{stdin:'1\n',expected:'1'},{stdin:'5\n',expected:'1\n2\n3\n4\n5'}], hiddenFrom:2 })}
+  ${CH({ id:'s3-countdown', title:'Countdown', level:'Starter', mode:'stdout',
+    prompt:'Read <code>n</code> and print from <code>n</code> down to <code>1</code>, one per line.',
+    starter:'n = int(input())\n# print n, n-1, ... down to 1\n',
+    tests:[{stdin:'3\n',expected:'3\n2\n1'},{stdin:'1\n',expected:'1'},{stdin:'5\n',expected:'5\n4\n3\n2\n1'}], hiddenFrom:2 })}
+  ${CH({ id:'s3-sumn', title:'Sum to N', level:'Starter', mode:'stdout',
+    prompt:'Read <code>n</code> and print the total of <code>1 + 2 + ... + n</code> (one number).',
+    starter:'n = int(input())\n# add up 1..n and print the total\n',
+    tests:[{stdin:'5\n',expected:'15'},{stdin:'1\n',expected:'1'},{stdin:'10\n',expected:'55'},{stdin:'100\n',expected:'5050'}], hiddenFrom:2 })}
+  ${CH({ id:'s3-evens', title:'Even Numbers', level:'Starter', mode:'stdout',
+    prompt:'Read <code>n</code> and print every even number from 2 up to <code>n</code>, one per line.',
+    starter:'n = int(input())\n# print 2, 4, 6, ... up to n\n',
+    tests:[{stdin:'6\n',expected:'2\n4\n6'},{stdin:'5\n',expected:'2\n4'},{stdin:'10\n',expected:'2\n4\n6\n8\n10'}], hiddenFrom:2 })}
+  ${CH({ id:'s3-table', title:'Times Table', level:'Starter', mode:'stdout',
+    prompt:'Read <code>n</code> and print its first five multiples (<code>n×1 … n×5</code>), one per line.',
+    starter:'n = int(input())\n# print n, 2n, 3n, 4n, 5n\n',
+    tests:[{stdin:'3\n',expected:'3\n6\n9\n12\n15'},{stdin:'10\n',expected:'10\n20\n30\n40\n50'}], hiddenFrom:1 })}
+  <div class="tier t-yellow">🟡 Medium</div>
+  ${CH({ id:'s3-factorial', title:'Factorial', level:'Medium', mode:'stdout',
+    prompt:'Read <code>n</code> and print <code>n!</code> = 1×2×…×n. (0! is 1.)',
+    starter:'n = int(input())\n# multiply 1*2*...*n and print it\n',
+    tests:[{stdin:'5\n',expected:'120'},{stdin:'0\n',expected:'1'},{stdin:'1\n',expected:'1'},{stdin:'3\n',expected:'6'}], hiddenFrom:2 })}
+  ${CH({ id:'s3-sumeven', title:'Sum of Evens', level:'Medium', mode:'stdout',
+    prompt:'Read <code>n</code> and print the sum of all even numbers from 1 to <code>n</code>.',
+    starter:'n = int(input())\n# add up the even numbers 1..n\n',
+    tests:[{stdin:'10\n',expected:'30'},{stdin:'5\n',expected:'6'},{stdin:'1\n',expected:'0'}], hiddenFrom:2 })}
+  ${CH({ id:'s3-repeat', title:'Echo', level:'Medium', mode:'stdout',
+    prompt:'Read a word (line 1) and a count (line 2), then print the word that many times, one per line.',
+    starter:'word = input()\ntimes = int(input())\n# print word on its own line, "times" times\n',
+    tests:[{stdin:'hi\n3\n',expected:'hi\nhi\nhi'},{stdin:'go\n2\n',expected:'go\ngo'},{stdin:'x\n1\n',expected:'x'}], hiddenFrom:2 })}
+  ${CH({ id:'s3-sumsquares', title:'Sum of Squares', level:'Medium', mode:'stdout',
+    prompt:'Read <code>n</code> and print <code>1² + 2² + ... + n²</code>.',
+    starter:'n = int(input())\n# add up each number times itself, 1..n\n',
+    tests:[{stdin:'3\n',expected:'14'},{stdin:'1\n',expected:'1'},{stdin:'4\n',expected:'30'}], hiddenFrom:2 })}
+  ${CH({ id:'s3-power2', title:'Powers of Two', level:'Medium', mode:'stdout',
+    prompt:'Read <code>n</code> and print <code>2⁰, 2¹, … 2ⁿ</code> (start at 1, double each line), one per line.',
+    starter:'n = int(input())\n# print 1, 2, 4, 8, ... up to 2**n\n',
+    tests:[{stdin:'3\n',expected:'1\n2\n4\n8'},{stdin:'0\n',expected:'1'},{stdin:'4\n',expected:'1\n2\n4\n8\n16'}], hiddenFrom:2 })}
+  <div class="tier t-red">🔴 Challenge</div>
+  ${CH({ id:'s3-fizzbuzz', title:'FizzBuzz to N', level:'Challenge', mode:'stdout',
+    prompt:'Read <code>n</code>. For 1..n print <code>Fizz</code> (÷3), <code>Buzz</code> (÷5), <code>FizzBuzz</code> (both), else the number — one per line.',
+    starter:'n = int(input())\n# loop 1..n: Fizz / Buzz / FizzBuzz / the number\n',
+    tests:[{stdin:'5\n',expected:'1\n2\nFizz\n4\nBuzz'},{stdin:'3\n',expected:'1\n2\nFizz'},{stdin:'15\n',expected:'1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz'}], hiddenFrom:2 })}
+  ${CH({ id:'s3-triangle', title:'Star Triangle', level:'Challenge', mode:'stdout',
+    prompt:'Read <code>n</code> and print a triangle: row 1 has 1 star, row 2 has 2 stars, … up to <code>n</code>.',
+    starter:'n = int(input())\n# row i has i stars (use "*" * i)\n',
+    tests:[{stdin:'3\n',expected:'*\n**\n***'},{stdin:'1\n',expected:'*'},{stdin:'4\n',expected:'*\n**\n***\n****'}], hiddenFrom:2 })}
+  ${CH({ id:'s3-digitsum', title:'Digit Sum', level:'Challenge', mode:'stdout',
+    prompt:'Read a whole number and print the sum of its digits. Hint: <code>n % 10</code> gives the last digit; <code>n // 10</code> drops it.',
+    starter:'n = int(input())\n# add up the digits and print the total\n',
+    tests:[{stdin:'123\n',expected:'6'},{stdin:'9\n',expected:'9'},{stdin:'100\n',expected:'1'},{stdin:'99\n',expected:'18'}], hiddenFrom:2 })}
+  ${CH({ id:'s3-vowels', title:'Count Vowels', level:'Challenge', mode:'stdout',
+    prompt:'Read a lowercase word and print how many vowels (a, e, i, o, u) it has.',
+    starter:'word = input()\n# count the vowels and print the number\n',
+    tests:[{stdin:'hello\n',expected:'2'},{stdin:'sky\n',expected:'0'},{stdin:'aeiou\n',expected:'5'},{stdin:'banana\n',expected:'3'}], hiddenFrom:2 })}
+  ${CH({ id:'s3-reverse', title:'Reverse a Word', level:'Challenge', mode:'stdout',
+    prompt:'Read a word and print it backwards. (Build it with a loop, or use <code>word[::-1]</code>.)',
+    starter:'word = input()\n# print the word reversed\n',
+    tests:[{stdin:'cat\n',expected:'tac'},{stdin:'hello\n',expected:'olleh'},{stdin:'a\n',expected:'a'}], hiddenFrom:2 })}
+
   <h3>🏠 Homework — "Spirograph Art"</h3>
   <p>Make your own colorful loop pattern (a flower or starburst). Experiment with the numbers:
   the angle, the forward distance, and the colors. Bring your favorite to show!</p>
@@ -827,6 +963,74 @@ page('s4','4 · Lists ⭐','One backpack, many things', ()=>`
       {t:'they are exactly the same', ok:false},
       {t:'remove() takes a position, pop() takes a value', ok:false}]},
   ])}
+
+  <h3>🧪 Code Challenges — auto-graded</h3>
+  <div class="box tip"><div class="h">🧪 Press ▶ Run Tests to earn 🏅</div>
+    The first line of each starter <b>reads the list for you</b> (numbers separated by spaces). You write
+    the list logic and <code>print</code> the answer. A few read a second line too. Saved automatically.</div>
+  <div class="tier t-green">🟢 Starter</div>
+  ${CH({ id:'s4-len', title:'How Many?', level:'Starter', mode:'stdout',
+    prompt:'Print how many numbers are in the list (use <code>len</code>).',
+    starter:'nums = [int(x) for x in input().split()]\n# print how many items\n',
+    tests:[{stdin:'1 2 3 4\n',expected:'4'},{stdin:'5\n',expected:'1'},{stdin:'7 7 7\n',expected:'3'}], hiddenFrom:2 })}
+  ${CH({ id:'s4-sum', title:'List Sum', level:'Starter', mode:'stdout',
+    prompt:'Print the sum of all the numbers.',
+    starter:'nums = [int(x) for x in input().split()]\n# print the total\n',
+    tests:[{stdin:'1 2 3\n',expected:'6'},{stdin:'10 20 30\n',expected:'60'},{stdin:'5\n',expected:'5'}], hiddenFrom:2 })}
+  ${CH({ id:'s4-max', title:'Biggest', level:'Starter', mode:'stdout',
+    prompt:'Print the largest number (you may use <code>max</code>).',
+    starter:'nums = [int(x) for x in input().split()]\n# print the biggest\n',
+    tests:[{stdin:'3 9 5\n',expected:'9'},{stdin:'1 2 3 4\n',expected:'4'},{stdin:'-5 -2 -9\n',expected:'-2'}], hiddenFrom:2 })}
+  ${CH({ id:'s4-min', title:'Smallest', level:'Starter', mode:'stdout',
+    prompt:'Print the smallest number (you may use <code>min</code>).',
+    starter:'nums = [int(x) for x in input().split()]\n# print the smallest\n',
+    tests:[{stdin:'3 9 5\n',expected:'3'},{stdin:'1 2 3 4\n',expected:'1'},{stdin:'-5 -2 -9\n',expected:'-9'}], hiddenFrom:2 })}
+  ${CH({ id:'s4-firstlast', title:'First and Last', level:'Starter', mode:'stdout',
+    prompt:'Print the first and last items with a space between: <code>FIRST LAST</code> (use <code>[0]</code> and <code>[-1]</code>).',
+    starter:'nums = [int(x) for x in input().split()]\n# print "<first> <last>"\n',
+    tests:[{stdin:'1 2 3\n',expected:'1 3'},{stdin:'10 20 30 40\n',expected:'10 40'},{stdin:'5\n',expected:'5 5'}], hiddenFrom:2 })}
+  <div class="tier t-yellow">🟡 Medium</div>
+  ${CH({ id:'s4-countevens', title:'Count Evens', level:'Medium', mode:'stdout',
+    prompt:'Print how many numbers in the list are even.',
+    starter:'nums = [int(x) for x in input().split()]\n# count the even numbers and print it\n',
+    tests:[{stdin:'1 2 3 4\n',expected:'2'},{stdin:'2 4 6\n',expected:'3'},{stdin:'1 3 5\n',expected:'0'}], hiddenFrom:2 })}
+  ${CH({ id:'s4-average', title:'Average', level:'Medium', mode:'stdout',
+    prompt:'Print the average using whole-number division: <code>sum(nums) // len(nums)</code>.',
+    starter:'nums = [int(x) for x in input().split()]\n# print sum // count\n',
+    tests:[{stdin:'2 4 6\n',expected:'4'},{stdin:'1 2\n',expected:'1'},{stdin:'10 20 30 40\n',expected:'25'}], hiddenFrom:2 })}
+  ${CH({ id:'s4-reverse', title:'Reverse the List', level:'Medium', mode:'stdout',
+    prompt:'Print the list reversed. Hint: <code>print(nums[::-1])</code> shows it like <code>[3, 2, 1]</code>.',
+    starter:'nums = [int(x) for x in input().split()]\n# print the reversed list\n',
+    tests:[{stdin:'1 2 3\n',expected:'[3, 2, 1]'},{stdin:'5 9\n',expected:'[9, 5]'},{stdin:'7\n',expected:'[7]'}], hiddenFrom:2 })}
+  ${CH({ id:'s4-doubled', title:'Double Each', level:'Medium', mode:'stdout',
+    prompt:'Print a new list where every number is doubled, like <code>[2, 4, 6]</code>.',
+    starter:'nums = [int(x) for x in input().split()]\n# print a list with each number times 2\n',
+    tests:[{stdin:'1 2 3\n',expected:'[2, 4, 6]'},{stdin:'5 0\n',expected:'[10, 0]'},{stdin:'7\n',expected:'[14]'}], hiddenFrom:2 })}
+  ${CH({ id:'s4-contains', title:'Is It In There?', level:'Medium', mode:'stdout',
+    prompt:'Line 1 is the list; line 2 is a target number. Print <code>yes</code> if the target is in the list, else <code>no</code> (use <code>in</code>).',
+    starter:'nums = [int(x) for x in input().split()]\ntarget = int(input())\n# print "yes" or "no"\n',
+    tests:[{stdin:'1 2 3\n2\n',expected:'yes'},{stdin:'1 2 3\n9\n',expected:'no'},{stdin:'5 6 7\n7\n',expected:'yes'}], hiddenFrom:2 })}
+  <div class="tier t-red">🔴 Challenge</div>
+  ${CH({ id:'s4-sumeven', title:'Sum of Evens', level:'Challenge', mode:'stdout',
+    prompt:'Print the sum of only the even numbers in the list.',
+    starter:'nums = [int(x) for x in input().split()]\n# add up only the even numbers\n',
+    tests:[{stdin:'1 2 3 4\n',expected:'6'},{stdin:'2 4 6\n',expected:'12'},{stdin:'1 3 5\n',expected:'0'}], hiddenFrom:2 })}
+  ${CH({ id:'s4-sorted', title:'Sort It', level:'Challenge', mode:'stdout',
+    prompt:'Print the list sorted from smallest to largest, like <code>[1, 2, 3]</code> (use <code>sorted</code>).',
+    starter:'nums = [int(x) for x in input().split()]\n# print the sorted list\n',
+    tests:[{stdin:'3 1 2\n',expected:'[1, 2, 3]'},{stdin:'9 5 7\n',expected:'[5, 7, 9]'},{stdin:'4\n',expected:'[4]'}], hiddenFrom:2 })}
+  ${CH({ id:'s4-range', title:'Range (Max − Min)', level:'Challenge', mode:'stdout',
+    prompt:'Print the difference between the biggest and smallest numbers.',
+    starter:'nums = [int(x) for x in input().split()]\n# print max(nums) - min(nums)\n',
+    tests:[{stdin:'3 9 5\n',expected:'6'},{stdin:'1 2 3 4\n',expected:'3'},{stdin:'7 7\n',expected:'0'}], hiddenFrom:2 })}
+  ${CH({ id:'s4-index', title:'Where Is It?', level:'Challenge', mode:'stdout',
+    prompt:'Line 1 is the list; line 2 is a target. Print the position (index, starting at 0) of the target. (Assume it is there.)',
+    starter:'nums = [int(x) for x in input().split()]\ntarget = int(input())\n# print the index of target\n',
+    tests:[{stdin:'10 20 30\n20\n',expected:'1'},{stdin:'5 6 7\n5\n',expected:'0'},{stdin:'1 2 3 4\n4\n',expected:'3'}], hiddenFrom:2 })}
+  ${CH({ id:'s4-countbig', title:'Count the Big Ones', level:'Challenge', mode:'stdout',
+    prompt:'Line 1 is the list; line 2 is a threshold. Print how many numbers are strictly greater than the threshold.',
+    starter:'nums = [int(x) for x in input().split()]\nlimit = int(input())\n# count how many are greater than limit\n',
+    tests:[{stdin:'1 5 3 8\n4\n',expected:'2'},{stdin:'1 2 3\n5\n',expected:'0'},{stdin:'10 20 30\n5\n',expected:'3'}], hiddenFrom:2 })}
 
   <h3>🏠 Homework — "Connect the Dots Picture"</h3>
   <p>Design your own hidden shape with at least 6 points in a list, then loop through to draw it.
