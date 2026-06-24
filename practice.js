@@ -52,6 +52,7 @@ async function runProblem(id){
   const ed = document.getElementById('sol_'+id);
   const out = document.getElementById('judge_'+id);
   if(!p || !ed || !out) return;
+  FX.warm();                                    // unlock audio during the click gesture
   saveSolution(id, ed.value);                   // make sure latest is stored
 
   if(!window.Judge){                            // STEP 2 attaches this
@@ -95,7 +96,80 @@ function renderResults(out, p, results){
       <span class="jlabel">Test ${i+1}</span> ${detail}</div>`;
   });
   out.innerHTML = html;
+  // 🎉 Reward feedback: celebrate a full pass, gently buzz otherwise.
+  if(allPass){ FX.celebrate(out); } else { FX.buzz(); }
 }
+
+/* =====================================================================
+   FX — fun feedback. Sounds are synthesized with the Web Audio API
+   (no downloads, works offline); confetti is drawn on a throwaway canvas.
+   ===================================================================== */
+const FX = (function(){
+  let actx = null;
+  function ctx(){                       // lazily create + unlock the audio context
+    try{
+      if(!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+      if(actx.state === 'suspended') actx.resume();
+      return actx;
+    }catch(e){ return null; }
+  }
+  function tone(c, freq, t0, dur, type, vol){
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.linearRampToValueAtTime(vol, t0 + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g).connect(c.destination);
+    o.start(t0); o.stop(t0 + dur + 0.02);
+  }
+  function buzz(){                       // short descending "error" beep
+    const c = ctx(); if(!c) return; const t = c.currentTime;
+    tone(c, 196, t,        0.18, 'square', 0.16);
+    tone(c, 138, t + 0.16, 0.24, 'square', 0.16);
+  }
+  function tada(){                       // little rising fanfare into a major chord
+    const c = ctx(); if(!c) return; const t = c.currentTime;
+    tone(c, 523.25, t,        0.12, 'triangle', 0.18);  // C5
+    tone(c, 659.25, t + 0.10, 0.12, 'triangle', 0.18);  // E5
+    tone(c, 783.99, t + 0.20, 0.55, 'triangle', 0.20);  // G5
+    tone(c, 1046.5, t + 0.20, 0.55, 'triangle', 0.14);  // C6
+  }
+  function confetti(originEl){
+    const cv = document.createElement('canvas');
+    cv.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999';
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const W = window.innerWidth, H = window.innerHeight;
+    cv.width = W*dpr; cv.height = H*dpr; cv.style.width = W+'px'; cv.style.height = H+'px';
+    document.body.appendChild(cv);
+    const g = cv.getContext('2d'); g.scale(dpr, dpr);
+    const colors = ['#ffd166','#5ee6a0','#5cc8ff','#b388ff','#ff6b8a'];
+    // Burst from the results box if we can find it, else screen center.
+    let ox = W/2, oy = H*0.3;
+    if(originEl){ const r = originEl.getBoundingClientRect(); ox = r.left + r.width/2; oy = r.top + 20; }
+    const parts = [];
+    for(let i=0;i<130;i++){
+      const a = Math.random()*Math.PI*2, sp = 3 + Math.random()*7;
+      parts.push({ x:ox, y:oy, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp - 4,
+        gr:0.16+Math.random()*0.12, w:6+Math.random()*6, h:8+Math.random()*8,
+        rot:Math.random()*Math.PI, vr:(Math.random()-0.5)*0.35, color:colors[i%colors.length] });
+    }
+    const start = performance.now(), LIFE = 1800;
+    (function frame(now){
+      const el = now - start;
+      g.clearRect(0,0,W,H);
+      parts.forEach(p=>{ p.vy += p.gr; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+        g.save(); g.translate(p.x, p.y); g.rotate(p.rot);
+        g.globalAlpha = Math.max(0, 1 - el/LIFE); g.fillStyle = p.color;
+        g.fillRect(-p.w/2, -p.h/2, p.w, p.h); g.restore(); });
+      if(el < LIFE) requestAnimationFrame(frame); else cv.remove();
+    })(start);
+  }
+  return {
+    warm: ctx,                          // call during a click so audio can play later
+    buzz,
+    celebrate(originEl){ tada(); confetti(originEl); },
+  };
+})();
 
 /* =====================================================================
    STEP 2 — the Python test runner (Pyodide in a Web Worker).
