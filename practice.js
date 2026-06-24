@@ -96,3 +96,58 @@ function renderResults(out, p, results){
   });
   out.innerHTML = html;
 }
+
+/* =====================================================================
+   STEP 2 — the Python test runner (Pyodide in a Web Worker).
+   window.Judge.runTests(code, problem) -> Promise<results[]>
+   - First call lazily boots the worker (downloads Python once).
+   - A timeout terminates a runaway worker (kills infinite loops), then the
+     next run boots a fresh one.
+   ===================================================================== */
+(function(){
+  const EXEC_TIMEOUT_MS = 6000;     // per Run Tests, AFTER Python is loaded
+  let worker=null, readyPromise=null, readyResolve, readyReject, seq=0;
+  const pending = {};
+
+  function makeWorker(){
+    worker = new Worker('judge.worker.js');
+    worker.onmessage = (e)=>{
+      const m = e.data;
+      if(m.type==='ready'){ readyResolve && readyResolve(); }
+      else if(m.type==='error' && m.fatal){ readyReject && readyReject(new Error(m.error)); }
+      else if(m.type==='result'){ const p=pending[m.reqId]; if(p){ delete pending[m.reqId]; p(m); } }
+    };
+    worker.onerror = (ev)=>{ readyReject && readyReject(new Error(ev.message||'worker failed')); };
+  }
+  function ensureReady(){
+    if(!readyPromise){
+      readyPromise = new Promise((res,rej)=>{ readyResolve=res; readyReject=rej; });
+      makeWorker();
+      worker.postMessage({ type:'init' });
+    }
+    return readyPromise;
+  }
+  function resetWorker(){
+    try{ worker && worker.terminate(); }catch(e){}
+    worker=null; readyPromise=null;
+    for(const k in pending) delete pending[k];
+  }
+
+  async function runTests(code, problem){
+    await ensureReady();
+    const reqId = ++seq;
+    const result = new Promise((resolve)=>{ pending[reqId]=resolve; });
+    // problem must be structured-clone-safe; it's plain data already.
+    worker.postMessage({ type:'run', reqId, code, problem });
+    const timeout = new Promise((resolve)=> setTimeout(()=>resolve({timeout:true}), EXEC_TIMEOUT_MS));
+    const winner = await Promise.race([result, timeout]);
+    if(winner.timeout){
+      resetWorker();   // kill the runaway; next run boots fresh
+      return problem.tests.map(()=>({ status:'ERROR', message:'Timed out — is there an infinite loop?' }));
+    }
+    if(!winner.ok) throw new Error(winner.error || 'tester failed');
+    return winner.results;
+  }
+
+  window.Judge = { runTests };
+})();
