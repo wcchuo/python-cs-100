@@ -156,6 +156,8 @@ function renderResults(out, p, results){
     } else {
       const input = p.mode==='function'
         ? `${p.funcName}(${(r.args||[]).map(a=>JSON.stringify(a)).join(', ')})`
+        : p.mode==='expr'
+        ? (r.expr||'')
         : `input: ${JSON.stringify(r.stdin||'')}`;
       detail = `<code>${escapeHtml(input)}</code> → expected <code>${escapeHtml(r.expected)}</code>`
         + (r.status==='FAIL' ? `, got <code>${escapeHtml(r.got)}</code>` : '');

@@ -1839,46 +1839,152 @@ page('s8','8 · Classes','Design your own thing', ()=>`
     You're ready to build the game.</div>
 
   <h3>🏆 Challenges</h3>
+  <div class="box tip"><div class="h">🧪 Auto-graded — the tester builds your objects</div>
+    The tester <b>makes objects from your class</b> and checks an attribute or a method's
+    <code>return</code> value (shown like <code>Pet("Rex").speak()</code>). Make methods
+    <b>return</b> their answer (not print). Saved automatically — earn a 🏅!</div>
+  <p class="mini">Worked example — a Balloon class (run &amp; look):</p>
+  ${R('class Balloon:\n    def __init__(self, color, size):\n        self.color = color\n        self.size = size\n\n    def pop(self):\n        print("The", self.color, "balloon goes POP! 🎈")\n\nb1 = Balloon("red", 10)\nb2 = Balloon("blue", 20)\nb1.pop()\nb2.pop()')}
+
   <div class="tier t-green">🟢 Starter — stamp your first cookies</div>
-  <ol>
-    <li><b>Balloon.</b> Make a <code>Balloon</code> class with a <code>color</code> and a <code>pop()</code>
-      method that prints a message. Create three different balloons (use the code below).</li>
-    <li><b>Two stickers.</b> Give <code>Balloon</code> a second attribute <code>size</code> and print it
-      inside <code>pop()</code>.</li>
-    <li><b>Pet.</b> Make a <code>Pet</code> class with a <code>name</code> and a <code>speak()</code> method.
-      Make two pets and call <code>speak()</code> on each.</li>
-    <li><b>Press the button twice.</b> Add a second method <code>sleep()</code> to <code>Pet</code> that
-      prints "Zzz". Call both buttons.</li>
-    <li><b>Read the sticker.</b> After making a pet <code>p = Pet("Rex")</code>, print <code>p.name</code>
-      directly (no method needed).</li>
-  </ol>
-  ${R('class Balloon:\n    def __init__(self, color, size):\n        self.color = color\n        self.size = size\n\n    def pop(self):\n        print("The", self.color, "balloon goes POP! 🎈")\n\nb1 = Balloon("red", 10)\nb2 = Balloon("blue", 20)\nb3 = Balloon("green", 15)\nb1.pop()\nb2.pop()\nb3.pop()')}
+  ${CH({
+    id:'s8-toy', title:'Read the Sticker', level:'Starter', mode:'expr',
+    prompt:'Make a <code>Toy</code> class whose <code>__init__(self, color)</code> stores <code>self.color</code>. The tester reads the attribute directly.',
+    starter:'class Toy:\n    def __init__(self, color):\n        # store color as an attribute\n        pass\n',
+    tests:[
+      {expr:'Toy("red").color',  expected:'red'},
+      {expr:'Toy("blue").color', expected:'blue'},
+      {expr:'Toy("gold").color', expected:'gold'},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s8-pet', title:'Talking Pet', level:'Starter', mode:'expr',
+    prompt:'Make a <code>Pet</code> class with <code>__init__(self, name)</code> and a method <code>speak(self)</code> that <b>returns</b> <code>NAME says hello</code>.',
+    starter:'class Pet:\n    def __init__(self, name):\n        self.name = name\n    def speak(self):\n        # return "<name> says hello"\n        pass\n',
+    tests:[
+      {expr:'Pet("Rex").speak()',  expected:'Rex says hello'},
+      {expr:'Pet("Luna").speak()', expected:'Luna says hello'},
+      {expr:'Pet("Max").speak()',  expected:'Max says hello'},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s8-greeter', title:'Greeter', level:'Starter', mode:'expr',
+    prompt:'Make a <code>Greeter</code> class with <code>__init__(self, name)</code> and <code>hello(self)</code> that <b>returns</b> <code>Hi, NAME!</code>.',
+    starter:'class Greeter:\n    def __init__(self, name):\n        self.name = name\n    def hello(self):\n        # return "Hi, <name>!"\n        pass\n',
+    tests:[
+      {expr:'Greeter("Sam").hello()', expected:'Hi, Sam!'},
+      {expr:'Greeter("Mia").hello()', expected:'Hi, Mia!'},
+      {expr:'Greeter("Pat").hello()', expected:'Hi, Pat!'},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s8-rect', title:'Rectangle Area', level:'Starter', mode:'expr',
+    prompt:'Make a <code>Rectangle</code> class with <code>__init__(self, w, h)</code> and <code>area(self)</code> that <b>returns</b> <code>w * h</code>.',
+    starter:'class Rectangle:\n    def __init__(self, w, h):\n        self.w = w\n        self.h = h\n    def area(self):\n        # return w * h\n        pass\n',
+    tests:[
+      {expr:'Rectangle(3,4).area()', expected:12},
+      {expr:'Rectangle(5,5).area()', expected:25},
+      {expr:'Rectangle(10,2).area()',expected:20},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s8-square', title:'Square Area', level:'Starter', mode:'expr',
+    prompt:'Make a <code>Square</code> class with <code>__init__(self, side)</code> and <code>area(self)</code> that <b>returns</b> <code>side * side</code>.',
+    starter:'class Square:\n    def __init__(self, side):\n        self.side = side\n    def area(self):\n        # return side * side\n        pass\n',
+    tests:[
+      {expr:'Square(5).area()', expected:25},
+      {expr:'Square(3).area()', expected:9},
+      {expr:'Square(1).area()', expected:1},
+    ], hiddenFrom:2,
+  })}
   <div class="tier t-yellow">🟡 Medium — give your objects memory</div>
-  <ol>
-    <li><b>Counter.</b> Make a <code>Counter</code> class starting at 0 with an <code>add()</code> method
-      that increases <code>self.count</code> by 1, and a <code>show()</code> method that prints it.</li>
-    <li><b>Robot power.</b> Make a <code>Robot</code> with <code>name</code> and <code>power</code>, plus a
-      <code>charge()</code> method that adds 10 to its power — an attribute that <i>changes</i>.</li>
-    <li><b>Bank account.</b> Make an <code>Account</code> with a <code>balance</code>; add
-      <code>deposit(amount)</code> and <code>spend(amount)</code> methods.</li>
-    <li><b>Dog with age.</b> Make a <code>Dog</code> with <code>name</code> and <code>age</code>; add a
-      <code>birthday()</code> method that adds 1 to age and prints the new age.</li>
-    <li><b>Each its own.</b> Make two robots and charge only one. Print both powers to prove each object
-      keeps its <i>own</i> data.</li>
-  </ol>
+  <p class="mini">These change the object's data, so the tester does a few steps first (shown in the label),
+  then checks the result.</p>
+  ${CH({
+    id:'s8-counter', title:'Counter', level:'Medium', mode:'expr',
+    prompt:'Make a <code>Counter</code> class that starts at <code>self.count = 0</code>, with <code>add(self)</code> that increases it by 1 and <code>value(self)</code> that <b>returns</b> the count.',
+    starter:'class Counter:\n    def __init__(self):\n        self.count = 0\n    def add(self):\n        # add 1 to self.count\n        pass\n    def value(self):\n        # return the count\n        pass\n',
+    tests:[
+      {label:'new -> value()',                 setup:'c=Counter()',                         expr:'c.value()', expected:0},
+      {label:'add twice -> value()',           setup:'c=Counter()\nc.add()\nc.add()',       expr:'c.value()', expected:2},
+      {label:'add 5 times -> value()',         setup:'c=Counter()\nfor _ in range(5):\n    c.add()', expr:'c.value()', expected:5},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s8-robot', title:'Robot Power', level:'Medium', mode:'expr',
+    prompt:'Make a <code>Robot</code> with <code>__init__(self, name, power)</code> and a <code>charge(self)</code> method that adds 10 to <code>self.power</code>.',
+    starter:'class Robot:\n    def __init__(self, name, power):\n        self.name = name\n        self.power = power\n    def charge(self):\n        # add 10 to self.power\n        pass\n',
+    tests:[
+      {label:'charge once -> power', setup:'r=Robot("A",50)\nr.charge()',           expr:'r.power', expected:60},
+      {label:'charge twice -> power',setup:'r=Robot("A",0)\nr.charge()\nr.charge()',expr:'r.power', expected:20},
+      {label:'start power',          setup:'r=Robot("A",5)',                         expr:'r.power', expected:5},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s8-account', title:'Bank Account', level:'Medium', mode:'expr',
+    prompt:'Make an <code>Account</code> with <code>__init__(self, balance)</code>, a <code>deposit(self, amount)</code> that adds, and a <code>spend(self, amount)</code> that subtracts from <code>self.balance</code>.',
+    starter:'class Account:\n    def __init__(self, balance):\n        self.balance = balance\n    def deposit(self, amount):\n        # add to balance\n        pass\n    def spend(self, amount):\n        # subtract from balance\n        pass\n',
+    tests:[
+      {label:'deposit 50',        setup:'a=Account(100)\na.deposit(50)', expr:'a.balance', expected:150},
+      {label:'spend 30',          setup:'a=Account(100)\na.spend(30)',   expr:'a.balance', expected:70},
+      {label:'deposit then spend',setup:'a=Account(0)\na.deposit(100)\na.spend(40)', expr:'a.balance', expected:60},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s8-dogage', title:'Dog Birthday', level:'Medium', mode:'expr',
+    prompt:'Make a <code>Dog</code> with <code>__init__(self, name, age)</code> and a <code>birthday(self)</code> method that adds 1 to <code>self.age</code>.',
+    starter:'class Dog:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n    def birthday(self):\n        # add 1 to self.age\n        pass\n',
+    tests:[
+      {label:'one birthday',   setup:'d=Dog("Rex",2)\nd.birthday()',           expr:'d.age', expected:3},
+      {label:'two birthdays',  setup:'d=Dog("Rex",0)\nd.birthday()\nd.birthday()',expr:'d.age', expected:2},
+    ], hiddenFrom:1,
+  })}
+  ${CH({
+    id:'s8-own', title:'Each Its Own', level:'Medium', mode:'expr',
+    prompt:'Make a <code>Score</code> class starting at <code>self.points = 0</code> with <code>add(self)</code> (+1). Two Scores must keep <b>separate</b> data — changing one does not change the other.',
+    starter:'class Score:\n    def __init__(self):\n        self.points = 0\n    def add(self):\n        # add 1 to self.points\n        pass\n',
+    tests:[
+      {label:'add to a only -> [a, b]', setup:'a=Score()\nb=Score()\na.add()\na.add()', expr:'[a.points, b.points]', expected:[2,0]},
+      {label:'add to b only -> [a, b]', setup:'a=Score()\nb=Score()\nb.add()',          expr:'[a.points, b.points]', expected:[0,1]},
+    ], hiddenFrom:1,
+  })}
   <div class="tier t-red">🔴 Challenge — objects that do real things</div>
-  <ol>
-    <li><b>Food blueprint.</b> Make a <code>Food</code> class with an <code>x</code> and <code>y</code>, and
-      a <code>draw()</code> method that stamps a turtle dot there.</li>
-    <li><b>Player with score.</b> Make a <code>Player</code> with a <code>name</code> and <code>score</code>;
-      add <code>eat()</code> (score += 10) and <code>has_won()</code> that <b>returns</b> True if score ≥ 50.</li>
+  ${CH({
+    id:'s8-player', title:'Player with Score', level:'Challenge', mode:'expr',
+    prompt:'Make a <code>Player</code> with <code>__init__(self, name)</code> starting <code>self.score = 0</code>, an <code>eat(self)</code> that adds 10, and <code>has_won(self)</code> that <b>returns</b> True when score is 50 or more.',
+    starter:'class Player:\n    def __init__(self, name):\n        self.name = name\n        self.score = 0\n    def eat(self):\n        # add 10 to score\n        pass\n    def has_won(self):\n        # return True if score >= 50\n        pass\n',
+    tests:[
+      {label:'eat once -> score',       setup:'p=Player("A")\np.eat()',                          expr:'p.score',     expected:10},
+      {label:'fresh -> has_won()',      setup:'p=Player("A")',                                   expr:'p.has_won()', expected:false},
+      {label:'eat 5x -> has_won()',     setup:'p=Player("A")\nfor _ in range(5):\n    p.eat()',  expr:'p.has_won()', expected:true},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s8-minisnake', title:'Mini Snake', level:'Challenge', mode:'expr',
+    prompt:'Make a <code>Snake</code> class starting with <code>self.body = [(0,0)]</code> and a <code>grow(self)</code> method that appends one new part to <code>self.body</code>.',
+    starter:'class Snake:\n    def __init__(self):\n        self.body = [(0,0)]\n    def grow(self):\n        # append one new part to self.body\n        pass\n',
+    tests:[
+      {label:'fresh -> length',     setup:'s=Snake()',                       expr:'len(s.body)', expected:1},
+      {label:'grow once -> length', setup:'s=Snake()\ns.grow()',             expr:'len(s.body)', expected:2},
+      {label:'grow twice -> length',setup:'s=Snake()\ns.grow()\ns.grow()',   expr:'len(s.body)', expected:3},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s8-turn', title:'Method Using a Method', level:'Challenge', mode:'expr',
+    prompt:'Make a <code>Player</code> (score starts 0) with <code>eat(self)</code> (+10), <code>has_won(self)</code> (True at 50+), and a <code>turn(self)</code> that calls <code>self.eat()</code> and <b>returns</b> <code>self.has_won()</code> — an object pressing its own buttons.',
+    starter:'class Player:\n    def __init__(self):\n        self.score = 0\n    def eat(self):\n        self.score += 10\n    def has_won(self):\n        return self.score >= 50\n    def turn(self):\n        # call self.eat(), then return self.has_won()\n        pass\n',
+    tests:[
+      {label:'first turn',           setup:'p=Player()',                                       expr:'p.turn()', expected:false},
+      {label:'5th turn wins',        setup:'p=Player()\nfor _ in range(4):\n    p.turn()',     expr:'p.turn()', expected:true},
+    ], hiddenFrom:1,
+  })}
+  <p class="mini">Turtle / multi-object (run &amp; look — not auto-graded):</p>
+  <ul>
+    <li><b>Food blueprint.</b> Make a <code>Food</code> class with <code>x</code>, <code>y</code> and a
+      <code>draw()</code> method that stamps a turtle dot there.</li>
     <li><b>Two objects talking.</b> Make a <code>Player</code> and a <code>Food</code>; if the player's
       position equals the food's position, call the player's <code>eat()</code>.</li>
-    <li><b>Mini Snake.</b> Make a <code>Snake</code> class with a <code>body</code> list and a
-      <code>grow()</code> method that appends a new part. Print the body length before and after.</li>
-    <li><b>Method using a method.</b> In <code>Player</code>, write a <code>turn()</code> method that calls
-      <code>self.eat()</code> and then prints whether <code>self.has_won()</code> — an object using its own buttons.</li>
-  </ol>
+  </ul>
 
   ${Q('Exit quiz', [
     {q:'<code>class Dog:</code> … then <code>rex = Dog()</code>. What is rex?', a:[

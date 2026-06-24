@@ -94,10 +94,29 @@ function runStdoutCase(code, problem, tc){
   }
 }
 
+// expr mode: run the user's code (e.g. a class), optionally run a few setup
+// statements, then evaluate one expression and compare its value. Great for
+// classes:  setup "c=Counter()\nc.add()" , expr "c.value()".
+function runExprCase(code, problem, tc){
+  const ns = pyodide.toPy({});
+  try{
+    pyodide.runPython(code, { globals: ns });
+    if(tc.setup) pyodide.runPython(tc.setup, { globals: ns });
+    const res = pyodide.runPython(tc.expr, { globals: ns });
+    const got = toJsSafe(res);
+    const status = deepEqual(got, tc.expected) ? 'PASS' : 'FAIL';
+    return { status, expr: (tc.label || tc.expr), expected: JSON.stringify(tc.expected), got: JSON.stringify(got) };
+  }catch(e){
+    return { status:'ERROR', expr: (tc.label || tc.expr), message: oneLineError(e.message || e) };
+  }finally{
+    ns.destroy();
+  }
+}
+
 function runCase(code, problem, tc){
-  return problem.mode === 'stdout'
-    ? runStdoutCase(code, problem, tc)
-    : runFunctionCase(code, problem, tc);
+  if(problem.mode === 'stdout') return runStdoutCase(code, problem, tc);
+  if(problem.mode === 'expr')   return runExprCase(code, problem, tc);
+  return runFunctionCase(code, problem, tc);
 }
 
 self.onmessage = async (e)=>{
