@@ -1632,6 +1632,31 @@ page('s7','7 · Abstraction','Hide the mess, organize the toys', ()=>`
 
   <h3>🏆 Challenges</h3>
   <div class="tier t-green">🟢 Starter — name &amp; hide</div>
+  <div class="box tip"><div class="h">🧪 Auto-graded — hide the calculation behind a name</div>
+    Abstraction means wrapping a messy little calculation inside a clearly-named function. These check
+    what you <code>return</code>. Saved automatically — earn a 🏅!</div>
+  ${CH({
+    id:'s7-minsec', title:'Minutes → Seconds', level:'Starter', mode:'function', funcName:'minutes_to_seconds',
+    prompt:'Hide the magic number 60! Write <code>minutes_to_seconds(m)</code> that <b>returns</b> <code>m * 60</code>.',
+    starter:'def minutes_to_seconds(m):\n    # return the number of seconds in m minutes\n    pass\n',
+    tests:[ {args:[1],expected:60}, {args:[2],expected:120}, {args:[0],expected:0}, {args:[5],expected:300} ],
+    hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s7-perim', title:'Square Perimeter', level:'Starter', mode:'function', funcName:'square_perimeter',
+    prompt:'Write <code>square_perimeter(side)</code> that <b>returns</b> the distance around a square: <code>side * 4</code>.',
+    starter:'def square_perimeter(side):\n    # return side times 4\n    pass\n',
+    tests:[ {args:[10],expected:40}, {args:[3],expected:12}, {args:[1],expected:4}, {args:[0],expected:0} ],
+    hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s7-stars', title:'Star Bar', level:'Starter', mode:'function', funcName:'stars',
+    prompt:'Hide the repetition! Write <code>stars(n)</code> that <b>returns</b> a string of <code>n</code> stars. Hint: <code>"*" * n</code>.',
+    starter:'def stars(n):\n    # return a string of n stars, e.g. stars(3) -> "***"\n    pass\n',
+    tests:[ {args:[3],expected:'***'}, {args:[5],expected:'*****'}, {args:[1],expected:'*'}, {args:[0],expected:''} ],
+    hiddenFrom:2,
+  })}
+  <p class="mini">Turtle warm-ups (run &amp; look — not auto-graded):</p>
   <ol>
     <li><b>One clean call.</b> Put any 3 turtle commands inside a function called <code>draw_line()</code>
       and call it once. The messy bits are now hidden.</li>
@@ -1644,7 +1669,29 @@ page('s7','7 · Abstraction','Hide the mess, organize the toys', ()=>`
     <li><b>Sibling test.</b> Show your main (just the calls) to someone and see if they can guess the
       picture without reading the details.</li>
   </ol>
-  <div class="tier t-yellow">🟡 Medium — Scene Builder</div>
+  <div class="tier t-yellow">🟡 Medium — build on your helpers</div>
+  ${CH({
+    id:'s7-totalsec', title:'Total Seconds', level:'Medium', mode:'function', funcName:'total_seconds',
+    prompt:'Write <code>total_seconds(minutes, seconds)</code> that <b>returns</b> the total seconds: <code>minutes * 60 + seconds</code>. (Reuse the idea from Minutes → Seconds.)',
+    starter:'def total_seconds(minutes, seconds):\n    # return minutes*60 + seconds\n    pass\n',
+    tests:[ {args:[1,30],expected:90}, {args:[2,0],expected:120}, {args:[0,45],expected:45}, {args:[3,15],expected:195} ],
+    hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s7-boxvol', title:'Box Volume', level:'Medium', mode:'function', funcName:'box_volume',
+    prompt:'Write <code>box_volume(w, h, d)</code> that <b>returns</b> <code>w * h * d</code> — one clean name for a 3-number calculation.',
+    starter:'def box_volume(w, h, d):\n    # return w * h * d\n    pass\n',
+    tests:[ {args:[2,3,4],expected:24}, {args:[1,1,1],expected:1}, {args:[5,2,2],expected:20}, {args:[10,0,3],expected:0} ],
+    hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s7-describe', title:'Describe Rectangle', level:'Medium', mode:'function', funcName:'describe_rectangle',
+    prompt:'Write <code>describe_rectangle(w, h)</code> that <b>returns</b> the sentence <code>Area is N</code> (with the area filled in) — a clean answer that hides the math inside.',
+    starter:'def describe_rectangle(w, h):\n    # return "Area is <w*h>"\n    pass\n',
+    tests:[ {args:[3,4],expected:'Area is 12'}, {args:[5,5],expected:'Area is 25'}, {args:[2,10],expected:'Area is 20'} ],
+    hiddenFrom:2,
+  })}
+  <p class="mini">Turtle scene-builder (run &amp; look — not auto-graded):</p>
   <ol>
     <li><b>Full scene.</b> Build a picture where the main program is only 3–4 clean function calls
       (use the starter code below).</li>
@@ -1656,7 +1703,22 @@ page('s7','7 · Abstraction','Hide the mess, organize the toys', ()=>`
       <code>draw_walls()</code> and <code>draw_roof()</code> — layers inside layers.</li>
   </ol>
   ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\ndef draw_ground():\n    t.penup(); t.goto(-200,-50); t.pendown()\n    t.color("green"); t.pensize(8); t.forward(400)\n\ndef draw_tree():\n    t.penup(); t.goto(-100,-50); t.pendown()\n    t.color("brown"); t.pensize(10)\n    t.left(90); t.forward(80)\n    t.color("darkgreen"); t.dot(70)\n\n# main:\ndraw_ground()\ndraw_tree()\n# add draw_sun() yourself!\n\nturtle.done()', {origin:'center'})}
-  <div class="tier t-red">🔴 Challenge — think in layers</div>
+  <div class="tier t-red">🔴 Challenge — one name, a whole rule</div>
+  ${CH({
+    id:'s7-fence', title:'Fence Cost', level:'Challenge', mode:'function', funcName:'fence_cost',
+    prompt:'Write <code>fence_cost(side, price)</code> that <b>returns</b> the cost to fence a square: the perimeter (<code>side * 4</code>) times the <code>price</code> per meter.',
+    starter:'def fence_cost(side, price):\n    # return perimeter (side*4) times price\n    pass\n',
+    tests:[ {args:[10,2],expected:80}, {args:[5,3],expected:60}, {args:[1,1],expected:4}, {args:[0,9],expected:0} ],
+    hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s7-ticket', title:'Ticket Price', level:'Challenge', mode:'function', funcName:'ticket_price',
+    prompt:'Hide a whole pricing <b>rule</b> behind one name. Write <code>ticket_price(age)</code> that <b>returns</b> <code>0</code> for under 5, <code>5</code> for under 13, and <code>10</code> for everyone else.',
+    starter:'def ticket_price(age):\n    # 0 if under 5, 5 if under 13, else 10\n    pass\n',
+    tests:[ {args:[3],expected:0}, {args:[10],expected:5}, {args:[13],expected:10}, {args:[40],expected:10}, {args:[5],expected:5} ],
+    hiddenFrom:3,
+  })}
+  <p class="mini">Turtle layering (run &amp; look — not auto-graded):</p>
   <ol>
     <li><b>Whole village.</b> Write <code>draw_village()</code> that calls <code>draw_house(x)</code>
       three times at different positions.</li>

@@ -66,8 +66,21 @@ function setupPractice(){
   window.addEventListener('hashchange', renderProgress);
 }
 
+// Show "🏅 done/total" on the My Progress sidebar button.
+function updateNavBadge(){
+  if(typeof SESSIONS==='undefined' || typeof ALL_PROBLEMS==='undefined') return;
+  const idx = SESSIONS.findIndex(s=>s.id==='progress');
+  if(idx<0) return;
+  const btn = document.querySelectorAll('.navbtn')[idx];
+  if(!btn) return;
+  let badge = btn.querySelector('.navcount');
+  if(!badge){ badge=document.createElement('span'); badge.className='navcount'; btn.appendChild(badge); }
+  badge.textContent = `🏅 ${solvedCount()}/${ALL_PROBLEMS.length}`;
+}
+
 /* ---------- Progress dashboard ---------- */
 function renderProgress(){
+  updateNavBadge();
   const root = document.getElementById('progress-root');
   if(!root || typeof ALL_PROBLEMS==='undefined') return;
   const total = ALL_PROBLEMS.length;
