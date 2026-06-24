@@ -15,9 +15,25 @@ function saveSolution(id, code){
 
 // problemById() and the registry (ALL_PROBLEMS) live in problems.js.
 
+/* ---------- Solved state (persisted) ---------- */
+const SOLVED_PREFIX = 'codequest.solved.';
+const solvedKey = (id)=> SOLVED_PREFIX + id;
+function isSolved(id){ try{ return localStorage.getItem(solvedKey(id))==='1'; }catch(e){ return false; } }
+function markSolved(id){ try{ localStorage.setItem(solvedKey(id), '1'); }catch(e){} }
+function solvedCount(){ return (typeof ALL_PROBLEMS!=='undefined') ? ALL_PROBLEMS.filter(p=>isSolved(p.id)).length : 0; }
+// Add the 🏅 chip to a problem card (once).
+function addSolvedBadge(id){
+  const head = document.querySelector(`.problem[data-pid="${id}"] h4`);
+  if(head && !head.querySelector('.solved-badge')){
+    const b=document.createElement('span'); b.className='solved-badge'; b.textContent='🏅 Solved';
+    head.appendChild(b);
+  }
+}
+
 function setupPractice(){
   if(typeof ALL_PROBLEMS === 'undefined') return;   // problems.js not loaded
   ALL_PROBLEMS.forEach(p=>{
+    if(isSolved(p.id)) addSolvedBadge(p.id);         // restore earned badges
     const ed = document.getElementById('sol_'+p.id);
     if(!ed) return;
     // Restore the kid's saved work (fall back to the starter code).
@@ -44,6 +60,45 @@ function setupPractice(){
     }
     if(rt){ runProblem(rt.dataset.runtests); }
   });
+
+  renderProgress();
+  // Re-render the progress dashboard whenever the kid navigates to it.
+  window.addEventListener('hashchange', renderProgress);
+}
+
+/* ---------- Progress dashboard ---------- */
+function renderProgress(){
+  const root = document.getElementById('progress-root');
+  if(!root || typeof ALL_PROBLEMS==='undefined') return;
+  const total = ALL_PROBLEMS.length;
+  const done = solvedCount();
+  const pct = total ? Math.round(done/total*100) : 0;
+  // Motivating message that grows with progress.
+  let cheer;
+  if(done===0)            cheer = "Every coder starts at zero. Press ▶ Run Tests on a challenge to earn your first 🏅!";
+  else if(done===total)   cheer = "🎉 INCREDIBLE! You've solved EVERY challenge. You're a true Python coder!";
+  else if(pct>=75)        cheer = "🔥 So close! You're crushing it — just a few left.";
+  else if(pct>=50)        cheer = "💪 Over halfway! Keep that streak going.";
+  else if(pct>=25)        cheer = "🚀 Great start — you're building real coding muscles.";
+  else                    cheer = "🌱 Nice — your first badges are in! One challenge at a time.";
+
+  let html = `
+    <div class="prog-hero">
+      <div class="prog-big">${done} <span class="prog-of">/ ${total}</span></div>
+      <div class="prog-sub">challenges conquered</div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+      <div class="prog-cheer">${cheer}</div>
+    </div>
+    <div class="prog-grid">`;
+  ALL_PROBLEMS.forEach(p=>{
+    const ok = isSolved(p.id);
+    html += `<div class="prog-chip ${ok?'done':''}">
+      <span class="prog-ic">${ok?'🏅':'⬜'}</span>
+      <span class="prog-name">${p.title}</span>
+      <span class="pill">${p.level}</span></div>`;
+  });
+  html += `</div>`;
+  root.innerHTML = html;
 }
 
 /* ---------- Run all tests for one problem ---------- */
@@ -97,7 +152,16 @@ function renderResults(out, p, results){
   });
   out.innerHTML = html;
   // 🎉 Reward feedback: celebrate a full pass, gently buzz otherwise.
-  if(allPass){ FX.celebrate(out); } else { FX.buzz(); }
+  if(allPass){
+    const fresh = !isSolved(p.id);
+    markSolved(p.id); addSolvedBadge(p.id); renderProgress();
+    FX.celebrate(out);
+    if(fresh){
+      const note=document.createElement('div'); note.className='jearned';
+      note.textContent='🏅 New badge earned! See the Progress page.';
+      out.appendChild(note);
+    }
+  } else { FX.buzz(); }
 }
 
 /* =====================================================================

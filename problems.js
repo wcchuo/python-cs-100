@@ -112,3 +112,11 @@ page('practice','🧪 Practice','Solve & test your code', ()=>{
   PROBLEMS.forEach(p=>{ html += problemCard(p); });
   return html;
 });
+
+/* ---------- Progress dashboard page (filled live by practice.js) ---------- */
+page('progress','🏅 My Progress','Badges you have earned', ()=>`
+  <h2>🏅 My Coding Journey</h2>
+  <p class="lead">Every challenge you solve earns a badge. They're saved on this device, so they're
+  here whenever you come back. Go get them all!</p>
+  <div id="progress-root"><span class="mini">Loading your badges…</span></div>
+`);

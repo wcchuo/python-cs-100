@@ -196,6 +196,27 @@
   .jrow.jerr{border-left:4px solid var(--accent)} .jrow.jerr .jicon{color:var(--accent)}
   .jrow code{background:#11142b; padding:1px 5px; border-radius:4px}
   .jmsg{color:#ffd4dd}
+  .solved-badge{margin-left:10px; font-size:12px; font-weight:800; color:#bdf5d6;
+    background:#163a2a; border:1px solid var(--green); border-radius:999px; padding:2px 10px}
+  .jearned{margin-top:8px; font-weight:800; color:#f5ecbd;
+    background:#3a3416; border:1px solid var(--accent); border-radius:8px; padding:8px 10px}
+
+  /* ---------- Progress dashboard ---------- */
+  .prog-hero{background:var(--panel); border:1px solid var(--line); border-radius:16px;
+    padding:22px; text-align:center; margin:14px 0}
+  .prog-big{font-size:54px; font-weight:900; color:var(--accent); line-height:1}
+  .prog-of{font-size:26px; color:var(--muted)}
+  .prog-sub{color:var(--muted); margin-bottom:14px; letter-spacing:.5px; text-transform:uppercase; font-size:13px}
+  .prog-bar{height:16px; background:var(--panel2); border-radius:999px; overflow:hidden; border:1px solid var(--line)}
+  .prog-fill{height:100%; background:linear-gradient(90deg,var(--green),var(--accent)); transition:width .4s}
+  .prog-cheer{margin-top:14px; font-size:16px; font-weight:700}
+  .prog-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; margin-top:16px}
+  .prog-chip{display:flex; align-items:center; gap:8px; background:var(--panel2);
+    border:1px solid var(--line); border-radius:10px; padding:10px 12px}
+  .prog-chip.done{border-color:var(--green); background:#16271f}
+  .prog-chip .prog-ic{font-size:18px}
+  .prog-chip .prog-name{flex:1; font-weight:600}
+  .prog-chip.done .prog-name{color:#bdf5d6}
 </style>
 </head>
 <body>
