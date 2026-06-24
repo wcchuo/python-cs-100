@@ -445,11 +445,29 @@ function render(){
 /* Inject the blank scratchpad runner (starts with no code) and wire the
    slide-in tab. Reuses the same runner machinery as the lesson code boxes,
    so Run / Reset / turtle all work via the existing event delegation. */
+const SCRATCH_KEY='codequest.scratchpad.v1';   // localStorage key for the scratchpad
 function setupScratchpad(){
   const body=document.getElementById('scratchbody');
   body.insertAdjacentHTML('beforeend', makeRunner(''));
   const ed=body.querySelector('.editor');
   RESET_STORE[ed.id]='';        // Reset clears it back to empty
+
+  // --- Persistence: restore last session, then save as the kid types ---
+  // We keep the work in localStorage so a refresh / closed tab never loses it.
+  let saved=null;
+  try{ saved=localStorage.getItem(SCRATCH_KEY); }catch(e){/* storage blocked */}
+  if(saved!=null) ed.value=saved;
+  const save=(v)=>{ try{ localStorage.setItem(SCRATCH_KEY, v); }catch(e){/* quota/blocked — ignore */} };
+  let saveTimer=null;
+  ed.addEventListener('input', ()=>{           // debounce so we don't write every keystroke
+    clearTimeout(saveTimer);
+    saveTimer=setTimeout(()=>save(ed.value), 300);
+  });
+  // Reset clears the editor to empty (RESET_STORE) — mirror that in storage so
+  // the blank state survives a refresh too. The generic reset handler sets the
+  // value but fires no input event, so we clear storage on the click here.
+  body.querySelector('[data-reset]').addEventListener('click', ()=>save(''));
+
   const pad=document.getElementById('scratchpad');
   const open=(o)=>{ pad.classList.toggle('open',o); pad.setAttribute('aria-hidden', o?'false':'true');
     if(o) setTimeout(()=>ed.focus(),250); };
