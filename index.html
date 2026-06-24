@@ -179,6 +179,23 @@
   #scratchpad .scratchbody{padding:14px 16px; overflow-y:auto; flex:1}
   #scratchpad .scratchbody .runner{margin-top:0}
   #scratchpad .editor{min-height:240px}
+
+  /* ---------- Practice arena / judge ---------- */
+  .problem{margin:22px 0; padding-top:6px; border-top:1px dashed var(--line)}
+  .problem h3{margin-top:6px}
+  .judge-out{padding:10px 12px; border-top:1px dashed var(--line); font-size:13px}
+  .jsummary{font-weight:800; padding:8px 10px; border-radius:8px; margin-bottom:8px}
+  .jsummary.jpass{background:#163a2a; color:#bdf5d6}
+  .jsummary.jfail{background:#3a3416; color:#f5ecbd}
+  .jrow{display:flex; align-items:baseline; gap:8px; padding:5px 8px; border-radius:7px;
+    margin:4px 0; background:var(--panel2)}
+  .jrow .jicon{font-weight:800}
+  .jrow .jlabel{font-weight:700; min-width:58px}
+  .jrow.jpass{border-left:4px solid var(--green)} .jrow.jpass .jicon{color:var(--green)}
+  .jrow.jfail{border-left:4px solid var(--red)}   .jrow.jfail .jicon{color:var(--red)}
+  .jrow.jerr{border-left:4px solid var(--accent)} .jrow.jerr .jicon{color:var(--accent)}
+  .jrow code{background:#11142b; padding:1px 5px; border-radius:4px}
+  .jmsg{color:#ffd4dd}
 </style>
 </head>
 <body>
@@ -411,6 +428,9 @@ function page(id,title,sub,builder){ SESSIONS.push({id,title,sub,builder}); }
 
 <!-- The big content script is split into a second file-like block below -->
 <script src="content.js"></script>
+<!-- Practice arena: problem data + page, then its wiring -->
+<script src="problems.js"></script>
+<script src="practice.js"></script>
 
 <script>
 /* =========================================================================
@@ -440,6 +460,7 @@ function render(){
   document.querySelectorAll('.editor').forEach(t=>{RESET_STORE[t.id]=t.value;});
   goto(location.hash? (parseInt(location.hash.replace('#p',''))||0):0);
   setupScratchpad();
+  if(typeof setupPractice==='function') setupPractice();
 }
 
 /* Inject the blank scratchpad runner (starts with no code) and wire the
