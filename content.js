@@ -1408,43 +1408,132 @@ page('s6','6 · Functions','Name a trick, use it forever', ()=>`
 
   <h3>🏆 Challenges</h3>
   <div class="tier t-green">🟢 Starter — define &amp; call</div>
-  <ol>
-    <li><b>Cheer squad.</b> Write <code>def cheer(name):</code> that prints "Go [name], go!" and call it for 3 names.</li>
-    <li><b>Greeting with a default.</b> Write <code>def greet(name, mood="happy"):</code>. Call it once
-      using the default and once overriding it.</li>
-    <li><b>Add machine.</b> Write <code>def add(a, b):</code> that <b>returns</b> <code>a + b</code>.
-      Store the result in a variable and print it.</li>
-    <li><b>Square of one number.</b> Write <code>def square(n):</code> that returns <code>n * n</code>,
-      then print <code>square(4)</code> and <code>square(9)</code>.</li>
-    <li><b>Name tag.</b> Write <code>def tag(name, age):</code> that prints
-      <code>f"{name} is {age}"</code> — practice passing two arguments.</li>
-  </ol>
-  <div class="tier t-yellow">🟡 Medium — Shape Stamp Maker &amp; return</div>
-  <ol>
-    <li><b>Polygon maker.</b> Write <code>draw_polygon(sides, size)</code> and draw a triangle, square, and pentagon with the SAME function.</li>
-    <li><b>Even checker.</b> Write <code>is_even(n)</code> that <b>returns</b> True/False (no printing).
-      Use its return value inside an <code>if</code>.</li>
-    <li><b>Biggest of three.</b> Write <code>biggest(a, b, c)</code> that returns the largest —
-      without using <code>max()</code>.</li>
-    <li><b>Colored shapes.</b> Add a <code>color</code> parameter to <code>draw_polygon</code> so each
-      shape can be a different color.</li>
-    <li><b>Points lookup.</b> Write <code>points_for(food)</code> that returns 10 for "apple",
-      20 for "cherry", else 5. Total up two foods using its return value.</li>
-  </ol>
+  <div class="box tip"><div class="h">🧪 Auto-graded — and these <code>return</code>!</div>
+    The tester <b>calls your function</b> with different inputs and checks what you <code>return</code>
+    (not what you print). Write the <code>def</code>, press ▶ <b>Run Tests</b>, earn a 🏅.</div>
+  ${CH({
+    id:'s6-cheer', title:'Cheer Squad', level:'Starter', mode:'function', funcName:'cheer',
+    prompt:'Write <code>cheer(name)</code> that <b>returns</b> the string <code>Go NAME, go!</code> (with the name filled in). Use an f-string.',
+    starter:'def cheer(name):\n    # return "Go <name>, go!"\n    pass\n',
+    tests:[
+      {args:['Sam'],  expected:'Go Sam, go!'},
+      {args:['Mia'],  expected:'Go Mia, go!'},
+      {args:['Pat'],  expected:'Go Pat, go!'},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s6-greet', title:'Greeting with a Default', level:'Starter', mode:'function', funcName:'greet',
+    prompt:'Write <code>greet(name, mood="happy")</code> that <b>returns</b> <code>NAME is MOOD</code>. The <code>mood</code> has a <b>default</b> of "happy" — so <code>greet("Sam")</code> returns <code>Sam is happy</code>.',
+    starter:'def greet(name, mood="happy"):\n    # return "<name> is <mood>"\n    pass\n',
+    tests:[
+      {args:['Sam'],         expected:'Sam is happy'},
+      {args:['Sam','sad'],   expected:'Sam is sad'},
+      {args:['Mia','sleepy'],expected:'Mia is sleepy'},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s6-add', title:'Add Machine', level:'Starter', mode:'function', funcName:'add',
+    prompt:'Write <code>add(a, b)</code> that <b>returns</b> <code>a + b</code>.',
+    starter:'def add(a, b):\n    # return the sum\n    pass\n',
+    tests:[
+      {args:[3,4],   expected:7},
+      {args:[10,10], expected:20},
+      {args:[0,0],   expected:0},
+      {args:[-5,2],  expected:-3},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s6-square', title:'Square It', level:'Starter', mode:'function', funcName:'square',
+    prompt:'Write <code>square(n)</code> that <b>returns</b> <code>n * n</code>.',
+    starter:'def square(n):\n    # return n times n\n    pass\n',
+    tests:[
+      {args:[4],  expected:16},
+      {args:[9],  expected:81},
+      {args:[0],  expected:0},
+      {args:[-3], expected:9},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s6-tag', title:'Name Tag', level:'Starter', mode:'function', funcName:'tag',
+    prompt:'Write <code>tag(name, age)</code> that <b>returns</b> <code>NAME is AGE</code> (two arguments, one f-string).',
+    starter:'def tag(name, age):\n    # return "<name> is <age>"\n    pass\n',
+    tests:[
+      {args:['Sam',11], expected:'Sam is 11'},
+      {args:['Mia',9],  expected:'Mia is 9'},
+      {args:['Pat',13], expected:'Pat is 13'},
+    ], hiddenFrom:2,
+  })}
+  <div class="tier t-yellow">🟡 Medium — return values</div>
+  ${CH({
+    id:'s6-iseven', title:'Even Checker', level:'Medium', mode:'function', funcName:'is_even',
+    prompt:'Write <code>is_even(n)</code> that <b>returns</b> <code>True</code> or <code>False</code> (no printing). Hint: <code>n % 2 == 0</code>.',
+    starter:'def is_even(n):\n    # return True if n is even, else False\n    pass\n',
+    tests:[
+      {args:[4],  expected:true},
+      {args:[7],  expected:false},
+      {args:[0],  expected:true},
+      {args:[-2], expected:true},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s6-biggest', title:'Biggest of Three', level:'Medium', mode:'function', funcName:'biggest',
+    prompt:'Write <code>biggest(a, b, c)</code> that <b>returns</b> the largest of the three — using <code>if/elif</code>, no <code>max()</code> needed.',
+    starter:'def biggest(a, b, c):\n    # return the largest of a, b, c\n    pass\n',
+    tests:[
+      {args:[3,9,5],    expected:9},
+      {args:[10,2,7],   expected:10},
+      {args:[1,1,1],    expected:1},
+      {args:[-5,-2,-9], expected:-2},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s6-points', title:'Points Lookup', level:'Medium', mode:'function', funcName:'points_for',
+    prompt:'Write <code>points_for(food)</code> that <b>returns</b> 10 for <code>"apple"</code>, 20 for <code>"cherry"</code>, and 5 for anything else.',
+    starter:'def points_for(food):\n    # 10 apple, 20 cherry, else 5\n    pass\n',
+    tests:[
+      {args:['apple'],  expected:10},
+      {args:['cherry'], expected:20},
+      {args:['banana'], expected:5},
+      {args:['mango'],  expected:5},
+    ], hiddenFrom:2,
+  })}
+  <p class="mini"><b>Turtle bonus (run &amp; look):</b> write <code>draw_polygon(sides, size)</code> and draw a
+    triangle, square, and pentagon with the SAME function. Then add a <code>color</code> parameter so each
+    shape can be a different color.</p>
   ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\ndef draw_polygon(sides, size):\n    angle = 360 / sides\n    for i in range(sides):\n        t.forward(size)\n        t.right(angle)\n\ndraw_polygon(3, 80)   # triangle\nt.penup(); t.forward(100); t.pendown()\ndraw_polygon(5, 60)   # pentagon\n\nturtle.done()')}
   <div class="tier t-red">🔴 Challenge — build with functions</div>
-  <ol>
-    <li><b>Room areas.</b> Write <code>area(width, height)</code> that <b>returns</b> width × height,
-      and print the area of 3 rooms.</li>
+  ${CH({
+    id:'s6-area', title:'Room Area', level:'Challenge', mode:'function', funcName:'area',
+    prompt:'Write <code>area(width, height)</code> that <b>returns</b> width × height.',
+    starter:'def area(width, height):\n    # return width times height\n    pass\n',
+    tests:[
+      {args:[3,4],  expected:12},
+      {args:[5,5],  expected:25},
+      {args:[10,2], expected:20},
+      {args:[1,1],  expected:1},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s6-countevens', title:'Helper Using a Helper', level:'Challenge', mode:'function', funcName:'count_evens',
+    prompt:'Write <code>count_evens(numbers)</code> that <b>returns</b> how many numbers in the list are even. (Bonus: write a tiny <code>is_even</code> helper and call it inside the loop.)',
+    starter:'def count_evens(numbers):\n    # return how many numbers are even\n    pass\n',
+    tests:[
+      {args:[[1,2,3,4]], expected:2},
+      {args:[[2,4,6]],   expected:3},
+      {args:[[1,3,5]],   expected:0},
+      {args:[[]],        expected:0},
+      {args:[[2,2,2,1]], expected:3},
+    ], hiddenFrom:2,
+  })}
+  <p class="mini"><b>Build-it-yourself (not auto-graded):</b></p>
+  <ul>
     <li><b>Clean main.</b> Split a messy program into 3 single-job functions, then write a short
       <code>main()</code> that calls them in order — make <code>main</code> read like a sentence.</li>
     <li><b>Dice roller.</b> Write <code>roll()</code> that <b>returns</b> a random number 1–6
       (<code>import random</code>; <code>random.randint(1, 6)</code>). Roll it 5 times in a loop.</li>
-    <li><b>Helper using a helper.</b> Write <code>is_even(n)</code>, then a function
-      <code>count_evens(numbers)</code> that uses it to return how many evens are in a list.</li>
     <li><b>Stamp a row.</b> Write <code>draw_shape(sides, size, x)</code> that moves to position
       <code>x</code> and stamps a polygon. Call it in a loop to draw a whole row of growing shapes.</li>
-  </ol>
+  </ul>
 
   ${Q('Exit quiz', [
     {q:'<code>return</code> does what?', a:[
