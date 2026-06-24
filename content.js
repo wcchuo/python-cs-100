@@ -1104,35 +1104,112 @@ match light:
   })}
 
   <div class="tier t-yellow">🟡 Medium — combine conditions &amp; input</div>
-  <ol>
-    <li><b>Even or odd.</b> Set a number and print <code>"Even"</code> or <code>"Odd"</code>.
-      Hint: <code>n % 2 == 0</code>.</li>
-    <li><b>FizzBuzz lite.</b> For a number, print <code>"FizzBuzz"</code> if divisible by 3 <b>and</b> 5,
-      else <code>"Fizz"</code> if by 3, else <code>"Buzz"</code> if by 5, else the number.
-      <i>(Order matters — check "both" first!)</i></li>
-    <li><b>Login.</b> Given <code>password</code> and <code>tries</code>, print <code>"Access granted"</code>
-      only if password equals <code>"snake123"</code> <b>and</b> <code>tries &lt; 3</code>.</li>
-    <li><b>Report card.</b> Set <code>score = 84</code>. Print a grade:
-      A (90+), B (80+), C (70+), else F. Use one <code>if/elif/elif/else</code> chain.</li>
-    <li><b>Ask the player.</b> Use <code>age = int(input("Your age? "))</code>, then print whether they
-      can join the camp (<code>age &gt;= 10</code>).</li>
-  </ol>
-  ${R('# Medium scratch\nn = 7\n\nif n % 2 == 0:\n    print("Even")\nelse:\n    print("Odd")')}
+  <p class="mini">Also auto-graded. Some read <b>two</b> inputs — call <code>input()</code> once per line.
+  Print exactly the word shown.</p>
+  ${CH({
+    id:'s5-evenodd', title:'Even or Odd', level:'Medium', mode:'stdout',
+    prompt:'Read a number with <code>int(input())</code>. Print <code>Even</code> or <code>Odd</code>. Hint: <code>n % 2 == 0</code>.',
+    starter:'n = int(input())\n# print "Even" or "Odd"\n',
+    tests:[
+      {stdin:'4\n',  expected:'Even'},
+      {stdin:'7\n',  expected:'Odd'},
+      {stdin:'0\n',  expected:'Even'},
+      {stdin:'-3\n', expected:'Odd'},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s5-fizzbuzz', title:'FizzBuzz Lite', level:'Medium', mode:'stdout',
+    prompt:'Read a number. Print <code>FizzBuzz</code> if divisible by 3 <b>and</b> 5, else <code>Fizz</code> if by 3, else <code>Buzz</code> if by 5, else the number itself. <i>(Check "both" first!)</i>',
+    starter:'n = int(input())\n# FizzBuzz / Fizz / Buzz / the number\n',
+    tests:[
+      {stdin:'15\n', expected:'FizzBuzz'},
+      {stdin:'9\n',  expected:'Fizz'},
+      {stdin:'10\n', expected:'Buzz'},
+      {stdin:'7\n',  expected:'7'},
+      {stdin:'30\n', expected:'FizzBuzz'},
+    ], hiddenFrom:3,
+  })}
+  ${CH({
+    id:'s5-login', title:'Login Check', level:'Medium', mode:'stdout',
+    prompt:'Read a <b>password</b> (line 1) and the number of <b>tries</b> (line 2). Print <code>Access granted</code> only if the password equals <code>snake123</code> <b>and</b> tries is less than 3; otherwise print <code>Access denied</code>.',
+    starter:'password = input()\ntries = int(input())\n# Access granted / Access denied\n',
+    tests:[
+      {stdin:'snake123\n1\n', expected:'Access granted'},
+      {stdin:'snake123\n3\n', expected:'Access denied'},
+      {stdin:'wrong\n1\n',    expected:'Access denied'},
+      {stdin:'snake123\n0\n', expected:'Access granted'},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s5-grade', title:'Report Card', level:'Medium', mode:'stdout',
+    prompt:'Read a score with <code>int(input())</code>. Print a grade: <code>A</code> (90+), <code>B</code> (80+), <code>C</code> (70+), else <code>F</code>. Use one <code>if/elif/elif/else</code> chain.',
+    starter:'score = int(input())\n# print A / B / C / F\n',
+    tests:[
+      {stdin:'95\n', expected:'A'},
+      {stdin:'84\n', expected:'B'},
+      {stdin:'72\n', expected:'C'},
+      {stdin:'50\n', expected:'F'},
+      {stdin:'90\n', expected:'A'},
+      {stdin:'80\n', expected:'B'},
+    ], hiddenFrom:3,
+  })}
+  ${CH({
+    id:'s5-join', title:'Join the Camp?', level:'Medium', mode:'stdout',
+    prompt:'Read an age. Print <code>Welcome!</code> if the age is 10 or more, otherwise <code>Too young</code>.',
+    starter:'age = int(input())\n# Welcome! / Too young\n',
+    tests:[
+      {stdin:'10\n', expected:'Welcome!'},
+      {stdin:'9\n',  expected:'Too young'},
+      {stdin:'14\n', expected:'Welcome!'},
+      {stdin:'5\n',  expected:'Too young'},
+    ], hiddenFrom:2,
+  })}
 
   <div class="tier t-red">🔴 Challenge — decisions that draw &amp; play</div>
-  <ol>
-    <li><b>Traffic light drawing.</b> Run the drawing below, then add a 4th case:
-      if <code>light == 0</code>, make a gray dot ("off").</li>
-    <li><b>Wall crash.</b> Set <code>x</code> and <code>y</code>. Print <code>"CRASH! 💥"</code> if the head is
-      off-screen using <code>or</code> — x too big <i>or</i> y too big (e.g. <code>abs(x) &gt; 200 or abs(y) &gt; 200</code>).</li>
-    <li><b>Rock · Paper · Scissors.</b> Set <code>p1</code> and <code>p2</code> to one of
-      <code>"rock"/"paper"/"scissors"</code>. Use an if/elif chain to print who wins (or a tie).</li>
-    <li><b>Guess the number.</b> Set <code>secret = 7</code> and a <code>guess</code>. Print
-      <code>"Too high"</code>, <code>"Too low"</code>, or <code>"Correct! 🎉"</code>.</li>
-    <li><b>Danger zone (loop + if).</b> In the drawing below, walk the turtle forward in a loop and
-      color each step <b>red</b> when <code>x &gt; 100</code>, otherwise <b>green</b> — a live collision preview.</li>
-  </ol>
+  <p class="mini">The three logic puzzles are auto-graded. The two drawing ones use the turtle, so
+  just run them and check with your eyes.</p>
+
+  ${CH({
+    id:'s5-crash', title:'Wall Crash', level:'Challenge', mode:'stdout',
+    prompt:'Read <code>x</code> (line 1) and <code>y</code> (line 2). The screen edge is 200. Print <code>CRASH</code> if the head is off-screen — <code>abs(x) &gt; 200 or abs(y) &gt; 200</code> — otherwise <code>Safe</code>.',
+    starter:'x = int(input())\ny = int(input())\n# CRASH if off-screen, else Safe\n',
+    tests:[
+      {stdin:'250\n0\n',  expected:'CRASH'},
+      {stdin:'0\n0\n',    expected:'Safe'},
+      {stdin:'0\n-300\n', expected:'CRASH'},
+      {stdin:'100\n100\n',expected:'Safe'},
+    ], hiddenFrom:2,
+  })}
+  ${CH({
+    id:'s5-rps', title:'Rock · Paper · Scissors', level:'Challenge', mode:'stdout',
+    prompt:'Read player 1 (line 1) and player 2 (line 2), each one of <code>rock</code>/<code>paper</code>/<code>scissors</code>. Print <code>Player 1</code>, <code>Player 2</code>, or <code>Tie</code>. (Rock beats scissors, scissors beats paper, paper beats rock.)',
+    starter:'p1 = input()\np2 = input()\n# print "Player 1", "Player 2", or "Tie"\n',
+    tests:[
+      {stdin:'rock\nscissors\n',  expected:'Player 1'},
+      {stdin:'scissors\nrock\n',  expected:'Player 2'},
+      {stdin:'rock\nrock\n',      expected:'Tie'},
+      {stdin:'paper\nrock\n',     expected:'Player 1'},
+      {stdin:'rock\npaper\n',     expected:'Player 2'},
+      {stdin:'scissors\npaper\n', expected:'Player 1'},
+    ], hiddenFrom:3,
+  })}
+  ${CH({
+    id:'s5-guess', title:'Guess the Number', level:'Challenge', mode:'stdout',
+    prompt:'Read the <code>secret</code> (line 1) and the <code>guess</code> (line 2). Print <code>Too high</code> if the guess is bigger, <code>Too low</code> if smaller, or <code>Correct</code> if equal.',
+    starter:'secret = int(input())\nguess = int(input())\n# Too high / Too low / Correct\n',
+    tests:[
+      {stdin:'7\n9\n',    expected:'Too high'},
+      {stdin:'7\n5\n',    expected:'Too low'},
+      {stdin:'7\n7\n',    expected:'Correct'},
+      {stdin:'50\n100\n', expected:'Too high'},
+    ], hiddenFrom:2,
+  })}
+
+  <p><b>Traffic light drawing.</b> Run the drawing below, then add a 4th case:
+    if <code>light == 0</code>, make a gray dot ("off").</p>
   ${R('import turtle\nt = turtle.Turtle()\nt.penup(); t.speed(0)\n\nlight = 3   # try 1, 2, or 3\n\nif light == 1:\n    t.color("red")\nelif light == 2:\n    t.color("yellow")\nelse:\n    t.color("green")\n\nt.dot(120)\nturtle.done()', {origin:'center'})}
+  <p class="mini"><b>Danger zone (loop + if):</b> once you reach Session 3's loops, walk the turtle forward
+    in a loop and color each step <b>red</b> when <code>x &gt; 100</code>, otherwise <b>green</b>.</p>
 
   ${Q('Exit quiz', [
     {q:'<code>n % 2 == 0</code> is True when n is…', a:[
@@ -1170,14 +1247,37 @@ match light:
   ])}
 
   <h3>🏠 Homework — "Number Sorter"</h3>
-  <p>Write a program with a variable <code>n</code>. Print "big" if n &gt; 100, "medium" if between
-  10 and 100, and "small" otherwise. Test it with three different values.</p>
-  ${HW('# 🏠 HOMEWORK: Print "big", "medium", or "small" depending on n.\nn = 250        # <- try 250, then 50, then 5\n\n# write your if / elif / else here:\n\n\n# Expected output:\n#   n = 250  -> big\n#   n = 50   -> medium\n#   n = 5    -> small')}
+  <p>Auto-graded! Read a number and sort it into a size. This is the same idea your game uses to bucket values.</p>
+  ${CH({
+    id:'s5-sorter', title:'Number Sorter', level:'Homework', mode:'stdout',
+    prompt:'Read a number with <code>int(input())</code>. Print <code>big</code> if it is over 100, <code>medium</code> if it is from 10 to 100, otherwise <code>small</code>.',
+    starter:'n = int(input())\n# big (>100) / medium (10..100) / small (<10)\n',
+    tests:[
+      {stdin:'250\n', expected:'big'},
+      {stdin:'50\n',  expected:'medium'},
+      {stdin:'5\n',   expected:'small'},
+      {stdin:'100\n', expected:'medium'},
+      {stdin:'101\n', expected:'big'},
+      {stdin:'9\n',   expected:'small'},
+    ], hiddenFrom:3,
+  })}
 
-  <h3>🏠 Bonus homework — "Game Over Check" (no turtle)</h3>
-  <p>This is a real Snake rule. Using <code>and</code>/<code>or</code>, decide if the game should end:
-  the snake crashes if its head goes past a wall <b>or</b> hits its own body.</p>
-  ${HW('# 🏠 BONUS: Decide if the game is over using or / in.\nhead = (120, 0)            # the snake\'s head position\nbody = [(0,0), (20,0), (40,0)]\nEDGE = 100                 # walls are at +/- 100\n\nx, y = head\nhit_wall = x > EDGE or x < -EDGE or y > EDGE or y < -EDGE\nhit_self = head in body\n\nif hit_wall or hit_self:\n    print("GAME OVER!")\nelse:\n    print("Keep slithering...")\n\n# Try changing head to (60,0) -> keep slithering,\n# or (20,0) -> hit_self is True -> GAME OVER.')}
+  <h3>🏠 Bonus homework — "Game Over Check"</h3>
+  <p>A real Snake rule! The body is fixed at <code>[(0,0), (20,0), (40,0)]</code> and the walls are at
+  ±100. Read the head's <code>x</code> (line 1) and <code>y</code> (line 2). Using <code>or</code> and
+  <code>in</code>, print <code>GAME OVER</code> if the head hits a wall <b>or</b> its own body, else
+  <code>Keep slithering</code>.</p>
+  ${CH({
+    id:'s5-gameover', title:'Game Over Check', level:'Homework', mode:'stdout',
+    prompt:'Body is <code>[(0,0), (20,0), (40,0)]</code>, walls at ±100. Read <code>x</code> then <code>y</code>. Print <code>GAME OVER</code> if <code>abs(x) &gt; 100 or abs(y) &gt; 100</code> <b>or</b> the head <code>(x, y)</code> is <code>in</code> the body; otherwise <code>Keep slithering</code>.',
+    starter:'body = [(0,0), (20,0), (40,0)]\nx = int(input())\ny = int(input())\nhead = (x, y)\n# GAME OVER if hit a wall or hit the body, else Keep slithering\n',
+    tests:[
+      {stdin:'120\n0\n', expected:'GAME OVER'},
+      {stdin:'20\n0\n',  expected:'GAME OVER'},
+      {stdin:'60\n0\n',  expected:'Keep slithering'},
+      {stdin:'0\n-200\n',expected:'GAME OVER'},
+    ], hiddenFrom:2,
+  })}
 
   <div class="box tip"><div class="h">💡 Tip</div>
     Read your conditions out loud like English. If it makes sense as a sentence, it's probably right.</div>
