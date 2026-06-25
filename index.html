@@ -285,7 +285,7 @@ function makeRunner(code, opts){
     <div class="bar"><span>▶ Python — edit me, then Run!</span>
       <span><button class="resetbtn" data-reset="${id}">↺ Reset</button>
       <button class="runbtn" data-run="${id}">▶ Run</button></span></div>
-    <textarea class="editor" id="${id}" rows="${rows}" spellcheck="false" data-origin="${opts.origin||'topleft'}">${escapeHtml(code)}</textarea>
+    <textarea class="editor" id="${id}" rows="${rows}" spellcheck="false" data-origin="${opts.origin||'topleft'}" data-size="${opts.size||''}">${escapeHtml(code)}</textarea>
     <div class="turtlebox" id="${turtleId}"></div>
     <div class="out" id="${id}_out"></div>
   </div>`;
@@ -346,10 +346,14 @@ function runSkulpt(id){
     read:builtinRead, __future__:Sk.python3, killableWhile:true, killableFor:true,
     inputfun: askInput, inputfunTakesPrompt: true
   });
-  // 40%-wider canvas (590×460 instead of 420×320) so drawings rarely run off.
+  // Canvas size: default 590×460 so most drawings fit. A runner can request a
+  // bigger square via opts.size (e.g. the Snake game uses 900×900 for room).
+  const sizeAttr = parseInt(ed.dataset.size, 10);
+  const cw = sizeAttr > 0 ? sizeAttr : 590;
+  const ch = sizeAttr > 0 ? sizeAttr : 460;
   Sk.TurtleGraphics = Sk.TurtleGraphics || {};
   Sk.TurtleGraphics.target = id+'_t';
-  Sk.TurtleGraphics.width = 590; Sk.TurtleGraphics.height = 460;
+  Sk.TurtleGraphics.width = cw; Sk.TurtleGraphics.height = ch;
   // Set the coordinate origin per run. The turtle screen is a Skulpt
   // singleton that survives between runs, so we always re-assert it.
   //  • topleft: (0,0) sits 20px from the top-left corner; y still grows
@@ -359,9 +363,12 @@ function runSkulpt(id){
   //    games that use coordinates like (-100, 80) or place items at ±200.
   let runCode = code, lineOffset = 0;
   if(usesTurtle){
+    // Derive world coordinates from the actual canvas size so origin stays
+    // correct at any size.  center: Cartesian origin in the middle.
+    // topleft: (0,0) near the top-left, y growing upward.
     const coords = (origin === 'center')
-      ? '_t.Screen().setworldcoordinates(-295,-230,295,230)'
-      : '_t.Screen().setworldcoordinates(-20,-440,570,20)';
+      ? `_t.Screen().setworldcoordinates(${-cw/2},${-ch/2},${cw/2},${ch/2})`
+      : `_t.Screen().setworldcoordinates(-20,${-(ch-20)},${cw-20},20)`;
     runCode = 'import turtle as _t;' + coords + '\n' + code;
     lineOffset = 1;
   }
