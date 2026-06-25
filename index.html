@@ -220,6 +220,26 @@
   .prog-chip .prog-ic{font-size:18px}
   .prog-chip .prog-name{flex:1; font-weight:600}
   .prog-chip.done .prog-name{color:#bdf5d6}
+
+  /* ---------- First-launch tutorial ---------- */
+  #tut-blocker{position:fixed; inset:0; z-index:10000}                 /* swallows page clicks */
+  #tut-spot{position:fixed; z-index:10001; border-radius:12px; border:3px solid var(--accent);
+    box-shadow:0 0 0 9999px rgba(8,10,25,.80); pointer-events:none; transition:all .25s ease}
+  #tut-bubble{position:fixed; z-index:10002; width:300px; background:var(--panel);
+    border:2px solid var(--accent); border-radius:14px; padding:16px 18px; color:var(--ink);
+    box-shadow:0 10px 34px rgba(0,0,0,.55); transition:left .25s ease, top .25s ease}
+  #tut-bubble .tut-arrow{position:absolute; width:0; height:0; border:11px solid transparent}
+  #tut-bubble[data-place="right"] .tut-arrow{left:-22px; border-right-color:var(--accent)}
+  #tut-bubble[data-place="left"]  .tut-arrow{right:-22px; border-left-color:var(--accent)}
+  #tut-bubble .tut-title{font-weight:800; font-size:17px; margin-bottom:6px; color:var(--accent)}
+  #tut-bubble .tut-text{font-size:14px; line-height:1.5}
+  #tut-bubble .tut-row{display:flex; justify-content:space-between; align-items:center; margin-top:14px}
+  #tut-bubble .tut-step{color:var(--muted); font-size:12px}
+  #tut-bubble .tut-skip{background:transparent; color:var(--muted); border:1px solid var(--line);
+    border-radius:8px; padding:5px 10px; cursor:pointer; margin-right:6px; font-size:13px}
+  #tut-bubble .tut-skip:hover{color:var(--ink)}
+  #tut-bubble .tut-next{background:var(--green); color:#07321f; border:none; border-radius:8px;
+    padding:6px 14px; font-weight:800; cursor:pointer; font-size:13px}
 </style>
 </head>
 <body>
@@ -455,6 +475,7 @@ function page(id,title,sub,builder){ SESSIONS.push({id,title,sub,builder}); }
 <!-- Practice arena: problem data + page, then its wiring -->
 <script src="problems.js"></script>
 <script src="practice.js"></script>
+<script src="tutorial.js"></script>
 
 <script>
 /* =========================================================================
@@ -485,6 +506,7 @@ function render(){
   goto(location.hash? (parseInt(location.hash.replace('#p',''))||0):0);
   setupScratchpad();
   if(typeof setupPractice==='function') setupPractice();
+  if(window.CodeQuestTutorial) setTimeout(()=>CodeQuestTutorial.maybeStart(), 400);
 }
 
 /* Inject the blank scratchpad runner (starts with no code) and wire the

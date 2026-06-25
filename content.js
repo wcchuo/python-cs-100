@@ -833,7 +833,7 @@ page('s4','4 · Lists ⭐','One backpack, many things', ()=>`
 
   <h3>🎬 Watch first — Lists in a few minutes</h3>
   <p>A quick, friendly video to see lists in action before we dive in:</p>
-  <div class="video"><iframe src="https://www.youtube.com/embed/pNncmHowA0U"
+  <div class="video"><iframe src="https://www.youtube.com/embed/IaEcrHxjoCM"
     title="Python Lists" frameborder="0" loading="lazy"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen></iframe></div>
