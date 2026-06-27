@@ -634,7 +634,7 @@ page('s3','3 · Loops','Do it again without retyping', ()=>`
 
   <h3>🎨 The "whoa" moment — turn a loop into a circle</h3>
   <p>Change <code>range(4)</code> to bigger numbers with smaller turns:</p>
-  ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\n\nfor i in range(36):   # 36 tiny steps\n    t.forward(20)\n    t.right(10)        # 36 x 10 = 360 = full circle!\n\nturtle.done()')}
+  ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\nt.penup(); t.goto(0, 115); t.pendown()   # start at the top so the circle is centered\n\nfor i in range(36):   # 36 tiny steps\n    t.forward(20)\n    t.right(10)        # 36 x 10 = 360 = full circle!\n\nturtle.done()', {origin:'center'})}
 
   <h3>🪆 Loops inside loops (nested) — the secret to a grid</h3>
   <p>Put a loop <i>inside</i> another loop and the inner one runs all the way through <b>every</b> time
@@ -683,24 +683,38 @@ page('s3','3 · Loops','Do it again without retyping', ()=>`
   ])}
 
   <h3>🏆 Challenges</h3>
+  <div class="box tip"><div class="h">🧪 The classic loop challenges — now auto-graded</div>
+    Use a <b>loop</b> (not copy-paste!) and <code>print</code> the answer. Press ▶ Run Tests to earn 🏅.</div>
   <div class="tier t-green">🟢 Starter</div>
-  <ul>
-    <li>Draw a hexagon (6 sides). Hint: <code>range(6)</code> and turn 60.</li>
-    <li>Print your name 10 times using a loop instead of copy-paste.</li>
-    <li>Use a loop to count down from 10 to 1, then print <code>"Liftoff!"</code>.</li>
-  </ul>
+  ${CH({ id:'s3-name10', title:'Name x10', level:'Starter', mode:'stdout',
+    prompt:'Read a name and print it <b>10 times</b>, one per line — using a loop, not copy-paste.',
+    starter:'name = input()\n# print the name 10 times (one per line)\n',
+    tests:[{stdin:'Sam\n',expected:'Sam\nSam\nSam\nSam\nSam\nSam\nSam\nSam\nSam\nSam'},{stdin:'Mia\n',expected:'Mia\nMia\nMia\nMia\nMia\nMia\nMia\nMia\nMia\nMia'}], hiddenFrom:1 })}
+  ${CH({ id:'s3-liftoff', title:'Liftoff!', level:'Starter', mode:'stdout',
+    prompt:'Use a loop to count down from <code>10</code> to <code>1</code> (one per line), then print <code>Liftoff!</code>.',
+    starter:'# count down 10 -> 1, then print "Liftoff!"\n',
+    tests:[{stdin:'',expected:'10\n9\n8\n7\n6\n5\n4\n3\n2\n1\nLiftoff!'}] })}
+  <p class="mini">Turtle warm-up (run &amp; look — not graded): draw a hexagon with <code>range(6)</code> and
+    <code>t.right(60)</code>. Try it in the 🐍 Scratchpad!</p>
   <div class="tier t-yellow">🟡 Medium</div>
+  ${CH({ id:'s3-7table', title:'7× Table', level:'Medium', mode:'stdout',
+    prompt:'Use a loop to print the 7× table: <code>7, 14, 21 … 70</code>, one per line.',
+    starter:'# print 7, 14, 21, ... up to 70\n',
+    tests:[{stdin:'',expected:'7\n14\n21\n28\n35\n42\n49\n56\n63\n70'}] })}
+  ${CH({ id:'s3-sumeven20', title:'Sum of Evens 2–20', level:'Medium', mode:'stdout',
+    prompt:'Use a loop with an accumulator to add up every even number from 2 to 20, then print the total. (The answer is 110.)',
+    starter:'# add up 2 + 4 + 6 + ... + 20 and print it\n',
+    tests:[{stdin:'',expected:'110'}] })}
+  ${CH({ id:'s3-letters', title:'Letters & Positions', level:'Medium', mode:'stdout',
+    prompt:'Read a word and loop over it, printing each letter with its <b>position number</b> (starting at 1), like <code>1 P</code> on its own line.',
+    starter:'word = input()\n# print "1 P", "2 Y", ... one per line\n',
+    tests:[{stdin:'PYTHON\n',expected:'1 P\n2 Y\n3 T\n4 H\n5 O\n6 N'},{stdin:'CAT\n',expected:'1 C\n2 A\n3 T'},{stdin:'GO\n',expected:'1 G\n2 O'}], hiddenFrom:2 })}
+  <div class="tier t-red">🔴 Challenge — Spirograph &amp; a grid (run &amp; look)</div>
   <ul>
-    <li>Use a loop to print the 7× table (7, 14, 21 … 70).</li>
-    <li>Add up all the even numbers from 2 to 20 with an accumulator. (Answer: 110.)</li>
-    <li>Loop over the word <code>"PYTHON"</code> and print each letter on its own line, with its position number.</li>
-  </ul>
-  <div class="tier t-red">🔴 Challenge — Spirograph & a grid</div>
-  <ul>
-    <li>Draw a colorful repeating pattern using a loop. Try changing colors each turn.</li>
+    <li>Draw a colorful repeating pattern using a loop. Try changing the colors and the angle.</li>
     <li><b>Stretch:</b> use a <i>nested</i> loop to stamp a 5×5 grid of dots — the start of the Snake board!</li>
   </ul>
-  ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\ncolors = ["red","orange","yellow","green","blue","purple"]\n\nfor i in range(36):\n    t.color(colors[i % 6])\n    t.forward(100)\n    t.right(80)   # try other angles!\n\nturtle.done()')}
+  ${R('import turtle\nt = turtle.Turtle()\nt.speed(0)\ncolors = ["red","orange","yellow","green","blue","purple"]\n\nfor i in range(36):\n    t.color(colors[i % 6])\n    t.forward(100)\n    t.right(80)   # try other angles!\n\nturtle.done()', {origin:'center'})}
   <p>Nested-loop grid starter (try it!):</p>
   ${R('import turtle\nt = turtle.Turtle()\nt.penup(); t.speed(0); t.shape("circle")\n\nfor row in range(5):          # 5 rows\n    for col in range(5):      # 5 dots per row\n        t.goto(col*40 - 80, row*40 - 80)\n        t.stamp()\n\nturtle.done()', {origin:'center'})}
 
